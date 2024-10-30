@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,45 +9,21 @@ namespace 考核系统.Entity
 {
     class Department//部门
     {
-        string id;//部门编号
-        string name;//部门名称
-        int population;//部门人数
-        double punishRatio;//扣分比例
+        [Key]
+        public int id { get; set; }//部门编号
+        public string dept_code { get; set; }//部门代码
+        public string dept_name { get; set; }//部门名称
 
-
-        //get set constructor
-        public string Id
+        public Department(int dept_id,string dept_code, string dept_name)
         {
-            get { return id; }
-            set { id = value; }
+            this.id = dept_id;
+            this.dept_code = dept_code;
+            this.dept_name = dept_name;
         }
-        public string Name
+        public Department()
         {
-            get { return name; }
-            set
-            {
-                name = value;
-            }
-
-        }
-        public int Population
-        {
-            get { return population; }
-            set { population = value; }
-        }
-        public double PunishRatio
-        {
-            get { return punishRatio; }
-            set { punishRatio = value; }
         }
 
-        public Department(string id, string name, int population, double punishRatio)
-        {
-            this.id = id;
-            this.name = name;
-            this.population = population;
-            this.punishRatio = punishRatio;
-        }
     }
 
 }

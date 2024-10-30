@@ -5,16 +5,33 @@ VisualStudioVersion = 17.12.35209.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "考核系统", "考核系统.csproj", "{57E2C766-A96A-40F4-BC08-34BEAE9794CD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{85669DCD-D009-4672-B25F-AF038C8219F9}"
+	ProjectSection(SolutionItems) = preProject
+		DhuAssessment.db = DhuAssessment.db
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Debug|x64.ActiveCfg = Debug|x64
+		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Debug|x64.Build.0 = Debug|x64
+		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Debug|x86.ActiveCfg = Debug|x86
+		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Debug|x86.Build.0 = Debug|x86
 		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Release|x64.ActiveCfg = Release|x64
+		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Release|x64.Build.0 = Release|x64
+		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Release|x86.ActiveCfg = Release|x86
+		{57E2C766-A96A-40F4-BC08-34BEAE9794CD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

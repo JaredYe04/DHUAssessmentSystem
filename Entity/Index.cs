@@ -6,51 +6,27 @@ using System.Threading.Tasks;
 
 namespace 考核系统.Entity
 {
-    class Index//指标
+    public class Index
     {
-        string id;//指标编号
-        string name;//指标名称
-        string type;//指标类型，加分类或基础类
-        double firstWeight;//一级权重
-        double secondWeight;//二级权重
+        public int id { get; set; }
+        public string index_code { get; set; }
+        public string index_name { get; set; }
+        public string index_type { get; set; }
+        public double weight1 { get; set; }
+        public double weight2 { get; set; }
+        public int enable_sensitivity { get; set; }
+        public double sensitivity { get; set; }
 
-        public string Id
+        public Index(int index_id,string index_code, string index_name, string index_type, double weight1, double weight2, int enable_sensitivity, double sensitivity)
         {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public string Type
-        {
-            get { return type; }
-            set { type = value; }
-        }
-
-        public double FirstWeight
-        {
-            get { return firstWeight; }
-            set { firstWeight = value; }
-        }
-
-        public double SecondWeight
-        {
-            get { return secondWeight; }
-            set { secondWeight = value; }
-        }
-
-        public Index(string id, string name, string type, double firstWeight, double secondWeight)
-        {
-            this.id = id;
-            this.name = name;
-            this.type = type;
-            this.firstWeight = firstWeight;
-            this.secondWeight = secondWeight;
+            this.id = index_id;
+            this.index_code = index_code;
+            this.index_name = index_name;
+            this.index_type = index_type;
+            this.weight1 = weight1;
+            this.weight2 = weight2;
+            this.enable_sensitivity = enable_sensitivity;
+            this.sensitivity = sensitivity;
         }
     }
 }

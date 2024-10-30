@@ -7,13 +7,13 @@ using System.Windows.Forms;
 
 namespace 考核系统.Utils
 {
-    enum LogType
+    public enum LogType
     {
         INFO,
         WARNING,
         ERROR
     }
-    class Logger
+    public class Logger
     {
         public static TextBox logger { set; get; } = null;
 
