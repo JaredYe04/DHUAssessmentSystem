@@ -300,6 +300,7 @@
     <Compile Include="Entity\DeptAnnualInfo.cs" />
     <Compile Include="Entity\Index.cs" />
     <Compile Include="Entity\IndexDuty.cs" />
+    <Compile Include="Entity\IndexIdentifier.cs" />
     <Compile Include="Entity\Manager.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -313,6 +314,7 @@
     <Compile Include="Mapper\DepartmentMapper.cs" />
     <Compile Include="Mapper\DeptAnnualInfoMapper.cs" />
     <Compile Include="Mapper\IndexDutyMapper.cs" />
+    <Compile Include="Mapper\IndexIdentifierMapper.cs" />
     <Compile Include="Mapper\IndexMapper.cs" />
     <Compile Include="Mapper\ManagerMapper.cs" />
     <Compile Include="Program.cs" />

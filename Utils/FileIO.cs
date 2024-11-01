@@ -73,6 +73,7 @@ namespace 考核系统.Utils
                     if (dataGridView[j, i].Value != null)
                     {
                         excel.Cells[i + 2, j + 1] = dataGridView[j, i].Value.ToString();
+
                     }
                     else
                     {

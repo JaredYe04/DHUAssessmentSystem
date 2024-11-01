@@ -21,8 +21,9 @@ namespace 考核系统.Mapper
         }
         public T Query(string sql)
         {
-            var result = DB.GetInstance().ExecuteReader(sql)[0];
-            if(result == null)
+            var list = DB.GetInstance().ExecuteReader(sql);
+            var result=list.FirstOrDefault();
+            if (result == null)
             {
                 return null;
             }   

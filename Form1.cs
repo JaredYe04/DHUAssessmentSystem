@@ -28,23 +28,58 @@ namespace 考核系统
             dept_punishment=4,
             dept_group=5
         }//部门信息表的列
+        public static Dictionary<DeptInfoColumns,string> deptInfoColumnsMap = new Dictionary<DeptInfoColumns, string>
+        {
+            {DeptInfoColumns.id,"单位编号"},
+            {DeptInfoColumns.dept_code,"单位代码"},
+            {DeptInfoColumns.dept_name,"单位名称"},
+            {DeptInfoColumns.dept_population,"单位人数"},
+            {DeptInfoColumns.dept_punishment,"惩罚系数"},
+            {DeptInfoColumns.dept_group,"单位组别"}
+        };
         public enum IndexInfoColumns
         {
             id = 0,
-            index_code = 1,
-            index_name = 2,
-            index_type = 3,
-            weight1 = 4,
-            weight2 = 5,
-            enable_sensitivity = 6,
-            sensitivity = 7
+            identifier_id = 1,
+            secondary_identifier = 2,
+            index_name = 3,
+            index_type = 4,
+            weight1 = 5,
+            weight2 = 6,
+            enable_sensitivity = 7,
+            sensitivity = 8
         }//指标信息表的列
+        public static Dictionary<IndexInfoColumns, string> indexInfoColumnsMap = new Dictionary<IndexInfoColumns, string>
+        {
+            {IndexInfoColumns.id,"指标编号"},
+            {IndexInfoColumns.identifier_id,"一级类别"},
+            {IndexInfoColumns.secondary_identifier,"二级类别"},
+            {IndexInfoColumns.index_name,"指标名称"},
+            {IndexInfoColumns.index_type,"指标类型"},
+            {IndexInfoColumns.weight1,"权重1"},
+            {IndexInfoColumns.weight2,"权重2"},
+            {IndexInfoColumns.enable_sensitivity,"启用敏感度"},
+            {IndexInfoColumns.sensitivity,"敏感度"}
+        };
         public enum ManagerInfoColumns
         {
             id = 0,
             manager_code = 1,
             manager_name = 2
         }//职能部门信息表的列
+
+        public enum IndexIdentifierInfoColumns
+        {
+            id = 0,
+            identifier_name = 1
+        }//指标分类信息表的列
+
+        public static Dictionary<ManagerInfoColumns, string> managerInfoColumnsMap = new Dictionary<ManagerInfoColumns, string>
+        {
+            {ManagerInfoColumns.id,"职能部门编号"},
+            {ManagerInfoColumns.manager_code,"职能部门代码"},
+            {ManagerInfoColumns.manager_name,"职能部门名称"}
+        };
         public Form1()
         {
             InitializeComponent();
@@ -55,8 +90,8 @@ namespace 考核系统
         {
             Logger.Log("年份变更为" + year);
             labelCurrentYear.Text = "当前年份:" + year;
-            //todo:更新界面
-            //labelYear.Text = year.ToString();
+            fetchDepartmentInfo();
+            //部门信息会随年份变更而变更
         }
         private void fetchDepartmentInfo()
         {
@@ -91,7 +126,7 @@ namespace 考核系统
                 if(deptAnnualInfo == null)
                 {
 
-                    deptAnnualInfo = new DeptAnnualInfo(deptList[i].id, year, 0, 0, "1-1");
+                    deptAnnualInfo = new DeptAnnualInfo(deptList[i].id, year, 0, 0, "组1");
                     deptAnnualInfoMapper.Add(deptAnnualInfo);
                 }
                 deptDataGrid.Rows[i].Cells[(int)DeptInfoColumns.dept_population].Value = deptAnnualInfo.dept_population;
@@ -108,6 +143,36 @@ namespace 考核系统
             Cursor.Current = Cursors.Default;
             Logger.Log("获取教学科研单位信息成功");
         }
+        void fetchIndexIdentifierInfo()
+        {
+            if (CommonData.IdentifierInfo == null)
+            {
+                CommonData.IdentifierInfo = new Dictionary<int, IndexIdentifier>();
+            }
+
+            Logger.Log("开始获取指标分类信息");
+            //鼠标指针变为等待状态
+            Cursor.Current = Cursors.WaitCursor;
+
+
+            indexIdentifierDataGrid.Rows.Clear();
+            //获取指标信息
+            var indexIdentifierMapper = IndexIdentifierMapper.GetInstance();
+            var indexIdentifierList = indexIdentifierMapper.GetAllObjects();
+
+            for (int i = 0; i < indexIdentifierList.Count; i++)
+            {
+                indexIdentifierDataGrid.Rows.Add();
+                indexIdentifierDataGrid.Rows[i].Cells[0].Value = indexIdentifierList[i].id;
+                indexIdentifierDataGrid.Rows[i].Cells[1].Value = indexIdentifierList[i].identifier_name;
+                CommonData.IdentifierInfo[indexIdentifierList[i].id] = IndexIdentifier.Copy(indexIdentifierList[i]);
+            }
+                
+            //鼠标指针恢复默认状态
+            Cursor.Current = Cursors.Default;
+            Logger.Log("获取职能指标分类成功");
+            updateComboIndexIdentifier();
+        }
         void fetchIndexInfo()
         {
             if (CommonData.IndexInfo == null)
@@ -118,31 +183,19 @@ namespace 考核系统
             Logger.Log("开始获取指标信息");
             //鼠标指针变为等待状态
             Cursor.Current = Cursors.WaitCursor;
-
-
+            
             //清空原有数据
             indexDataGrid.Rows.Clear();
             //获取指标信息
             var indexMapper = IndexMapper.GetInstance();
             var indexList = indexMapper.GetAllObjects();
 
-
-            for (int i = 0; i < indexList.Count; i++)
+            CommonData.IndexInfo.Clear();
+            foreach (var index in indexList)
             {
-
-                indexDataGrid.Rows.Add();
-                indexDataGrid.Rows[i].Cells[(int)IndexInfoColumns.id].Value = indexList[i].id;
-                indexDataGrid.Rows[i].Cells[(int)IndexInfoColumns.index_code].Value = indexList[i].index_code;
-                indexDataGrid.Rows[i].Cells[(int)IndexInfoColumns.index_name].Value = indexList[i].index_name;
-                indexDataGrid.Rows[i].Cells[(int)IndexInfoColumns.index_type].Value = indexList[i].index_type;
-                indexDataGrid.Rows[i].Cells[(int)IndexInfoColumns.weight1].Value = indexList[i].weight1;
-                indexDataGrid.Rows[i].Cells[(int)IndexInfoColumns.weight2].Value = indexList[i].weight2;
-                indexDataGrid.Rows[i].Cells[(int)IndexInfoColumns.enable_sensitivity].Value = indexList[i].enable_sensitivity==1;
-                indexDataGrid.Rows[i].Cells[(int)IndexInfoColumns.sensitivity].Value = indexList[i].sensitivity;
-
-                CommonData.IndexInfo[indexList[i].id] = Index.Copy(indexList[i]);
-
+                CommonData.IndexInfo[index.id] = Index.Copy(index);
             }
+            //指标信息不显示，只有在选中第一级类别时才显示
 
 
             //鼠标指针恢复默认状态
@@ -287,6 +340,7 @@ namespace 考核系统
             mainContainer.SelectedIndex = 1;
             labelView.Text = "指标视图";
             fetchIndexInfo();
+            fetchIndexIdentifierInfo();
         }
 
         private void 完成度视图ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -325,6 +379,7 @@ namespace 考核系统
         private void button3_Click(object sender, EventArgs e)
         {
             fetchDepartmentInfo();
+            
         }
 
         private void deptDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -344,7 +399,7 @@ namespace 考核系统
                 var deptAnnualInfoMapper = DeptAnnualInfoMapper.GetInstance();
 
                 var newDeptInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new Department()));
-                var newDeptAnnualInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new DeptAnnualInfo(-1, CommonData.CurrentYear, 0, 0, "1-1")));
+                var newDeptAnnualInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new DeptAnnualInfo(-1, CommonData.CurrentYear, 0, 0, "组1")));
 
                 if (newDeptInfo.Keys.Contains(columnName))
                 {
@@ -471,8 +526,31 @@ namespace 考核系统
                 CommonData.DeptInfo.Remove(deptId);
             }
         }
-        private void dump2Sheet(DataGridView dataGridView)
+        private void dump2Sheet(DataGridView dataGridView,bool reserveId=false)
         {
+            if (reserveId == false)
+            {
+                //复制一份数据表，去掉id列
+                DataGridView dataGridViewCopy = new DataGridView();
+                dataGridViewCopy.ColumnCount = dataGridView.ColumnCount - 1;
+                for (int i = 1; i < dataGridView.ColumnCount; i++)
+                {
+                    dataGridViewCopy.Columns[i - 1].Name = dataGridView.Columns[i].Name;
+                    //复制标题
+                    dataGridViewCopy.Columns[i - 1].HeaderText = dataGridView.Columns[i].HeaderText;
+                }
+
+                for (int i = 0; i < dataGridView.RowCount; i++)
+                {
+                    dataGridViewCopy.Rows.Add();
+                    for (int j = 1; j < dataGridView.ColumnCount; j++)
+                    {
+                        dataGridViewCopy.Rows[i].Cells[j - 1].Value = dataGridView.Rows[i].Cells[j].Value;
+                    }
+                }
+                dataGridView = dataGridViewCopy;
+
+            }
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
                 //excel导出
@@ -491,6 +569,7 @@ namespace 考核系统
         }
         private void buttonDeptDump_Click(object sender, EventArgs e)
         {
+            saveDialog.FileName= DateTime.Now.ToString("yyyy-MM-dd")+"教学科研单位信息.xlsx";
             dump2Sheet(deptDataGrid);
         }
 
@@ -509,6 +588,9 @@ namespace 考核系统
         private void buttonIndexRefresh_Click(object sender, EventArgs e)
         {
             fetchIndexInfo();
+            fetchIndexIdentifierInfo(); 
+            comboIndexIdentifier.Text = "";//清空选中的一级类别
+            indexDataGrid.Enabled=false;
         }
 
         private bool HasSelectedManager//是否选中了职能部门
@@ -522,14 +604,29 @@ namespace 考核系统
         {
             object cellValue = indexDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 
+            if (cellValue == null) return;//应对bug:当新的行选中checkbox，然后取消选中，cellValue为null
+
+
             string columnName = Enum.GetName(typeof(IndexInfoColumns), e.ColumnIndex);
-            if (e.RowIndex >= CommonData.IndexInfo.Count)
+            if (e.RowIndex >= CommonData.currentCategoryIndexes.Count)
             {
                 //新增行时，写入数据库
                 var indexMapper = IndexMapper.GetInstance();
                 var newIndexInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new Index()));
-                
+
+
                 newIndexInfo[columnName] = cellValue;//更新字段值
+
+                newIndexInfo["identifier_id"] = CommonData.selectedIdentifier.id;//新增的指标一定属于当前选中的一级类别
+
+                int nextSecondaryIdentifier = 1;
+                if (CommonData.IndexInfo.Values.Any(index => index.identifier_id == CommonData.selectedIdentifier.id))
+                {
+                    nextSecondaryIdentifier = CommonData.IndexInfo.Values.Where(index => index.identifier_id == CommonData.selectedIdentifier.id).Max(index => index.secondary_identifier) + 1;
+                }//获取当前一级类别下的最大二级类别，新的二级类别为最大二级类别+1
+                newIndexInfo["secondary_identifier"] = nextSecondaryIdentifier;
+
+
 
                 var newIndexInfoObj = JsonConvert.DeserializeObject<Index>(JsonConvert.SerializeObject(newIndexInfo));
                 indexMapper.Add(newIndexInfoObj);
@@ -540,7 +637,8 @@ namespace 考核系统
                 CommonData.IndexInfo[newIndexInfoObj.id] = Index.Copy(newIndexInfoObj);
 
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.id].Value = newIndexInfoObj.id;
-                indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.index_code].Value = newIndexInfoObj.index_code;
+                indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.identifier_id].Value = newIndexInfoObj.identifier_id;
+                indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.secondary_identifier].Value = newIndexInfoObj.secondary_identifier;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.index_name].Value = newIndexInfoObj.index_name;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.index_type].Value = newIndexInfoObj.index_type;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.weight1].Value = newIndexInfoObj.weight1;
@@ -567,7 +665,20 @@ namespace 考核系统
                 {
                     cellValue = (bool)cellValue ? 1 : 0;
                 }
-
+                if (columnName == "secondary_identifier")
+                {
+                    //如果是二级类别，判断一下是否有重复
+                    if (CommonData.IndexInfo.Values.Any(index =>
+                    index.secondary_identifier == Int32.Parse(cellValue.ToString())
+                    && index.identifier_id == CommonData.selectedIdentifier.id
+                    ))
+                    {
+                        MessageBox.Show("二级类别不能重复", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        indexDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = indexInfo[columnName];
+                        //如果有重复，不做任何操作
+                        return;
+                    }
+                }
                 indexInfo[columnName] = cellValue;
 
                 var indexInfoObj = JsonConvert.DeserializeObject<Index>(JsonConvert.SerializeObject(indexInfo));
@@ -581,6 +692,7 @@ namespace 考核系统
 
         private void buttonIndexDump_Click(object sender, EventArgs e)
         {
+            saveDialog.FileName = DateTime.Now.ToString("yyyy-MM-dd") + "考核指标信息.xlsx";
             dump2Sheet(indexDataGrid);
         }
 
@@ -627,6 +739,7 @@ namespace 考核系统
 
         private void buttonManagerDump_Click(object sender, EventArgs e)
         {
+            saveDialog.FileName = DateTime.Now.ToString("yyyy-MM-dd") + "职能部门信息.xlsx";
             dump2Sheet(managerDataGrid);
         }
 
@@ -763,8 +876,15 @@ namespace 考核系统
                 listAllocatedIndexes.ValueMember = "id";
                 foreach (var indexDuty in indexDutyList)
                 {
-                    var index = CommonData.IndexInfo[indexDuty.index_id];
-                    listAllocatedIndexes.Items.Add(index);
+                    try
+                    {
+                        var index = CommonData.IndexInfo[indexDuty.index_id];
+                        listAllocatedIndexes.Items.Add(index);
+                    }
+                    catch(Exception ex)
+                    {
+                        Logger.Log($"指标{indexDuty.index_id}不存在;"+ex.Message);
+                    }
                 }
             }
             refreshDutyAllocateButtonState();
@@ -878,6 +998,174 @@ namespace 考核系统
                 listAllocatedIndexes.SetSelected(i, true);
             }
             unallocateDuty(listAllocatedIndexes.SelectedItems);
+        }
+
+        private void indexIdentifierDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            object cellValue = indexIdentifierDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+            string columnName = Enum.GetName(typeof(IndexIdentifierInfoColumns), e.ColumnIndex);
+            if (e.RowIndex >= CommonData.IdentifierInfo.Count)
+            {
+                //新增行时，写入数据库
+                var indexIdentifierMapper = IndexIdentifierMapper.GetInstance();
+                var newIndexIdentifierInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new IndexIdentifier()));
+                newIndexIdentifierInfo[columnName] = cellValue;//更新字段值
+                var newIndexIdentifierInfoObj = JsonConvert.DeserializeObject<IndexIdentifier>(JsonConvert.SerializeObject(newIndexIdentifierInfo));
+                indexIdentifierMapper.Add(newIndexIdentifierInfoObj,false);
+                newIndexIdentifierInfoObj = indexIdentifierMapper.GetObject(newIndexIdentifierInfo);//获取刚插入的部门信息，带有id
+                CommonData.IdentifierInfo[newIndexIdentifierInfoObj.id] = IndexIdentifier.Copy(newIndexIdentifierInfoObj);
+
+                indexIdentifierDataGrid.Rows[e.RowIndex].Cells[(int)IndexIdentifierInfoColumns.id].Value = newIndexIdentifierInfoObj.id;
+                indexIdentifierDataGrid.Rows[e.RowIndex].Cells[(int)IndexIdentifierInfoColumns.identifier_name].Value = newIndexIdentifierInfoObj.identifier_name;
+                //将新增的指标分类信息写入数据表
+
+                Logger.Log($"新增指标分类{newIndexIdentifierInfoObj.id}");
+                return;
+            }
+
+
+            ////////以上是新增行的操作，以下是修改行的操作
+
+            int identifier_id = Int32.Parse(indexIdentifierDataGrid.Rows[e.RowIndex].Cells[0].Value.ToString());
+
+            //由于改的是主键，所以要特殊处理
+            var obj=new IndexIdentifier();
+            if (CommonData.IdentifierInfo.ContainsKey(identifier_id) == false)
+            {
+                //从第二列获取该行的数据
+                var identifierName = (string)indexIdentifierDataGrid.Rows[e.RowIndex].Cells[1].Value;
+                var currentRow = CommonData.IdentifierInfo.FirstOrDefault(x => x.Value.identifier_name == identifierName);
+                obj=currentRow.Value;
+                var oldIdentifierId = currentRow.Key;
+                CommonData.IdentifierInfo.Remove(oldIdentifierId);
+                var indexIdentifierMapper = IndexIdentifierMapper.GetInstance();
+                indexIdentifierMapper.Remove(oldIdentifierId.ToString());
+                obj.id = identifier_id;
+                indexIdentifierMapper.Add(obj,false);
+                CommonData.IdentifierInfo[identifier_id] = IndexIdentifier.Copy(obj);
+                Logger.Log($"更改指标{obj.identifier_name}分类编号至:{identifier_id}");
+                return;//由于改的是主键，因此要删了再加
+            }
+            else if (e.ColumnIndex==0&& CommonData.IdentifierInfo.ContainsKey(identifier_id))
+            {
+                //说明是修改主键，但是主键已经存在
+                MessageBox.Show("指标分类编号不能重复", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                var identifierName = (string)indexIdentifierDataGrid.Rows[e.RowIndex].Cells[1].Value;
+                var oldId = CommonData.IdentifierInfo.FirstOrDefault(x => x.Value.identifier_name == identifierName).Value.id;
+                indexIdentifierDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = oldId;
+                return;
+            }
+            else
+            {
+                obj = CommonData.IdentifierInfo[identifier_id];
+            }
+            var identifierInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(obj));
+
+            if (identifierInfo[columnName].ToString() != cellValue.ToString())
+            {
+                //写数据库
+                var indexIdentifierMapper = IndexIdentifierMapper.GetInstance();
+                Logger.Log($"指标分类{identifier_id}的{columnName}由{identifierInfo[columnName]}变更为{cellValue}");
+                identifierInfo[columnName] = cellValue;
+                var identifierInfoObj = JsonConvert.DeserializeObject<IndexIdentifier>(JsonConvert.SerializeObject(identifierInfo));
+                //更新内存中的数据
+                CommonData.IdentifierInfo[identifier_id] = IndexIdentifier.Copy(identifierInfoObj);
+                indexIdentifierMapper.Update(identifierInfoObj);
+            }
+            updateComboIndexIdentifier();
+        }
+        private void updateComboIndexIdentifier()
+        {
+            var currentSelectedIndexIdentifier = (IndexIdentifier)comboIndexIdentifier.SelectedItem;
+            comboIndexIdentifier.Items.Clear();
+            foreach (var indexIdentifier in CommonData.IdentifierInfo.Values)
+            {
+                comboIndexIdentifier.Items.Add(indexIdentifier);
+            }
+            comboIndexIdentifier.DisplayMember = "identifier_name";
+            comboIndexIdentifier.ValueMember = "id";
+            if (currentSelectedIndexIdentifier != null)
+            {
+                comboIndexIdentifier.SelectedItem = currentSelectedIndexIdentifier;
+            }
+        }
+        private void indexIdentifierDataGrid_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            //如果数据表被清空，不做任何操作
+            if (indexIdentifierDataGrid.Rows.Count == 0)
+            {
+                return;
+            }
+
+            List<int> removedIndexIdentifierIds = new List<int>();
+            
+            foreach(var indexIdentifierId in CommonData.IdentifierInfo.Keys)
+            {
+                bool isRemoved = true;
+                for (int i = 0; i < indexIdentifierDataGrid.Rows.Count; i++)
+                {
+                    if (indexIdentifierDataGrid.Rows[i].Cells[0].Value == null) continue;
+                    if (indexIdentifierId == (int)indexIdentifierDataGrid.Rows[i].Cells[0].Value)
+                    {
+                        isRemoved = false;
+                        break;
+                    }
+                }
+                if (isRemoved)
+                {
+                    removedIndexIdentifierIds.Add(indexIdentifierId);
+                }
+            }
+
+            var indexIdentifierMapper = IndexIdentifierMapper.GetInstance();
+            foreach (var indexIdentifierId in removedIndexIdentifierIds)
+            {
+                indexIdentifierMapper.Remove(indexIdentifierId.ToString());
+                Logger.Log($"删除指标分类{indexIdentifierId}");
+                CommonData.IdentifierInfo.Remove(indexIdentifierId);
+            }
+            updateComboIndexIdentifier();
+        }
+
+        private void comboIndexIdentifier_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //indexDataGrid显示选中的指标分类下的指标
+            var indexIdentifier = (IndexIdentifier)comboIndexIdentifier.SelectedItem;
+            CommonData.selectedIdentifier = indexIdentifier;//更新当前选中的指标分类
+            if (indexIdentifier == null)
+            {
+                indexDataGrid.Enabled = false;
+                return;
+            }
+            indexDataGrid.Enabled = true;
+            indexDataGrid.Rows.Clear();
+
+            var selectedIndexes = CommonData.currentCategoryIndexes;
+            foreach (var keyValuePair in selectedIndexes)
+            {
+                var index = keyValuePair.Value;
+                indexDataGrid.Rows.Add();
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.id].Value = index.id;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.identifier_id].Value = index.identifier_id;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.secondary_identifier].Value = index.secondary_identifier;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.index_name].Value = index.index_name;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.index_type].Value = index.index_type;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.weight1].Value = index.weight1;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.weight2].Value = index.weight2;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.enable_sensitivity].Value = index.enable_sensitivity;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.sensitivity].Value = index.sensitivity;
+            }
+        }
+
+        private void comboIndexIdentifier_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void indexIdentifierDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

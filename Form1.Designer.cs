@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,12 +56,6 @@
             this.pageDept = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.deptDataGrid = new System.Windows.Forms.DataGridView();
-            this.DeptId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptPopulation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptPunishment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonDeptDump = new System.Windows.Forms.Button();
             this.buttonDeptRefresh = new System.Windows.Forms.Button();
@@ -66,26 +63,24 @@
             this.button2 = new System.Windows.Forms.Button();
             this.pageIndex = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.indexDataGrid = new System.Windows.Forms.DataGridView();
-            this.indexId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.indexCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.indexName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.indexType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.weight1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.weight2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.enable_sensitivity = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.sensitivity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonIndexDump = new System.Windows.Forms.Button();
             this.buttonIndexRefresh = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.IndexIdentifierSplit = new System.Windows.Forms.TableLayoutPanel();
+            this.indexIdentifierDataGrid = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.identifier_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.comboIndexIdentifier = new System.Windows.Forms.ComboBox();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.indexDataGrid = new System.Windows.Forms.DataGridView();
             this.pageManager = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.managerDataGrid = new System.Windows.Forms.DataGridView();
-            this.manager_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.manager_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.manager_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonManagerDump = new System.Windows.Forms.Button();
             this.buttonManagerRefresh = new System.Windows.Forms.Button();
@@ -142,6 +137,24 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
+            this.indexId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.index_identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.secondaryIdentifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.indexName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.indexType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.weight1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.weight2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.enable_sensitivity = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.sensitivity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptPopulation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptPunishment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.manager_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.manager_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.manager_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.mainTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -152,8 +165,14 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.pageIndex.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.indexDataGrid)).BeginInit();
             this.tableLayoutPanel11.SuspendLayout();
+            this.tableLayoutPanel16.SuspendLayout();
+            this.groupBox10.SuspendLayout();
+            this.IndexIdentifierSplit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.indexIdentifierDataGrid)).BeginInit();
+            this.groupBox11.SuspendLayout();
+            this.groupBox12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.indexDataGrid)).BeginInit();
             this.pageManager.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.managerDataGrid)).BeginInit();
@@ -451,54 +470,11 @@
             this.deptDataGrid.RowTemplate.Height = 27;
             this.deptDataGrid.Size = new System.Drawing.Size(1221, 682);
             this.deptDataGrid.TabIndex = 5;
-            this.deptDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.deptDataGrid_CellContentClick);
+            this.deptDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexDataGrid_CellEndEdit);
             this.deptDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.deptDataGrid_CellEndEdit);
             this.deptDataGrid.ColumnRemoved += new System.Windows.Forms.DataGridViewColumnEventHandler(this.deptDataGrid_ColumnRemoved);
             this.deptDataGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.deptDataGrid_RowsAdded);
             this.deptDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.deptDataGrid_RowsRemoved);
-            // 
-            // DeptId
-            // 
-            this.DeptId.HeaderText = "单位编号";
-            this.DeptId.MinimumWidth = 6;
-            this.DeptId.Name = "DeptId";
-            this.DeptId.ReadOnly = true;
-            this.DeptId.Width = 150;
-            // 
-            // DeptCode
-            // 
-            this.DeptCode.HeaderText = "单位代码";
-            this.DeptCode.MinimumWidth = 6;
-            this.DeptCode.Name = "DeptCode";
-            this.DeptCode.Width = 150;
-            // 
-            // DeptName
-            // 
-            this.DeptName.HeaderText = "单位名称";
-            this.DeptName.MinimumWidth = 6;
-            this.DeptName.Name = "DeptName";
-            this.DeptName.Width = 150;
-            // 
-            // DeptPopulation
-            // 
-            this.DeptPopulation.HeaderText = "单位人数";
-            this.DeptPopulation.MinimumWidth = 6;
-            this.DeptPopulation.Name = "DeptPopulation";
-            this.DeptPopulation.Width = 150;
-            // 
-            // DeptPunishment
-            // 
-            this.DeptPunishment.HeaderText = "惩罚系数";
-            this.DeptPunishment.MinimumWidth = 6;
-            this.DeptPunishment.Name = "DeptPunishment";
-            this.DeptPunishment.Width = 150;
-            // 
-            // DeptGroup
-            // 
-            this.DeptGroup.HeaderText = "单位组别";
-            this.DeptGroup.MinimumWidth = 6;
-            this.DeptGroup.Name = "DeptGroup";
-            this.DeptGroup.Width = 150;
             // 
             // tableLayoutPanel3
             // 
@@ -578,7 +554,7 @@
             this.pageIndex.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pageIndex.Name = "pageIndex";
             this.pageIndex.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pageIndex.Size = new System.Drawing.Size(1540, 696);
+            this.pageIndex.Size = new System.Drawing.Size(1540, 698);
             this.pageIndex.TabIndex = 1;
             this.pageIndex.Text = "指标视图";
             this.pageIndex.UseVisualStyleBackColor = true;
@@ -588,101 +564,16 @@
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.Controls.Add(this.indexDataGrid, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel11, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel16, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 4);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1534, 688);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1534, 690);
             this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // indexDataGrid
-            // 
-            this.indexDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.indexDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.indexId,
-            this.indexCode,
-            this.indexName,
-            this.indexType,
-            this.weight1,
-            this.weight2,
-            this.enable_sensitivity,
-            this.sensitivity});
-            this.indexDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.indexDataGrid.Location = new System.Drawing.Point(3, 4);
-            this.indexDataGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.indexDataGrid.Name = "indexDataGrid";
-            this.indexDataGrid.RowHeadersWidth = 51;
-            this.indexDataGrid.RowTemplate.Height = 27;
-            this.indexDataGrid.Size = new System.Drawing.Size(1221, 680);
-            this.indexDataGrid.TabIndex = 5;
-            this.indexDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexDataGrid_CellEndEdit);
-            this.indexDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.indexDataGrid_RowsRemoved);
-            // 
-            // indexId
-            // 
-            this.indexId.HeaderText = "指标编号";
-            this.indexId.MinimumWidth = 6;
-            this.indexId.Name = "indexId";
-            this.indexId.ReadOnly = true;
-            this.indexId.Width = 125;
-            // 
-            // indexCode
-            // 
-            this.indexCode.HeaderText = "指标代码";
-            this.indexCode.MinimumWidth = 6;
-            this.indexCode.Name = "indexCode";
-            this.indexCode.Width = 125;
-            // 
-            // indexName
-            // 
-            this.indexName.HeaderText = "指标名称";
-            this.indexName.MinimumWidth = 6;
-            this.indexName.Name = "indexName";
-            this.indexName.Width = 125;
-            // 
-            // indexType
-            // 
-            this.indexType.HeaderText = "指标类型";
-            this.indexType.Items.AddRange(new object[] {
-            "基础类",
-            "加分类"});
-            this.indexType.MinimumWidth = 6;
-            this.indexType.Name = "indexType";
-            this.indexType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.indexType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.indexType.Width = 125;
-            // 
-            // weight1
-            // 
-            this.weight1.HeaderText = "权重1";
-            this.weight1.MinimumWidth = 8;
-            this.weight1.Name = "weight1";
-            this.weight1.Width = 125;
-            // 
-            // weight2
-            // 
-            this.weight2.HeaderText = "权重2";
-            this.weight2.MinimumWidth = 8;
-            this.weight2.Name = "weight2";
-            this.weight2.Width = 125;
-            // 
-            // enable_sensitivity
-            // 
-            this.enable_sensitivity.HeaderText = "启用敏感度";
-            this.enable_sensitivity.MinimumWidth = 8;
-            this.enable_sensitivity.Name = "enable_sensitivity";
-            this.enable_sensitivity.Width = 125;
-            // 
-            // sensitivity
-            // 
-            this.sensitivity.HeaderText = "敏感度";
-            this.sensitivity.MinimumWidth = 8;
-            this.sensitivity.Name = "sensitivity";
-            this.sensitivity.Width = 125;
             // 
             // tableLayoutPanel11
             // 
@@ -702,7 +593,7 @@
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(301, 680);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(301, 682);
             this.tableLayoutPanel11.TabIndex = 6;
             // 
             // buttonIndexDump
@@ -755,6 +646,139 @@
             this.button7.Text = "导出excel模板";
             this.button7.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel16
+            // 
+            this.tableLayoutPanel16.ColumnCount = 2;
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 75F));
+            this.tableLayoutPanel16.Controls.Add(this.groupBox10, 0, 0);
+            this.tableLayoutPanel16.Controls.Add(this.groupBox12, 1, 0);
+            this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel16.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
+            this.tableLayoutPanel16.RowCount = 1;
+            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(1221, 684);
+            this.tableLayoutPanel16.TabIndex = 7;
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.IndexIdentifierSplit);
+            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox10.Location = new System.Drawing.Point(3, 3);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(299, 678);
+            this.groupBox10.TabIndex = 7;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "指标一级类别";
+            // 
+            // IndexIdentifierSplit
+            // 
+            this.IndexIdentifierSplit.ColumnCount = 1;
+            this.IndexIdentifierSplit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.IndexIdentifierSplit.Controls.Add(this.indexIdentifierDataGrid, 0, 1);
+            this.IndexIdentifierSplit.Controls.Add(this.groupBox11, 0, 0);
+            this.IndexIdentifierSplit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IndexIdentifierSplit.Location = new System.Drawing.Point(3, 27);
+            this.IndexIdentifierSplit.Name = "IndexIdentifierSplit";
+            this.IndexIdentifierSplit.RowCount = 2;
+            this.IndexIdentifierSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.IndexIdentifierSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            this.IndexIdentifierSplit.Size = new System.Drawing.Size(293, 648);
+            this.IndexIdentifierSplit.TabIndex = 0;
+            // 
+            // indexIdentifierDataGrid
+            // 
+            this.indexIdentifierDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.indexIdentifierDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.identifier_name});
+            this.indexIdentifierDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.indexIdentifierDataGrid.Location = new System.Drawing.Point(3, 68);
+            this.indexIdentifierDataGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.indexIdentifierDataGrid.Name = "indexIdentifierDataGrid";
+            this.indexIdentifierDataGrid.RowHeadersWidth = 51;
+            this.indexIdentifierDataGrid.RowTemplate.Height = 27;
+            this.indexIdentifierDataGrid.Size = new System.Drawing.Size(287, 576);
+            this.indexIdentifierDataGrid.TabIndex = 7;
+            this.indexIdentifierDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexIdentifierDataGrid_CellContentClick);
+            this.indexIdentifierDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexIdentifierDataGrid_CellEndEdit);
+            this.indexIdentifierDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.indexIdentifierDataGrid_RowsRemoved);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "分类标号";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 120;
+            // 
+            // identifier_name
+            // 
+            this.identifier_name.HeaderText = "分类名称";
+            this.identifier_name.MinimumWidth = 8;
+            this.identifier_name.Name = "identifier_name";
+            this.identifier_name.Width = 120;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.comboIndexIdentifier);
+            this.groupBox11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox11.Location = new System.Drawing.Point(3, 3);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(287, 58);
+            this.groupBox11.TabIndex = 0;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "当前选中";
+            // 
+            // comboIndexIdentifier
+            // 
+            this.comboIndexIdentifier.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.comboIndexIdentifier.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboIndexIdentifier.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboIndexIdentifier.FormattingEnabled = true;
+            this.comboIndexIdentifier.Location = new System.Drawing.Point(3, 27);
+            this.comboIndexIdentifier.Name = "comboIndexIdentifier";
+            this.comboIndexIdentifier.Size = new System.Drawing.Size(281, 32);
+            this.comboIndexIdentifier.TabIndex = 0;
+            this.comboIndexIdentifier.SelectedIndexChanged += new System.EventHandler(this.comboIndexIdentifier_SelectedIndexChanged);
+            this.comboIndexIdentifier.TextChanged += new System.EventHandler(this.comboIndexIdentifier_TextChanged);
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.indexDataGrid);
+            this.groupBox12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox12.Location = new System.Drawing.Point(308, 3);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(910, 678);
+            this.groupBox12.TabIndex = 8;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "当前类别的所有指标";
+            // 
+            // indexDataGrid
+            // 
+            this.indexDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.indexDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.indexId,
+            this.index_identifier,
+            this.secondaryIdentifier,
+            this.indexName,
+            this.indexType,
+            this.weight1,
+            this.weight2,
+            this.enable_sensitivity,
+            this.sensitivity});
+            this.indexDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.indexDataGrid.Enabled = false;
+            this.indexDataGrid.Location = new System.Drawing.Point(3, 27);
+            this.indexDataGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.indexDataGrid.Name = "indexDataGrid";
+            this.indexDataGrid.RowHeadersWidth = 51;
+            this.indexDataGrid.RowTemplate.Height = 27;
+            this.indexDataGrid.Size = new System.Drawing.Size(904, 648);
+            this.indexDataGrid.TabIndex = 7;
+            this.indexDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexDataGrid_CellEndEdit);
+            this.indexDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.indexDataGrid_RowsRemoved);
+            // 
             // pageManager
             // 
             this.pageManager.Controls.Add(this.tableLayoutPanel12);
@@ -762,7 +786,7 @@
             this.pageManager.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pageManager.Name = "pageManager";
             this.pageManager.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pageManager.Size = new System.Drawing.Size(1540, 696);
+            this.pageManager.Size = new System.Drawing.Size(1540, 698);
             this.pageManager.TabIndex = 2;
             this.pageManager.Text = "职能部门视图";
             this.pageManager.UseVisualStyleBackColor = true;
@@ -780,7 +804,7 @@
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(1534, 688);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(1534, 690);
             this.tableLayoutPanel12.TabIndex = 2;
             // 
             // managerDataGrid
@@ -796,33 +820,11 @@
             this.managerDataGrid.Name = "managerDataGrid";
             this.managerDataGrid.RowHeadersWidth = 51;
             this.managerDataGrid.RowTemplate.Height = 27;
-            this.managerDataGrid.Size = new System.Drawing.Size(1221, 680);
+            this.managerDataGrid.Size = new System.Drawing.Size(1221, 682);
             this.managerDataGrid.TabIndex = 5;
             this.managerDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.managerDataGrid_CellContentClick);
             this.managerDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.managerDataGrid_CellEndEdit);
             this.managerDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.managerDataGrid_RowsRemoved);
-            // 
-            // manager_id
-            // 
-            this.manager_id.HeaderText = "职能部门编号";
-            this.manager_id.MinimumWidth = 6;
-            this.manager_id.Name = "manager_id";
-            this.manager_id.ReadOnly = true;
-            this.manager_id.Width = 200;
-            // 
-            // manager_code
-            // 
-            this.manager_code.HeaderText = "职能部门代码";
-            this.manager_code.MinimumWidth = 6;
-            this.manager_code.Name = "manager_code";
-            this.manager_code.Width = 200;
-            // 
-            // manager_name
-            // 
-            this.manager_name.HeaderText = "职能部门名称";
-            this.manager_name.MinimumWidth = 6;
-            this.manager_name.Name = "manager_name";
-            this.manager_name.Width = 200;
             // 
             // tableLayoutPanel13
             // 
@@ -842,7 +844,7 @@
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(301, 680);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(301, 682);
             this.tableLayoutPanel13.TabIndex = 6;
             // 
             // buttonManagerDump
@@ -926,14 +928,14 @@
             // 
             this.managerInfoSplit.ColumnCount = 1;
             this.managerInfoSplit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.managerInfoSplit.Controls.Add(this.groupBox1, 0, 1);
-            this.managerInfoSplit.Controls.Add(this.groupBox3, 0, 0);
+            this.managerInfoSplit.Controls.Add(this.groupBox1, 0, 0);
+            this.managerInfoSplit.Controls.Add(this.groupBox3, 0, 1);
             this.managerInfoSplit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.managerInfoSplit.Location = new System.Drawing.Point(3, 3);
             this.managerInfoSplit.Name = "managerInfoSplit";
             this.managerInfoSplit.RowCount = 2;
-            this.managerInfoSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.managerInfoSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.managerInfoSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.managerInfoSplit.Size = new System.Drawing.Size(454, 684);
             this.managerInfoSplit.TabIndex = 0;
             // 
@@ -942,10 +944,10 @@
             this.groupBox1.Controls.Add(this.buttonCancelSelectManager);
             this.groupBox1.Controls.Add(this.textSelectedManager);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 550);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(448, 131);
-            this.groupBox1.TabIndex = 2;
+            this.groupBox1.Size = new System.Drawing.Size(448, 130);
+            this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "当前选择的职能部门";
             // 
@@ -960,7 +962,6 @@
             this.buttonCancelSelectManager.TabIndex = 1;
             this.buttonCancelSelectManager.Text = "✖";
             this.buttonCancelSelectManager.UseVisualStyleBackColor = true;
-            this.buttonCancelSelectManager.Click += new System.EventHandler(this.buttonCancelSelectManager_Click);
             // 
             // textSelectedManager
             // 
@@ -972,14 +973,12 @@
             this.textSelectedManager.Size = new System.Drawing.Size(368, 39);
             this.textSelectedManager.TabIndex = 0;
             this.textSelectedManager.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textSelectedManager.TextChanged += new System.EventHandler(this.textSelectedManager_TextChanged);
             // 
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.SystemColors.Control;
             this.groupBox3.Controls.Add(this.listManager);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Location = new System.Drawing.Point(3, 139);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(448, 541);
             this.groupBox3.TabIndex = 3;
@@ -1198,7 +1197,7 @@
             this.pageCompletion.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pageCompletion.Name = "pageCompletion";
             this.pageCompletion.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pageCompletion.Size = new System.Drawing.Size(1540, 696);
+            this.pageCompletion.Size = new System.Drawing.Size(1540, 698);
             this.pageCompletion.TabIndex = 4;
             this.pageCompletion.Text = "完成度视图";
             this.pageCompletion.UseVisualStyleBackColor = true;
@@ -1566,6 +1565,150 @@
             // 
             this.saveDialog.Filter = "Excel 文件|*.xlsx|csv文件|*.csv";
             // 
+            // indexId
+            // 
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Gainsboro;
+            this.indexId.DefaultCellStyle = dataGridViewCellStyle10;
+            this.indexId.HeaderText = "指标编号";
+            this.indexId.MinimumWidth = 6;
+            this.indexId.Name = "indexId";
+            this.indexId.ReadOnly = true;
+            this.indexId.Visible = false;
+            this.indexId.Width = 125;
+            // 
+            // index_identifier
+            // 
+            this.index_identifier.HeaderText = "一级类别";
+            this.index_identifier.MinimumWidth = 8;
+            this.index_identifier.Name = "index_identifier";
+            this.index_identifier.ReadOnly = true;
+            this.index_identifier.Width = 125;
+            // 
+            // secondaryIdentifier
+            // 
+            this.secondaryIdentifier.HeaderText = "二级类别";
+            this.secondaryIdentifier.MinimumWidth = 6;
+            this.secondaryIdentifier.Name = "secondaryIdentifier";
+            this.secondaryIdentifier.Width = 125;
+            // 
+            // indexName
+            // 
+            this.indexName.HeaderText = "指标名称";
+            this.indexName.MinimumWidth = 6;
+            this.indexName.Name = "indexName";
+            this.indexName.Width = 125;
+            // 
+            // indexType
+            // 
+            this.indexType.HeaderText = "指标类型";
+            this.indexType.Items.AddRange(new object[] {
+            "基础类",
+            "加分类"});
+            this.indexType.MinimumWidth = 6;
+            this.indexType.Name = "indexType";
+            this.indexType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.indexType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.indexType.Width = 125;
+            // 
+            // weight1
+            // 
+            this.weight1.HeaderText = "权重1";
+            this.weight1.MinimumWidth = 8;
+            this.weight1.Name = "weight1";
+            this.weight1.Width = 125;
+            // 
+            // weight2
+            // 
+            this.weight2.HeaderText = "权重2";
+            this.weight2.MinimumWidth = 8;
+            this.weight2.Name = "weight2";
+            this.weight2.Width = 125;
+            // 
+            // enable_sensitivity
+            // 
+            this.enable_sensitivity.HeaderText = "启用敏感度";
+            this.enable_sensitivity.MinimumWidth = 8;
+            this.enable_sensitivity.Name = "enable_sensitivity";
+            this.enable_sensitivity.Width = 125;
+            // 
+            // sensitivity
+            // 
+            this.sensitivity.HeaderText = "敏感度";
+            this.sensitivity.MinimumWidth = 8;
+            this.sensitivity.Name = "sensitivity";
+            this.sensitivity.Width = 125;
+            // 
+            // DeptId
+            // 
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Gainsboro;
+            this.DeptId.DefaultCellStyle = dataGridViewCellStyle11;
+            this.DeptId.HeaderText = "单位编号";
+            this.DeptId.MinimumWidth = 6;
+            this.DeptId.Name = "DeptId";
+            this.DeptId.ReadOnly = true;
+            this.DeptId.Visible = false;
+            this.DeptId.Width = 120;
+            // 
+            // DeptCode
+            // 
+            this.DeptCode.HeaderText = "单位代码";
+            this.DeptCode.MinimumWidth = 6;
+            this.DeptCode.Name = "DeptCode";
+            this.DeptCode.Width = 150;
+            // 
+            // DeptName
+            // 
+            this.DeptName.HeaderText = "单位名称";
+            this.DeptName.MinimumWidth = 6;
+            this.DeptName.Name = "DeptName";
+            this.DeptName.Width = 150;
+            // 
+            // DeptPopulation
+            // 
+            this.DeptPopulation.HeaderText = "单位人数";
+            this.DeptPopulation.MinimumWidth = 6;
+            this.DeptPopulation.Name = "DeptPopulation";
+            this.DeptPopulation.Width = 150;
+            // 
+            // DeptPunishment
+            // 
+            this.DeptPunishment.HeaderText = "惩罚系数";
+            this.DeptPunishment.MinimumWidth = 6;
+            this.DeptPunishment.Name = "DeptPunishment";
+            this.DeptPunishment.Width = 150;
+            // 
+            // DeptGroup
+            // 
+            this.DeptGroup.HeaderText = "单位组别";
+            this.DeptGroup.MinimumWidth = 6;
+            this.DeptGroup.Name = "DeptGroup";
+            this.DeptGroup.Width = 150;
+            // 
+            // manager_id
+            // 
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.Gainsboro;
+            this.manager_id.DefaultCellStyle = dataGridViewCellStyle12;
+            this.manager_id.HeaderText = "职能部门编号";
+            this.manager_id.MinimumWidth = 6;
+            this.manager_id.Name = "manager_id";
+            this.manager_id.ReadOnly = true;
+            this.manager_id.Visible = false;
+            this.manager_id.Width = 160;
+            // 
+            // manager_code
+            // 
+            this.manager_code.HeaderText = "职能部门代码";
+            this.manager_code.MinimumWidth = 6;
+            this.manager_code.Name = "manager_code";
+            this.manager_code.Width = 200;
+            // 
+            // manager_name
+            // 
+            this.manager_name.HeaderText = "职能部门名称";
+            this.manager_name.MinimumWidth = 6;
+            this.manager_name.Name = "manager_name";
+            this.manager_name.Width = 200;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -1575,6 +1718,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MinimumSize = new System.Drawing.Size(1024, 1024);
             this.Name = "Form1";
             this.Text = "DHU考核系统";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -1589,8 +1733,14 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.pageIndex.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.indexDataGrid)).EndInit();
             this.tableLayoutPanel11.ResumeLayout(false);
+            this.tableLayoutPanel16.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
+            this.IndexIdentifierSplit.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.indexIdentifierDataGrid)).EndInit();
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.indexDataGrid)).EndInit();
             this.pageManager.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.managerDataGrid)).EndInit();
@@ -1712,20 +1862,11 @@
         private System.Windows.Forms.ToolStripMenuItem 导出向导ToolStripMenuItem;
         private System.Windows.Forms.TabPage pageIndex;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.DataGridView indexDataGrid;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.Button buttonIndexDump;
         private System.Windows.Forms.Button buttonIndexRefresh;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn indexId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn indexCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn indexName;
-        private System.Windows.Forms.DataGridViewComboBoxColumn indexType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn weight1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn weight2;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn enable_sensitivity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sensitivity;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.DataGridView managerDataGrid;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
@@ -1733,19 +1874,8 @@
         private System.Windows.Forms.Button buttonManagerRefresh;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptPopulation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptPunishment;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptGroup;
-        private System.Windows.Forms.DataGridViewTextBoxColumn manager_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn manager_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn manager_name;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private System.Windows.Forms.TableLayoutPanel managerInfoSplit;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textSelectedManager;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ListBox listManager;
         private System.Windows.Forms.TableLayoutPanel dutySplit;
@@ -1762,7 +1892,37 @@
         private System.Windows.Forms.Button buttonAllocatedDutyAll;
         private System.Windows.Forms.Button buttonUnallocateDuty;
         private System.Windows.Forms.Button buttonUnallocateDutyAll;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonCancelSelectManager;
+        private System.Windows.Forms.TextBox textSelectedManager;
+        private System.Windows.Forms.TableLayoutPanel IndexIdentifierSplit;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.ComboBox comboIndexIdentifier;
+        private System.Windows.Forms.DataGridView indexIdentifierDataGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn identifier_name;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.DataGridView indexDataGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn indexId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn index_identifier;
+        private System.Windows.Forms.DataGridViewTextBoxColumn secondaryIdentifier;
+        private System.Windows.Forms.DataGridViewTextBoxColumn indexName;
+        private System.Windows.Forms.DataGridViewComboBoxColumn indexType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn weight1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn weight2;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn enable_sensitivity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sensitivity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptPopulation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptPunishment;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptGroup;
+        private System.Windows.Forms.DataGridViewTextBoxColumn manager_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn manager_code;
+        private System.Windows.Forms.DataGridViewTextBoxColumn manager_name;
     }
 }
 

@@ -17,16 +17,9 @@ namespace 考核系统
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            try
-            {
-                Application.Run(new Form1());
-            }
-            catch(Exception e)
-            {
-                Logger.Log("系统错误,请联系开发人员:"+e.Message,LogType.ERROR);
-                
+            Application.Run(new Form1());
 
-            }
+
         }
     }
 }

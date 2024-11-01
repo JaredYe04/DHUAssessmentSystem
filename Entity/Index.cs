@@ -9,7 +9,8 @@ namespace 考核系统.Entity
     class Index: DeepCopy<Index>//指标
     {
         public int id { get; set; }
-        public string index_code { get; set; }
+        public int identifier_id { get; set; }
+        public int secondary_identifier { get; set; }
         public string index_name { get; set; }
         public string index_type { get; set; }
         public double weight1 { get; set; }
@@ -17,10 +18,11 @@ namespace 考核系统.Entity
         public int enable_sensitivity { get; set; }
         public double sensitivity { get; set; }
 
-        public Index(int index_id,string index_code, string index_name, string index_type, double weight1, double weight2, int enable_sensitivity, double sensitivity)
+        public Index(int index_id, int identifier_id, int secondary_identifier, string index_name, string index_type, double weight1, double weight2, int enable_sensitivity, double sensitivity)
         {
             this.id = index_id;
-            this.index_code = index_code;
+            this.identifier_id = identifier_id;
+            this.secondary_identifier = secondary_identifier;
             this.index_name = index_name;
             this.index_type = index_type;
             this.weight1 = weight1;

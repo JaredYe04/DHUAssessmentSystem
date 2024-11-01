@@ -23,7 +23,7 @@ namespace 考核系统.Utils
         public static Dictionary<int,Tuple<Department,DeptAnnualInfo>> DeptInfo { get; set; }
         public static Dictionary<int, Index> IndexInfo { get; set; }
         public static Dictionary<int, Manager> ManagerInfo { get; set; }
-
+        public static Dictionary<int, IndexIdentifier> IdentifierInfo { get; set; }
         public static Dictionary<int,IndexDuty>DutyInfo { get; set; }
         public static Dictionary<int, Index> UnallocatedIndexes
         {
@@ -41,7 +41,16 @@ namespace 考核系统.Utils
                 return unallocatedIndex;
             }
         }
-        public static Manager selectedManager { get; set; }
+        public static Manager selectedManager { get; set; }//当前选中的职能部门
 
+        public static IndexIdentifier selectedIdentifier { get; set; }//当前选中的一级类别
+        public static Dictionary<int, Index> currentCategoryIndexes//当前选中的一级类别下的所有指标
+        {
+            get
+            {
+                return IndexInfo.Values.Where(index => index.identifier_id == selectedIdentifier.id).ToDictionary(index => index.id);
+            }
+        }
+        public static bool userEditing = true;// 标志，用户是否正在编辑
     }
 }
