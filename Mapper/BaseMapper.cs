@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,35 +19,43 @@ namespace 考核系统.Mapper
             BaseMapper<T>.tableName = tableName;
             BaseMapper<T>.keyName = keyName;
         }
+        public T Query(string sql)
+        {
+            var result = DB.GetInstance().ExecuteReader(sql)[0];
+            if(result == null)
+            {
+                return null;
+            }   
+            string json = JsonConvert.SerializeObject(result);
+            return JsonConvert.DeserializeObject<T>(json);
+        }
+        public List<T> QueryAll(string sql)
+        {
+            var results = DB.GetInstance().ExecuteReader(sql);
+            List<T> list = new List<T>();
+            foreach (var result in results)
+            {
+                string json = JsonConvert.SerializeObject(result);
+                list.Add(JsonConvert.DeserializeObject<T>(json));
+            }
+            return list;
+        }
         public List<T> GetAllObjects()
         {
 
             string sql = $"select * from '{tableName}'";
-            var reader = DB.GetInstance().ExecuteReader(sql);
-            List<T> objs = new List<T>();
-            var columns = reader.GetSchemaTable();
-            while (reader.Read())
-            {
-                var values = new object[reader.FieldCount];
-                reader.GetValues(values);
-                Dictionary<string, object> dict = new Dictionary<string, object>();
-                for (int i = 0; i < columns.Rows.Count; i++)
-                {
-                    dict.Add(columns.Rows[i]["ColumnName"].ToString(), values[i]);
-                }
-                string json = JsonConvert.SerializeObject(dict);
-
-                objs.Add(JsonConvert.DeserializeObject<T>(json));
-
-            }
-            return objs;
+            return QueryAll(sql);
         }
-        public void Add(T obj)
+        public void Add(T obj,bool AutoId=true)
         {
             try
             {
                 string json = JsonConvert.SerializeObject(obj);
                 Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                if(AutoId)
+                {
+                    dict.Remove(keyName);
+                }
                 string columns = string.Join(",", dict.Keys);
                 string values = string.Join(",", dict.Values.Select(x => $"'{x}'"));
                 string sql = $"insert into {tableName}({columns}) values({values})";
@@ -103,43 +112,20 @@ namespace 考核系统.Mapper
         public T GetObject(string key)
         {
             string sql = $"select * from {tableName} where {keyName} = '{key}'";
-            var reader = DB.GetInstance().ExecuteReader(sql);
-            var columns = reader.GetSchemaTable();
-            if (reader.Read())
-            {
-                var values = new object[reader.FieldCount];
-                reader.GetValues(values);
-                Dictionary<string, object> dict = new Dictionary<string, object>();
-                for (int i = 0; i < columns.Rows.Count; i++)
-                {
-                    dict.Add(columns.Rows[i]["ColumnName"].ToString(), values[i]);
-                }
-                string json = JsonConvert.SerializeObject(dict);
-                return JsonConvert.DeserializeObject<T>(json);
-            }
-            return null;
+            return Query(sql);
+        }
+        public T GetObject(Dictionary<string, object> conditions)
+        {
+            string where = string.Join(" and ", conditions.Select(x => $"{x.Key}='{x.Value}'"));
+            string sql = $"select * from {tableName} where {where}";
+            return Query(sql);
         }
 
         public List<T> GetObjects(Dictionary<string, object> conditions)
         {
             string where = string.Join(" and ", conditions.Select(x => $"{x.Key}='{x.Value}'"));
             string sql = $"select * from {tableName} where {where}";
-            var reader = DB.GetInstance().ExecuteReader(sql);
-            List<T> objs = new List<T>();
-            var columns = reader.GetSchemaTable();
-            while (reader.Read())
-            {
-                var values = new object[reader.FieldCount];
-                reader.GetValues(values);
-                Dictionary<string, object> dict = new Dictionary<string, object>();
-                for (int i = 0; i < columns.Rows.Count; i++)
-                {
-                    dict.Add(columns.Rows[i]["ColumnName"].ToString(), values[i]);
-                }
-                string json = JsonConvert.SerializeObject(dict);
-                objs.Add(JsonConvert.DeserializeObject<T>(json));
-            }
-            return objs;
+            return QueryAll(sql);
         }
 
         public void Update(string key, Dictionary<string, object> values)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace 考核系统.Entity
 {
-    public class DeptAnnualInfo
+    class DeptAnnualInfo: DeepCopy<DeptAnnualInfo>//部门年度信息
     {
         public int id { get; set; }
         public int dept_id { get; set; }
@@ -15,14 +15,25 @@ namespace 考核系统.Entity
         public double dept_punishment { get; set; }
         public string dept_group { get; set; }
 
-        public DeptAnnualInfo(int dept_annual_info_id, int dept_id, int year, int dept_population, double dept_punishment, string dept_group)
+        public DeptAnnualInfo(int id, int dept_id, int year, int dept_population, double dept_punishment, string dept_group)
         {
-            this.id = dept_annual_info_id;
+            this.id = id;
             this.dept_id = dept_id;
             this.year = year;
             this.dept_population = dept_population;
             this.dept_punishment = dept_punishment;
             this.dept_group = dept_group;
+        }
+        public DeptAnnualInfo(int dept_id, int year, int dept_population, double dept_punishment, string dept_group)
+        {
+            this.dept_id = dept_id;
+            this.year = year;
+            this.dept_population = dept_population;
+            this.dept_punishment = dept_punishment;
+            this.dept_group = dept_group;
+        }//id自增
+        public DeptAnnualInfo()
+        {
         }
     }
 }

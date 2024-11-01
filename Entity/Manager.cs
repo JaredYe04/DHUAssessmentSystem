@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace 考核系统.Entity
 {
-    public class Manager
+    class Manager : DeepCopy<Manager>//部门经理
     {
         public int id { get; set; }
         public string manager_code { get; set; }
@@ -17,6 +17,9 @@ namespace 考核系统.Entity
             id = managerId;
             this.manager_code = manager_code;
             manager_name = managerName;
+        }
+        public Manager()
+        {
         }
     }
 }

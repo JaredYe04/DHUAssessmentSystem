@@ -19,6 +19,12 @@ namespace 考核系统.Mapper
             }
             return instance;
         }
+        public DeptAnnualInfo GetDeptAnnualInfo(int dept_id,int year)
+        {
+            var sql = $"select * from dept_annual_info where dept_id={dept_id} and year={year}";
+            var result = instance.Query(sql);
+            return result;
+        }
     }
 
 }

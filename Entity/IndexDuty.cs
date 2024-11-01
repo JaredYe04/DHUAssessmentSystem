@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace 考核系统.Entity
 {
-    public class IndexDuty
+    class IndexDuty: DeepCopy<IndexDuty>//指标职责
     {
         public int id { get; set; }
         public int manager_id { get; set; }
@@ -19,6 +19,9 @@ namespace 考核系统.Entity
             manager_id = managerId;
             index_id = indexId;
             this.enable_assessment = enable_assessment;
+        }
+        public IndexDuty()
+        {
         }
     }
 }

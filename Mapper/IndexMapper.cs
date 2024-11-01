@@ -10,7 +10,7 @@ namespace 考核系统.Mapper
     internal class IndexMapper : BaseMapper<Index>
     {
         private static IndexMapper instance;
-        private IndexMapper() : base("index")
+        private IndexMapper() : base("indexes")
         { }
         public static IndexMapper GetInstance()
         {

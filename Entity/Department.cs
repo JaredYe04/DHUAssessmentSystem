@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace 考核系统.Entity
 {
-    class Department//部门
+    class Department:DeepCopy<Department>//部门
     {
         [Key]
         public int id { get; set; }//部门编号
@@ -23,6 +24,7 @@ namespace 考核系统.Entity
         public Department()
         {
         }
+
 
     }
 

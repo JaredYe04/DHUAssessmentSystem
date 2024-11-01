@@ -16,9 +16,18 @@ namespace 考核系统.Mapper
     internal class DB
     {
         private static string connStr = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-
-
+        //private static SQLiteConnection cn=new SQLiteConnection(connStr);
         private static DB instance = null;
+        //public static void Open()
+        //{
+        //    if(cn.State != System.Data.ConnectionState.Open)
+        //        cn.Open();
+        //}
+        //public static void Close()
+        //{
+        //    if (cn.State != System.Data.ConnectionState.Closed)
+        //        cn.Close();
+        //}
         public static DB GetInstance()
         {
             //加一个互斥锁，防止多线程同时访问
@@ -34,37 +43,68 @@ namespace 考核系统.Mapper
         }
         public void ExecuteNonQuery(string sql)
         {
-            SQLiteConnection cn = new SQLiteConnection(connStr);
-            cn.Open();//打开数据库
-            SQLiteCommand cmd = new SQLiteCommand();
-            cmd.Connection = cn;//把 SQLiteCommand的 Connection和SQLiteConnection 联系起来
-            cmd.CommandText = sql;//输入SQL语句
-            cmd.ExecuteNonQuery();//调用此方法运行
-            cn.Close();//关闭数据库
+            using (SQLiteConnection cn = new SQLiteConnection(connStr))
+            {
+                cn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = cn;
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+            }
         }
-        public SQLiteDataReader ExecuteReader(string sql)
+        //public SQLiteDataReader ExecuteReader(string sql, out SQLiteConnection connection)
+        //{
+        //    SQLiteConnection cn = new SQLiteConnection(connStr);
+
+        //    cn.Open();
+        //    SQLiteCommand cmd = new SQLiteCommand();
+        //    cmd.Connection = cn;
+        //    cmd.CommandText = sql;
+        //    SQLiteDataReader reader = cmd.ExecuteReader();
+        //    connection = cn;//让用户自己关闭连接
+        //    return reader;
+
+        //}
+
+        ////重写ExecuteReader方法，直接返回读取到的数据
+
+        public List<Dictionary<string, object>> ExecuteReader(string sql)
         {
-            SQLiteConnection cn = new SQLiteConnection(connStr);
-            cn.Open();//打开数据库
-            SQLiteCommand cmd = new SQLiteCommand();
-            cmd.Connection = cn;//把 SQLiteCommand的 Connection和SQLiteConnection 联系起来
-            cmd.CommandText = sql;//输入SQL语句
-            SQLiteDataReader reader = cmd.ExecuteReader();
-            return reader;
+            using (SQLiteConnection cn = new SQLiteConnection(connStr))
+            {
+                cn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = cn;
+                cmd.CommandText = sql;
+                SQLiteDataReader reader = cmd.ExecuteReader();
+                List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+                while (reader.Read())
+                {
+                    Dictionary<string, object> dict = new Dictionary<string, object>();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        dict.Add(reader.GetName(i), reader.GetValue(i));
+                    }
+                    result.Add(dict);
+                }
+                return result;
+            }
         }
+
         public void ExecuteNonQuery(string sql, Dictionary<string, object> parameters)
         {
-            SQLiteConnection cn = new SQLiteConnection(connStr);
-            cn.Open();//打开数据库
-            SQLiteCommand cmd = new SQLiteCommand();
-            cmd.Connection = cn;//把 SQLiteCommand的 Connection和SQLiteConnection 联系起来
-            cmd.CommandText = sql;//输入SQL语句
-            foreach (var item in parameters)
+            using (SQLiteConnection cn = new SQLiteConnection(connStr))
             {
-                cmd.Parameters.AddWithValue(item.Key, item.Value);
+                cn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = cn;
+                cmd.CommandText = sql;
+                foreach (var item in parameters)
+                {
+                    cmd.Parameters.AddWithValue(item.Key, item.Value);
+                }
+                cmd.ExecuteNonQuery();
             }
-            cmd.ExecuteNonQuery();//调用此方法运行
-            cn.Close();//关闭数据库
         }
         ~DB()
         {

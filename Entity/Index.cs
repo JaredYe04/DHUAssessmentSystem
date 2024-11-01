@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace 考核系统.Entity
 {
-    public class Index
+    class Index: DeepCopy<Index>//指标
     {
         public int id { get; set; }
         public string index_code { get; set; }
@@ -27,6 +27,9 @@ namespace 考核系统.Entity
             this.weight2 = weight2;
             this.enable_sensitivity = enable_sensitivity;
             this.sensitivity = sensitivity;
+        }
+        public Index()
+        {
         }
     }
 }

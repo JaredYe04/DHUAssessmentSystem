@@ -19,5 +19,15 @@ namespace 考核系统.Mapper
             }
             return instance;
         }
+        public List<IndexDuty> GetIndexDutyByManagerId(int managerId)
+        {
+            var sql = $"select * from index_duty where manager_id={managerId}";
+            return QueryAll(sql);
+        }
+        public IndexDuty GetIndexDutyByIndexAndManagerId(int indexId, int managerId)
+        {
+            var sql = $"select * from index_duty where index_id={indexId} and manager_id={managerId}";
+            return Query(sql);
+        }
     }
 }
