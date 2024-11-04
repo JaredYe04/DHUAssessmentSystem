@@ -294,6 +294,12 @@
     <Compile Include="Dialogs\ChangeYear.Designer.cs">
       <DependentUpon>ChangeYear.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ImportMode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ImportMode.Designer.cs">
+      <DependentUpon>ImportMode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Completion.cs" />
     <Compile Include="Entity\DeepCopy.cs" />
     <Compile Include="Entity\Department.cs" />
@@ -319,12 +325,16 @@
     <Compile Include="Mapper\ManagerMapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Columns.cs" />
     <Compile Include="Utils\CommonData.cs" />
     <Compile Include="Utils\EventBus.cs" />
     <Compile Include="Utils\FileIO.cs" />
     <Compile Include="Utils\Logger.cs" />
     <EmbeddedResource Include="Dialogs\ChangeYear.resx">
       <DependentUpon>ChangeYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ImportMode.resx">
+      <DependentUpon>ImportMode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

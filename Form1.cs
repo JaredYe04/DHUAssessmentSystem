@@ -19,67 +19,7 @@ namespace 考核系统
 {
     public partial class Form1 : Form
     {
-        public enum DeptInfoColumns
-        {
-            id= 0,
-            dept_code=1,
-            dept_name=2,
-            dept_population=3,
-            dept_punishment=4,
-            dept_group=5
-        }//部门信息表的列
-        public static Dictionary<DeptInfoColumns,string> deptInfoColumnsMap = new Dictionary<DeptInfoColumns, string>
-        {
-            {DeptInfoColumns.id,"单位编号"},
-            {DeptInfoColumns.dept_code,"单位代码"},
-            {DeptInfoColumns.dept_name,"单位名称"},
-            {DeptInfoColumns.dept_population,"单位人数"},
-            {DeptInfoColumns.dept_punishment,"惩罚系数"},
-            {DeptInfoColumns.dept_group,"单位组别"}
-        };
-        public enum IndexInfoColumns
-        {
-            id = 0,
-            identifier_id = 1,
-            secondary_identifier = 2,
-            index_name = 3,
-            index_type = 4,
-            weight1 = 5,
-            weight2 = 6,
-            enable_sensitivity = 7,
-            sensitivity = 8
-        }//指标信息表的列
-        public static Dictionary<IndexInfoColumns, string> indexInfoColumnsMap = new Dictionary<IndexInfoColumns, string>
-        {
-            {IndexInfoColumns.id,"指标编号"},
-            {IndexInfoColumns.identifier_id,"一级类别"},
-            {IndexInfoColumns.secondary_identifier,"二级类别"},
-            {IndexInfoColumns.index_name,"指标名称"},
-            {IndexInfoColumns.index_type,"指标类型"},
-            {IndexInfoColumns.weight1,"权重1"},
-            {IndexInfoColumns.weight2,"权重2"},
-            {IndexInfoColumns.enable_sensitivity,"启用敏感度"},
-            {IndexInfoColumns.sensitivity,"敏感度"}
-        };
-        public enum ManagerInfoColumns
-        {
-            id = 0,
-            manager_code = 1,
-            manager_name = 2
-        }//职能部门信息表的列
 
-        public enum IndexIdentifierInfoColumns
-        {
-            id = 0,
-            identifier_name = 1
-        }//指标分类信息表的列
-
-        public static Dictionary<ManagerInfoColumns, string> managerInfoColumnsMap = new Dictionary<ManagerInfoColumns, string>
-        {
-            {ManagerInfoColumns.id,"职能部门编号"},
-            {ManagerInfoColumns.manager_code,"职能部门代码"},
-            {ManagerInfoColumns.manager_name,"职能部门名称"}
-        };
         public Form1()
         {
             InitializeComponent();
@@ -416,10 +356,12 @@ namespace 考核系统
                 newDeptInfo.Remove("id");//移除id字段
                 newDeptInfoObj = deptMapper.GetObject(newDeptInfo);//获取刚插入的部门信息，带有id
                 
+
                 newDeptAnnualInfo["dept_id"] = newDeptInfoObj.id;
                 var newDeptAnnualInfoObj = JsonConvert.DeserializeObject<DeptAnnualInfo>(JsonConvert.SerializeObject(newDeptAnnualInfo));
                 deptAnnualInfoMapper.Add(newDeptAnnualInfoObj);
-
+                newDeptAnnualInfo.Remove("id");//移除id字段
+                newDeptAnnualInfoObj = deptAnnualInfoMapper.GetDeptAnnualInfo(newDeptInfoObj.id, CommonData.CurrentYear);//获取刚插入的部门信息，带有id
 
                 CommonData.DeptInfo[newDeptInfoObj.id] = new Tuple<Department, DeptAnnualInfo>(newDeptInfoObj, newDeptAnnualInfoObj);
 
@@ -526,10 +468,22 @@ namespace 考核系统
                 CommonData.DeptInfo.Remove(deptId);
             }
         }
-        private void dump2Sheet(DataGridView dataGridView,bool reserveId=false)
+        private void dump2Sheet(Dictionary<string, DataGridView> sheets, Dictionary<string, bool> reserveId = null,bool structureOnly=false)
         {
-            if (reserveId == false)
+            if (reserveId == null)
             {
+                reserveId = new Dictionary<string, bool>();
+                foreach (var keypair in sheets)
+                {
+                    reserveId[keypair.Key] = false;
+                }
+            }
+            foreach (var keypair in reserveId)
+            {
+                if (keypair.Value == true) continue;
+
+                var header = keypair.Key;
+                DataGridView dataGridView = sheets[keypair.Key]; ;
                 //复制一份数据表，去掉id列
                 DataGridView dataGridViewCopy = new DataGridView();
                 dataGridViewCopy.ColumnCount = dataGridView.ColumnCount - 1;
@@ -550,27 +504,32 @@ namespace 考核系统
                 }
                 dataGridView = dataGridViewCopy;
 
+                sheets[header] = dataGridView;
+
+
             }
+
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
-                //excel导出
-                if (saveDialog.FilterIndex == 1)
+                try
                 {
-                    FileIO.DataGridViewToExcel(dataGridView, saveDialog.FileName);
+                    FileIO.MultiDataGridViewToExcel(sheets, saveDialog.FileName, structureOnly);
+                    Logger.Log(saveDialog.FileName + "导出成功");
                 }
-
-                //csv导出
-                if (saveDialog.FilterIndex == 2)
+                catch (Exception ex)
                 {
-                    FileIO.DataGridViewToCSV(dataGridView, saveDialog.FileName);
-                }
+                    Logger.Log(saveDialog.FileName + "导出失败:" + ex.Message);
 
+                }
             }
+
         }
         private void buttonDeptDump_Click(object sender, EventArgs e)
         {
             saveDialog.FileName= DateTime.Now.ToString("yyyy-MM-dd")+"教学科研单位信息.xlsx";
-            dump2Sheet(deptDataGrid);
+            var dict = new Dictionary<string, DataGridView>();
+            dict.Add("教学科研单位信息表", deptDataGrid);
+            dump2Sheet(dict);
         }
 
         private void 修改年份ToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -689,11 +648,39 @@ namespace 考核系统
 
             }
         }
-
         private void buttonIndexDump_Click(object sender, EventArgs e)
         {
             saveDialog.FileName = DateTime.Now.ToString("yyyy-MM-dd") + "考核指标信息.xlsx";
-            dump2Sheet(indexDataGrid);
+            var dict = new Dictionary<string, DataGridView>();
+            dict.Add("指标一级类别信息表", indexIdentifierDataGrid);
+            var fullIndexDataGrid = new DataGridView();
+            fullIndexDataGrid.ColumnCount = indexDataGrid.ColumnCount;
+            for (int i = 0; i < indexDataGrid.ColumnCount; i++)
+            {
+                fullIndexDataGrid.Columns[i].Name = indexDataGrid.Columns[i].Name;
+                fullIndexDataGrid.Columns[i].HeaderText = indexDataGrid.Columns[i].HeaderText;
+            }
+            foreach(var index in CommonData.IndexInfo)
+            {
+                fullIndexDataGrid.Rows.Add();
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.id].Value = index.Value.id;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.identifier_id].Value = index.Value.identifier_id;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.secondary_identifier].Value = index.Value.secondary_identifier;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.index_name].Value = index.Value.index_name;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.index_type].Value = index.Value.index_type;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.weight1].Value = index.Value.weight1;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.weight2].Value = index.Value.weight2;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.enable_sensitivity].Value = index.Value.enable_sensitivity;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.sensitivity].Value = index.Value.sensitivity;
+
+            }
+            dict.Add("考核指标信息表", fullIndexDataGrid);
+            var reserveId = new Dictionary<string, bool>
+            {
+                { "指标一级类别信息表", true },
+                { "考核指标信息表", false }
+            };
+            dump2Sheet(dict,reserveId);
         }
 
         private void indexDataGrid_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -740,7 +727,9 @@ namespace 考核系统
         private void buttonManagerDump_Click(object sender, EventArgs e)
         {
             saveDialog.FileName = DateTime.Now.ToString("yyyy-MM-dd") + "职能部门信息.xlsx";
-            dump2Sheet(managerDataGrid);
+            var dict = new Dictionary<string, DataGridView>();
+            dict.Add("职能部门信息表", managerDataGrid);
+            dump2Sheet(dict);
         }
 
         private void buttonManagerRefresh_Click(object sender, EventArgs e)
@@ -1166,6 +1155,277 @@ namespace 考核系统
         private void indexIdentifierDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void buttonDeptTemplateDump_Click(object sender, EventArgs e)
+        {
+            saveDialog.FileName = "教学科研单位信息模板.xlsx";
+            var dict = new Dictionary<string, DataGridView>();
+            dict.Add("教学科研单位信息表", deptDataGrid);
+            dump2Sheet(dict,null,true);
+
+        }
+
+        private void buttonManagerTemplateDump_Click(object sender, EventArgs e)
+        {
+            saveDialog.FileName = "职能部门信息模板.xlsx";
+            var dict = new Dictionary<string, DataGridView>();
+            dict.Add("职能部门信息表", managerDataGrid);
+            dump2Sheet(dict, null, true);
+        }
+
+        private void 导出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mainContainer.SelectedIndex = 5;
+            labelView.Text = "导出向导";
+        }
+
+        private void 导出向导ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mainContainer.SelectedIndex = 5;
+            labelView.Text = "导出向导";
+        }
+
+        private void buttonIndexTemplateDump_Click(object sender, EventArgs e)
+        {
+            saveDialog.FileName = "考核指标信息模板.xlsx";
+            var dict = new Dictionary<string, DataGridView>();
+            dict.Add("指标一级类别信息表", indexIdentifierDataGrid);
+            dict.Add("考核指标信息表",indexDataGrid);
+            var reserveId = new Dictionary<string, bool>
+            {
+                { "指标一级类别信息表", true },
+                { "考核指标信息表", false }
+            };
+            dump2Sheet(dict, reserveId,true);
+        }
+
+        private void buttonDutyClear_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("确定要清空所有职责分配吗？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                var indexDutyMapper = IndexDutyMapper.GetInstance();
+                foreach (var indexDuty in CommonData.DutyInfo.Values)
+                {
+                    indexDutyMapper.Remove(indexDuty.id.ToString());
+                }
+                CommonData.DutyInfo.Clear();
+                listAllocatedIndexes.Items.Clear();
+                listUnallocatedIndexes.Items.Clear();
+                Logger.Log("清空所有职责分配");
+                fetchDutyInfo();
+            }
+        }
+
+        private void buttonDeptImport_Click(object sender, EventArgs e)
+        {
+            var importMode = new ImportMode();
+            //importMode.ShowDialog();
+            //if (importMode.DialogResult != DialogResult.OK) return;
+            var importModeValue = importMode.ModeFlag;//获取导入模式,true为追加模式，false为覆盖模式
+            
+
+            openDialog.Title = "请选择要导入的部门信息文件";
+            openDialog.ShowDialog();
+            if (openDialog.FileName == "")
+            {
+                return;
+            }
+            //fetchDepartmentInfo();
+            var importedDeptInfo = FileIO.ImportSingleSheet(openDialog.FileName);
+
+            for (int i = 0; i < importedDeptInfo.Rows.Count - 1; i++)//最后一行是未提交的新数据，不参与比对
+            {
+                var exists = false;
+                int exist_row_idx = -1;
+                if (!importModeValue)
+                {
+                    //检查一下原本的DeptInfo中，是否存在DeptCode和新数据匹配的数据
+                    //注意最后一行是未提交的新数据，不参与比对
+                    for (int j=0;j<deptDataGrid.Rows.Count;j++)
+                    {
+                        if (deptDataGrid.Rows[j].Cells[(int)DeptInfoColumns.id].Value == null) continue;
+                        var dept = CommonData.DeptInfo[(int)deptDataGrid.Rows[j].Cells[(int)DeptInfoColumns.id].Value].Item1;
+                        
+
+                        if (
+                            dept.dept_code ==
+                            importedDeptInfo.Rows[i].Cells[(int)DeptInfoColumns.dept_code].Value?.ToString()
+                            )
+                        {
+                            //如果存在，更新数据
+                            exists = true;
+                            exist_row_idx = j;
+                            break;
+                        }
+                    }
+                }
+                int cur_idx=(!importModeValue && exists)? exist_row_idx : deptDataGrid.Rows.Add();
+
+                deptDataGrid.Rows[cur_idx].Cells[(int)DeptInfoColumns.dept_name].Value = importedDeptInfo.Rows[i].Cells[(int)DeptInfoColumns.dept_name].Value;
+                deptDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)DeptInfoColumns.dept_name, cur_idx));
+
+                deptDataGrid.Rows[cur_idx].Cells[(int)DeptInfoColumns.dept_code].Value = importedDeptInfo.Rows[i].Cells[(int)DeptInfoColumns.dept_code].Value;
+                deptDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)DeptInfoColumns.dept_code, cur_idx));
+
+                deptDataGrid.Rows[cur_idx].Cells[(int)DeptInfoColumns.dept_population].Value = importedDeptInfo.Rows[i].Cells[(int)DeptInfoColumns.dept_population].Value;
+                deptDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)DeptInfoColumns.dept_population, cur_idx));
+
+                deptDataGrid.Rows[cur_idx].Cells[(int)DeptInfoColumns.dept_punishment].Value = importedDeptInfo.Rows[i].Cells[(int)DeptInfoColumns.dept_punishment].Value;
+                deptDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)DeptInfoColumns.dept_punishment, cur_idx));
+
+                deptDataGrid.Rows[cur_idx].Cells[(int)DeptInfoColumns.dept_group].Value = importedDeptInfo.Rows[i].Cells[(int)DeptInfoColumns.dept_group].Value;
+                deptDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)DeptInfoColumns.dept_group, cur_idx));
+
+                if ((!importModeValue && exists))
+                {
+                    Logger.Log("部门" + importedDeptInfo.Rows[i].Cells[(int)DeptInfoColumns.dept_code].Value.ToString() + "已存在，更新数据");
+                }
+                else
+                {
+                    Logger.Log("新增部门" + importedDeptInfo.Rows[i].Cells[(int)DeptInfoColumns.dept_code].Value.ToString());
+                }
+
+            }
+            fetchDepartmentInfo();
+        }
+
+        private void buttonManagerImport_Click(object sender, EventArgs e)
+        {
+            var importMode = new ImportMode();
+            //importMode.ShowDialog();
+            //if (importMode.DialogResult != DialogResult.OK) return;
+            var importModeValue = importMode.ModeFlag;//获取导入模式,true为追加模式，false为覆盖模式
+
+
+            openDialog.Title = "请选择要导入的职能部门信息文件";
+            openDialog.ShowDialog();
+            if (openDialog.FileName == "")
+            {
+                return;
+            }
+            //fetchDepartmentInfo();
+            var importedManagerInfo = FileIO.ImportSingleSheet(openDialog.FileName);
+
+            for (int i = 0; i < importedManagerInfo.Rows.Count - 1; i++)//最后一行是未提交的新数据，不参与比对
+            {
+                var exists = false;
+                int exist_row_idx = -1;
+                if (!importModeValue)
+                {
+                    //检查一下原本的DeptInfo中，是否存在DeptCode和新数据匹配的数据
+                    //注意最后一行是未提交的新数据，不参与比对
+                    for (int j = 0; j < managerDataGrid.Rows.Count; j++)
+                    {
+                        if (managerDataGrid.Rows[j].Cells[(int)ManagerInfoColumns.id].Value == null) continue;
+                        var manager = CommonData.ManagerInfo[(int)managerDataGrid.Rows[j].Cells[(int)ManagerInfoColumns.id].Value];
+                        
+
+                        if (
+                            manager.manager_code ==
+                            importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_code].Value?.ToString()
+                            )
+                        {
+                            //如果存在，更新数据
+                            exists = true;
+                            exist_row_idx = j;
+                            break;
+                        }
+                    }
+                }
+                int cur_idx = (!importModeValue && exists) ? exist_row_idx : managerDataGrid.Rows.Add();
+
+                managerDataGrid.Rows[cur_idx].Cells[(int)ManagerInfoColumns.manager_name].Value = importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_name].Value;
+                managerDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)ManagerInfoColumns.manager_name, cur_idx));
+
+                managerDataGrid.Rows[cur_idx].Cells[(int)ManagerInfoColumns.manager_code].Value = importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_code].Value;
+                managerDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)ManagerInfoColumns.manager_code, cur_idx));
+
+                if ((!importModeValue && exists))
+                {
+                    Logger.Log("职能部门" + importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_code].Value.ToString() + "已存在，更新数据");
+                }
+                else
+                {
+                    Logger.Log("新增职能部门" + importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_code].Value.ToString());
+                }
+
+            }
+            fetchManagerInfo();
+        }
+
+        private void buttonIndexImport_Click(object sender, EventArgs e)
+        {
+            var importMode = new ImportMode();
+            //importMode.ShowDialog();
+            //if (importMode.DialogResult != DialogResult.OK) return;
+            var importModeValue = importMode.ModeFlag;//获取导入模式,true为追加模式，false为覆盖模式
+
+
+            openDialog.Title = "请选择要导入的考核指标信息文件";
+            openDialog.ShowDialog();
+            //如果用户在openDialog点了取消，就不打开
+
+            
+
+            if (openDialog.FileName == "")
+            {
+                return;
+            }
+            //fetchDepartmentInfo();
+            var importedManagerInfo = FileIO.ImportSingleSheet(openDialog.FileName);
+
+            for (int i = 0; i < importedManagerInfo.Rows.Count - 1; i++)//最后一行是未提交的新数据，不参与比对
+            {
+                var exists = false;
+                int exist_row_idx = -1;
+                if (!importModeValue)
+                {
+                    //检查一下原本的DeptInfo中，是否存在DeptCode和新数据匹配的数据
+                    //注意最后一行是未提交的新数据，不参与比对
+                    for (int j = 0; j < managerDataGrid.Rows.Count; j++)
+                    {
+                        if (managerDataGrid.Rows[j].Cells[(int)ManagerInfoColumns.id].Value == null) continue;
+                        var manager = CommonData.ManagerInfo[(int)managerDataGrid.Rows[j].Cells[(int)ManagerInfoColumns.id].Value];
+
+
+                        if (
+                            manager.manager_code ==
+                            importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_code].Value?.ToString()
+                            )
+                        {
+                            //如果存在，更新数据
+                            exists = true;
+                            exist_row_idx = j;
+                            break;
+                        }
+                    }
+                }
+                int cur_idx = (!importModeValue && exists) ? exist_row_idx : managerDataGrid.Rows.Add();
+
+                managerDataGrid.Rows[cur_idx].Cells[(int)ManagerInfoColumns.manager_name].Value = importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_name].Value;
+                managerDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)ManagerInfoColumns.manager_name, cur_idx));
+
+                managerDataGrid.Rows[cur_idx].Cells[(int)ManagerInfoColumns.manager_code].Value = importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_code].Value;
+                managerDataGrid_CellEndEdit(sender, new DataGridViewCellEventArgs((int)ManagerInfoColumns.manager_code, cur_idx));
+
+                if ((!importModeValue && exists))
+                {
+                    Logger.Log("职能部门" + importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_code].Value.ToString() + "已存在，更新数据");
+                }
+                else
+                {
+                    Logger.Log("新增职能部门" + importedManagerInfo.Rows[i].Cells[(int)ManagerInfoColumns.manager_code].Value.ToString());
+                }
+
+            }
+            fetchIndexInfo();
+        }
+
+        private void buttonChangeYear_Click(object sender, EventArgs e)
+        {
+            ChangeYear changeYear = new ChangeYear();
+            changeYear.ShowDialog();
         }
     }
 }

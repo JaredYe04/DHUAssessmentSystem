@@ -156,6 +156,12 @@ namespace 考核系统.Mapper
             string sql = $"delete from {tableName}";
             DB.GetInstance().ExecuteNonQuery(sql);
         }
+        public int Count()
+        {
+            string sql = $"select count(*) from {tableName}";
+            var result = DB.GetInstance().ExecuteReader(sql).FirstOrDefault();
+            return Convert.ToInt32(result.Values.First());
+        }
     }
 
 }

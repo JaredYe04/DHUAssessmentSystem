@@ -29,5 +29,6 @@ namespace 考核系统.Mapper
             var sql = $"select * from index_duty where index_id={indexId} and manager_id={managerId}";
             return Query(sql);
         }
+        
     }
 }

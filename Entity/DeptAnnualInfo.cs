@@ -11,7 +11,7 @@ namespace 考核系统.Entity
         public int id { get; set; }
         public int dept_id { get; set; }
         public int year { get; set; }
-        public int dept_population { get; set; }
+        public double dept_population { get; set; }
         public double dept_punishment { get; set; }
         public string dept_group { get; set; }
 

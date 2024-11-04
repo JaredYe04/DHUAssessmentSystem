@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,36 +56,55 @@
             this.pageDept = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.deptDataGrid = new System.Windows.Forms.DataGridView();
+            this.DeptId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptPopulation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptPunishment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeptGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonDeptDump = new System.Windows.Forms.Button();
             this.buttonDeptRefresh = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonDeptImport = new System.Windows.Forms.Button();
+            this.buttonDeptTemplateDump = new System.Windows.Forms.Button();
             this.pageIndex = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonIndexDump = new System.Windows.Forms.Button();
             this.buttonIndexRefresh = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.buttonIndexImport = new System.Windows.Forms.Button();
+            this.buttonIndexTemplateDump = new System.Windows.Forms.Button();
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.IndexIdentifierSplit = new System.Windows.Forms.TableLayoutPanel();
             this.indexIdentifierDataGrid = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.identifier_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.comboIndexIdentifier = new System.Windows.Forms.ComboBox();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.indexDataGrid = new System.Windows.Forms.DataGridView();
+            this.indexId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.index_identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.secondaryIdentifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.indexName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.indexType = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.weight1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.weight2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.enable_sensitivity = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.sensitivity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pageManager = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.managerDataGrid = new System.Windows.Forms.DataGridView();
+            this.manager_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.manager_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.manager_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonManagerDump = new System.Windows.Forms.Button();
             this.buttonManagerRefresh = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.buttonManagerImport = new System.Windows.Forms.Button();
+            this.buttonManagerTemplateDump = new System.Windows.Forms.Button();
             this.pageIndexDuty = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.managerInfoSplit = new System.Windows.Forms.TableLayoutPanel();
@@ -97,18 +116,21 @@
             this.dutySplit = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableDutyUtil = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonDutyExportEmptyTable = new System.Windows.Forms.Button();
+            this.buttonDutyClear = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.listAllocatedIndexes = new System.Windows.Forms.ListBox();
-            this.groupUnallocated = new System.Windows.Forms.GroupBox();
-            this.listUnallocatedIndexes = new System.Windows.Forms.ListBox();
             this.groupDutyAllocate = new System.Windows.Forms.GroupBox();
             this.buttonUnallocateDutyAll = new System.Windows.Forms.Button();
             this.buttonAllocatedDutyAll = new System.Windows.Forms.Button();
             this.buttonUnallocateDuty = new System.Windows.Forms.Button();
             this.buttonAllocateDuty = new System.Windows.Forms.Button();
+            this.groupUnallocated = new System.Windows.Forms.GroupBox();
+            this.listUnallocatedIndexes = new System.Windows.Forms.ListBox();
+            this.groupBoxAllocated = new System.Windows.Forms.GroupBox();
+            this.listAllocatedIndexes = new System.Windows.Forms.ListBox();
             this.pageCompletion = new System.Windows.Forms.TabPage();
+            this.pageExport = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
             this.labelView = new System.Windows.Forms.Label();
@@ -116,6 +138,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textLogger = new System.Windows.Forms.TextBox();
             this.groupBoxMetaInfo = new System.Windows.Forms.GroupBox();
+            this.buttonChangeYear = new System.Windows.Forms.Button();
             this.labelCurrentYear = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -137,24 +160,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
-            this.indexId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.index_identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.secondaryIdentifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.indexName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.indexType = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.weight1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.weight2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.enable_sensitivity = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.sensitivity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptPopulation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptPunishment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeptGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.manager_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.manager_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.manager_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.openDialog = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.mainTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -170,8 +176,9 @@
             this.groupBox10.SuspendLayout();
             this.IndexIdentifierSplit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.indexIdentifierDataGrid)).BeginInit();
-            this.groupBox11.SuspendLayout();
             this.groupBox12.SuspendLayout();
+            this.tableLayoutPanel17.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.indexDataGrid)).BeginInit();
             this.pageManager.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
@@ -184,11 +191,12 @@
             this.groupBox3.SuspendLayout();
             this.dutySplit.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.tableDutyUtil.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            this.groupUnallocated.SuspendLayout();
             this.groupDutyAllocate.SuspendLayout();
+            this.groupUnallocated.SuspendLayout();
+            this.groupBoxAllocated.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -304,6 +312,7 @@
             this.导出ToolStripMenuItem.Name = "导出ToolStripMenuItem";
             this.导出ToolStripMenuItem.Size = new System.Drawing.Size(236, 34);
             this.导出ToolStripMenuItem.Text = "导出...";
+            this.导出ToolStripMenuItem.Click += new System.EventHandler(this.导出ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
@@ -367,6 +376,7 @@
             this.导出向导ToolStripMenuItem.Name = "导出向导ToolStripMenuItem";
             this.导出向导ToolStripMenuItem.Size = new System.Drawing.Size(98, 28);
             this.导出向导ToolStripMenuItem.Text = "导出向导";
+            this.导出向导ToolStripMenuItem.Click += new System.EventHandler(this.导出向导ToolStripMenuItem_Click);
             // 
             // mainTable
             // 
@@ -410,6 +420,7 @@
             this.mainContainer.Controls.Add(this.pageManager);
             this.mainContainer.Controls.Add(this.pageIndexDuty);
             this.mainContainer.Controls.Add(this.pageCompletion);
+            this.mainContainer.Controls.Add(this.pageExport);
             this.mainContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainContainer.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.mainContainer.ItemSize = new System.Drawing.Size(0, 25);
@@ -470,11 +481,56 @@
             this.deptDataGrid.RowTemplate.Height = 27;
             this.deptDataGrid.Size = new System.Drawing.Size(1221, 682);
             this.deptDataGrid.TabIndex = 5;
-            this.deptDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexDataGrid_CellEndEdit);
             this.deptDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.deptDataGrid_CellEndEdit);
             this.deptDataGrid.ColumnRemoved += new System.Windows.Forms.DataGridViewColumnEventHandler(this.deptDataGrid_ColumnRemoved);
             this.deptDataGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.deptDataGrid_RowsAdded);
             this.deptDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.deptDataGrid_RowsRemoved);
+            // 
+            // DeptId
+            // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
+            this.DeptId.DefaultCellStyle = dataGridViewCellStyle1;
+            this.DeptId.HeaderText = "单位编号";
+            this.DeptId.MinimumWidth = 6;
+            this.DeptId.Name = "DeptId";
+            this.DeptId.ReadOnly = true;
+            this.DeptId.Visible = false;
+            this.DeptId.Width = 120;
+            // 
+            // DeptCode
+            // 
+            this.DeptCode.HeaderText = "单位代码";
+            this.DeptCode.MinimumWidth = 6;
+            this.DeptCode.Name = "DeptCode";
+            this.DeptCode.Width = 150;
+            // 
+            // DeptName
+            // 
+            this.DeptName.HeaderText = "单位名称";
+            this.DeptName.MinimumWidth = 6;
+            this.DeptName.Name = "DeptName";
+            this.DeptName.Width = 150;
+            // 
+            // DeptPopulation
+            // 
+            this.DeptPopulation.HeaderText = "单位人数";
+            this.DeptPopulation.MinimumWidth = 6;
+            this.DeptPopulation.Name = "DeptPopulation";
+            this.DeptPopulation.Width = 150;
+            // 
+            // DeptPunishment
+            // 
+            this.DeptPunishment.HeaderText = "惩罚系数";
+            this.DeptPunishment.MinimumWidth = 6;
+            this.DeptPunishment.Name = "DeptPunishment";
+            this.DeptPunishment.Width = 150;
+            // 
+            // DeptGroup
+            // 
+            this.DeptGroup.HeaderText = "单位组别";
+            this.DeptGroup.MinimumWidth = 6;
+            this.DeptGroup.Name = "DeptGroup";
+            this.DeptGroup.Width = 150;
             // 
             // tableLayoutPanel3
             // 
@@ -482,8 +538,8 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptDump, 0, 3);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptRefresh, 0, 2);
-            this.tableLayoutPanel3.Controls.Add(this.button1, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.button2, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.buttonDeptImport, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.buttonDeptTemplateDump, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(1230, 4);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -523,29 +579,31 @@
             this.buttonDeptRefresh.UseVisualStyleBackColor = true;
             this.buttonDeptRefresh.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button1
+            // buttonDeptImport
             // 
-            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(34, 172);
-            this.button1.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(233, 64);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "从Excel导入";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonDeptImport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonDeptImport.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonDeptImport.Location = new System.Drawing.Point(34, 172);
+            this.buttonDeptImport.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonDeptImport.Name = "buttonDeptImport";
+            this.buttonDeptImport.Size = new System.Drawing.Size(233, 64);
+            this.buttonDeptImport.TabIndex = 2;
+            this.buttonDeptImport.Text = "从Excel导入";
+            this.buttonDeptImport.UseVisualStyleBackColor = true;
+            this.buttonDeptImport.Click += new System.EventHandler(this.buttonDeptImport_Click);
             // 
-            // button2
+            // buttonDeptTemplateDump
             // 
-            this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(34, 36);
-            this.button2.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(233, 64);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "导出excel模板";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonDeptTemplateDump.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonDeptTemplateDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonDeptTemplateDump.Location = new System.Drawing.Point(34, 36);
+            this.buttonDeptTemplateDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonDeptTemplateDump.Name = "buttonDeptTemplateDump";
+            this.buttonDeptTemplateDump.Size = new System.Drawing.Size(233, 64);
+            this.buttonDeptTemplateDump.TabIndex = 1;
+            this.buttonDeptTemplateDump.Text = "导出Excel模板";
+            this.buttonDeptTemplateDump.UseVisualStyleBackColor = true;
+            this.buttonDeptTemplateDump.Click += new System.EventHandler(this.buttonDeptTemplateDump_Click);
             // 
             // pageIndex
             // 
@@ -581,8 +639,8 @@
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.Controls.Add(this.buttonIndexDump, 0, 3);
             this.tableLayoutPanel11.Controls.Add(this.buttonIndexRefresh, 0, 2);
-            this.tableLayoutPanel11.Controls.Add(this.button6, 0, 1);
-            this.tableLayoutPanel11.Controls.Add(this.button7, 0, 0);
+            this.tableLayoutPanel11.Controls.Add(this.buttonIndexImport, 0, 1);
+            this.tableLayoutPanel11.Controls.Add(this.buttonIndexTemplateDump, 0, 0);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel11.Location = new System.Drawing.Point(1230, 4);
             this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -622,29 +680,31 @@
             this.buttonIndexRefresh.UseVisualStyleBackColor = true;
             this.buttonIndexRefresh.Click += new System.EventHandler(this.buttonIndexRefresh_Click);
             // 
-            // button6
+            // buttonIndexImport
             // 
-            this.button6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button6.Location = new System.Drawing.Point(34, 172);
-            this.button6.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(233, 64);
-            this.button6.TabIndex = 2;
-            this.button6.Text = "从Excel导入";
-            this.button6.UseVisualStyleBackColor = true;
+            this.buttonIndexImport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonIndexImport.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonIndexImport.Location = new System.Drawing.Point(34, 172);
+            this.buttonIndexImport.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonIndexImport.Name = "buttonIndexImport";
+            this.buttonIndexImport.Size = new System.Drawing.Size(233, 64);
+            this.buttonIndexImport.TabIndex = 2;
+            this.buttonIndexImport.Text = "从Excel导入";
+            this.buttonIndexImport.UseVisualStyleBackColor = true;
+            this.buttonIndexImport.Click += new System.EventHandler(this.buttonIndexImport_Click);
             // 
-            // button7
+            // buttonIndexTemplateDump
             // 
-            this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button7.Location = new System.Drawing.Point(34, 36);
-            this.button7.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(233, 64);
-            this.button7.TabIndex = 1;
-            this.button7.Text = "导出excel模板";
-            this.button7.UseVisualStyleBackColor = true;
+            this.buttonIndexTemplateDump.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonIndexTemplateDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonIndexTemplateDump.Location = new System.Drawing.Point(34, 36);
+            this.buttonIndexTemplateDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonIndexTemplateDump.Name = "buttonIndexTemplateDump";
+            this.buttonIndexTemplateDump.Size = new System.Drawing.Size(233, 64);
+            this.buttonIndexTemplateDump.TabIndex = 1;
+            this.buttonIndexTemplateDump.Text = "导出Excel模板";
+            this.buttonIndexTemplateDump.UseVisualStyleBackColor = true;
+            this.buttonIndexTemplateDump.Click += new System.EventHandler(this.buttonIndexTemplateDump_Click);
             // 
             // tableLayoutPanel16
             // 
@@ -670,20 +730,19 @@
             this.groupBox10.Size = new System.Drawing.Size(299, 678);
             this.groupBox10.TabIndex = 7;
             this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "指标一级类别";
+            this.groupBox10.Text = "指标类别";
             // 
             // IndexIdentifierSplit
             // 
             this.IndexIdentifierSplit.ColumnCount = 1;
             this.IndexIdentifierSplit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.IndexIdentifierSplit.Controls.Add(this.indexIdentifierDataGrid, 0, 1);
-            this.IndexIdentifierSplit.Controls.Add(this.groupBox11, 0, 0);
+            this.IndexIdentifierSplit.Controls.Add(this.indexIdentifierDataGrid, 0, 0);
             this.IndexIdentifierSplit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.IndexIdentifierSplit.Location = new System.Drawing.Point(3, 27);
             this.IndexIdentifierSplit.Name = "IndexIdentifierSplit";
-            this.IndexIdentifierSplit.RowCount = 2;
-            this.IndexIdentifierSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.IndexIdentifierSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            this.IndexIdentifierSplit.RowCount = 1;
+            this.IndexIdentifierSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.IndexIdentifierSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 648F));
             this.IndexIdentifierSplit.Size = new System.Drawing.Size(293, 648);
             this.IndexIdentifierSplit.TabIndex = 0;
             // 
@@ -694,12 +753,12 @@
             this.dataGridViewTextBoxColumn1,
             this.identifier_name});
             this.indexIdentifierDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.indexIdentifierDataGrid.Location = new System.Drawing.Point(3, 68);
+            this.indexIdentifierDataGrid.Location = new System.Drawing.Point(3, 4);
             this.indexIdentifierDataGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.indexIdentifierDataGrid.Name = "indexIdentifierDataGrid";
             this.indexIdentifierDataGrid.RowHeadersWidth = 51;
             this.indexIdentifierDataGrid.RowTemplate.Height = 27;
-            this.indexIdentifierDataGrid.Size = new System.Drawing.Size(287, 576);
+            this.indexIdentifierDataGrid.Size = new System.Drawing.Size(287, 640);
             this.indexIdentifierDataGrid.TabIndex = 7;
             this.indexIdentifierDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexIdentifierDataGrid_CellContentClick);
             this.indexIdentifierDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexIdentifierDataGrid_CellEndEdit);
@@ -719,16 +778,42 @@
             this.identifier_name.Name = "identifier_name";
             this.identifier_name.Width = 120;
             // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.tableLayoutPanel17);
+            this.groupBox12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox12.Location = new System.Drawing.Point(308, 3);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(910, 678);
+            this.groupBox12.TabIndex = 8;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "指标信息表";
+            // 
+            // tableLayoutPanel17
+            // 
+            this.tableLayoutPanel17.ColumnCount = 1;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel17.Controls.Add(this.groupBox11, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.indexDataGrid, 0, 1);
+            this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(3, 27);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 2;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(904, 648);
+            this.tableLayoutPanel17.TabIndex = 0;
+            // 
             // groupBox11
             // 
             this.groupBox11.Controls.Add(this.comboIndexIdentifier);
             this.groupBox11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox11.Location = new System.Drawing.Point(3, 3);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(287, 58);
-            this.groupBox11.TabIndex = 0;
+            this.groupBox11.Size = new System.Drawing.Size(898, 58);
+            this.groupBox11.TabIndex = 9;
             this.groupBox11.TabStop = false;
-            this.groupBox11.Text = "当前选中";
+            this.groupBox11.Text = "当前选中的类别";
             // 
             // comboIndexIdentifier
             // 
@@ -738,21 +823,10 @@
             this.comboIndexIdentifier.FormattingEnabled = true;
             this.comboIndexIdentifier.Location = new System.Drawing.Point(3, 27);
             this.comboIndexIdentifier.Name = "comboIndexIdentifier";
-            this.comboIndexIdentifier.Size = new System.Drawing.Size(281, 32);
+            this.comboIndexIdentifier.Size = new System.Drawing.Size(892, 32);
             this.comboIndexIdentifier.TabIndex = 0;
             this.comboIndexIdentifier.SelectedIndexChanged += new System.EventHandler(this.comboIndexIdentifier_SelectedIndexChanged);
             this.comboIndexIdentifier.TextChanged += new System.EventHandler(this.comboIndexIdentifier_TextChanged);
-            // 
-            // groupBox12
-            // 
-            this.groupBox12.Controls.Add(this.indexDataGrid);
-            this.groupBox12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox12.Location = new System.Drawing.Point(308, 3);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(910, 678);
-            this.groupBox12.TabIndex = 8;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "当前类别的所有指标";
             // 
             // indexDataGrid
             // 
@@ -769,15 +843,86 @@
             this.sensitivity});
             this.indexDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.indexDataGrid.Enabled = false;
-            this.indexDataGrid.Location = new System.Drawing.Point(3, 27);
+            this.indexDataGrid.Location = new System.Drawing.Point(3, 68);
             this.indexDataGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.indexDataGrid.Name = "indexDataGrid";
             this.indexDataGrid.RowHeadersWidth = 51;
             this.indexDataGrid.RowTemplate.Height = 27;
-            this.indexDataGrid.Size = new System.Drawing.Size(904, 648);
-            this.indexDataGrid.TabIndex = 7;
-            this.indexDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.indexDataGrid_CellEndEdit);
-            this.indexDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.indexDataGrid_RowsRemoved);
+            this.indexDataGrid.Size = new System.Drawing.Size(898, 576);
+            this.indexDataGrid.TabIndex = 8;
+            // 
+            // indexId
+            // 
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.indexId.DefaultCellStyle = dataGridViewCellStyle2;
+            this.indexId.HeaderText = "指标编号";
+            this.indexId.MinimumWidth = 6;
+            this.indexId.Name = "indexId";
+            this.indexId.ReadOnly = true;
+            this.indexId.Visible = false;
+            this.indexId.Width = 125;
+            // 
+            // index_identifier
+            // 
+            this.index_identifier.HeaderText = "一级类别编号";
+            this.index_identifier.MinimumWidth = 8;
+            this.index_identifier.Name = "index_identifier";
+            this.index_identifier.ReadOnly = true;
+            this.index_identifier.Width = 155;
+            // 
+            // secondaryIdentifier
+            // 
+            this.secondaryIdentifier.HeaderText = "二级类别编号";
+            this.secondaryIdentifier.MinimumWidth = 6;
+            this.secondaryIdentifier.Name = "secondaryIdentifier";
+            this.secondaryIdentifier.Width = 155;
+            // 
+            // indexName
+            // 
+            this.indexName.HeaderText = "指标名称";
+            this.indexName.MinimumWidth = 6;
+            this.indexName.Name = "indexName";
+            this.indexName.Width = 125;
+            // 
+            // indexType
+            // 
+            this.indexType.HeaderText = "指标类型";
+            this.indexType.Items.AddRange(new object[] {
+            "基础类",
+            "加分类"});
+            this.indexType.MinimumWidth = 6;
+            this.indexType.Name = "indexType";
+            this.indexType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.indexType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.indexType.Width = 125;
+            // 
+            // weight1
+            // 
+            this.weight1.HeaderText = "权重1";
+            this.weight1.MinimumWidth = 8;
+            this.weight1.Name = "weight1";
+            this.weight1.Width = 125;
+            // 
+            // weight2
+            // 
+            this.weight2.HeaderText = "权重2";
+            this.weight2.MinimumWidth = 8;
+            this.weight2.Name = "weight2";
+            this.weight2.Width = 125;
+            // 
+            // enable_sensitivity
+            // 
+            this.enable_sensitivity.HeaderText = "启用敏感度";
+            this.enable_sensitivity.MinimumWidth = 8;
+            this.enable_sensitivity.Name = "enable_sensitivity";
+            this.enable_sensitivity.Width = 125;
+            // 
+            // sensitivity
+            // 
+            this.sensitivity.HeaderText = "敏感度";
+            this.sensitivity.MinimumWidth = 8;
+            this.sensitivity.Name = "sensitivity";
+            this.sensitivity.Width = 125;
             // 
             // pageManager
             // 
@@ -826,14 +971,39 @@
             this.managerDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.managerDataGrid_CellEndEdit);
             this.managerDataGrid.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.managerDataGrid_RowsRemoved);
             // 
+            // manager_id
+            // 
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.manager_id.DefaultCellStyle = dataGridViewCellStyle3;
+            this.manager_id.HeaderText = "职能部门编号";
+            this.manager_id.MinimumWidth = 6;
+            this.manager_id.Name = "manager_id";
+            this.manager_id.ReadOnly = true;
+            this.manager_id.Visible = false;
+            this.manager_id.Width = 160;
+            // 
+            // manager_code
+            // 
+            this.manager_code.HeaderText = "职能部门代码";
+            this.manager_code.MinimumWidth = 6;
+            this.manager_code.Name = "manager_code";
+            this.manager_code.Width = 200;
+            // 
+            // manager_name
+            // 
+            this.manager_name.HeaderText = "职能部门名称";
+            this.manager_name.MinimumWidth = 6;
+            this.manager_name.Name = "manager_name";
+            this.manager_name.Width = 200;
+            // 
             // tableLayoutPanel13
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.Controls.Add(this.buttonManagerDump, 0, 3);
             this.tableLayoutPanel13.Controls.Add(this.buttonManagerRefresh, 0, 2);
-            this.tableLayoutPanel13.Controls.Add(this.button5, 0, 1);
-            this.tableLayoutPanel13.Controls.Add(this.button8, 0, 0);
+            this.tableLayoutPanel13.Controls.Add(this.buttonManagerImport, 0, 1);
+            this.tableLayoutPanel13.Controls.Add(this.buttonManagerTemplateDump, 0, 0);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel13.Location = new System.Drawing.Point(1230, 4);
             this.tableLayoutPanel13.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -873,29 +1043,31 @@
             this.buttonManagerRefresh.UseVisualStyleBackColor = true;
             this.buttonManagerRefresh.Click += new System.EventHandler(this.buttonManagerRefresh_Click);
             // 
-            // button5
+            // buttonManagerImport
             // 
-            this.button5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button5.Location = new System.Drawing.Point(34, 172);
-            this.button5.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(233, 64);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "从Excel导入";
-            this.button5.UseVisualStyleBackColor = true;
+            this.buttonManagerImport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonManagerImport.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonManagerImport.Location = new System.Drawing.Point(34, 172);
+            this.buttonManagerImport.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonManagerImport.Name = "buttonManagerImport";
+            this.buttonManagerImport.Size = new System.Drawing.Size(233, 64);
+            this.buttonManagerImport.TabIndex = 2;
+            this.buttonManagerImport.Text = "从Excel导入";
+            this.buttonManagerImport.UseVisualStyleBackColor = true;
+            this.buttonManagerImport.Click += new System.EventHandler(this.buttonManagerImport_Click);
             // 
-            // button8
+            // buttonManagerTemplateDump
             // 
-            this.button8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button8.Location = new System.Drawing.Point(34, 36);
-            this.button8.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(233, 64);
-            this.button8.TabIndex = 1;
-            this.button8.Text = "导出excel模板";
-            this.button8.UseVisualStyleBackColor = true;
+            this.buttonManagerTemplateDump.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonManagerTemplateDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonManagerTemplateDump.Location = new System.Drawing.Point(34, 36);
+            this.buttonManagerTemplateDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonManagerTemplateDump.Name = "buttonManagerTemplateDump";
+            this.buttonManagerTemplateDump.Size = new System.Drawing.Size(233, 64);
+            this.buttonManagerTemplateDump.TabIndex = 1;
+            this.buttonManagerTemplateDump.Text = "导出excel模板";
+            this.buttonManagerTemplateDump.UseVisualStyleBackColor = true;
+            this.buttonManagerTemplateDump.Click += new System.EventHandler(this.buttonManagerTemplateDump_Click);
             // 
             // pageIndexDuty
             // 
@@ -962,6 +1134,7 @@
             this.buttonCancelSelectManager.TabIndex = 1;
             this.buttonCancelSelectManager.Text = "✖";
             this.buttonCancelSelectManager.UseVisualStyleBackColor = true;
+            this.buttonCancelSelectManager.Click += new System.EventHandler(this.buttonCancelSelectManager_Click);
             // 
             // textSelectedManager
             // 
@@ -1031,6 +1204,8 @@
             this.tableDutyUtil.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableDutyUtil.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableDutyUtil.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableDutyUtil.Controls.Add(this.buttonDutyExportEmptyTable, 1, 0);
+            this.tableDutyUtil.Controls.Add(this.buttonDutyClear, 0, 0);
             this.tableDutyUtil.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableDutyUtil.Location = new System.Drawing.Point(3, 27);
             this.tableDutyUtil.Name = "tableDutyUtil";
@@ -1038,6 +1213,31 @@
             this.tableDutyUtil.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableDutyUtil.Size = new System.Drawing.Size(1056, 101);
             this.tableDutyUtil.TabIndex = 0;
+            // 
+            // buttonDutyExportEmptyTable
+            // 
+            this.buttonDutyExportEmptyTable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonDutyExportEmptyTable.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonDutyExportEmptyTable.Location = new System.Drawing.Point(284, 20);
+            this.buttonDutyExportEmptyTable.Margin = new System.Windows.Forms.Padding(20);
+            this.buttonDutyExportEmptyTable.Name = "buttonDutyExportEmptyTable";
+            this.buttonDutyExportEmptyTable.Size = new System.Drawing.Size(224, 61);
+            this.buttonDutyExportEmptyTable.TabIndex = 1;
+            this.buttonDutyExportEmptyTable.Text = "导出各部门空表";
+            this.buttonDutyExportEmptyTable.UseVisualStyleBackColor = true;
+            // 
+            // buttonDutyClear
+            // 
+            this.buttonDutyClear.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonDutyClear.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonDutyClear.Location = new System.Drawing.Point(20, 20);
+            this.buttonDutyClear.Margin = new System.Windows.Forms.Padding(20);
+            this.buttonDutyClear.Name = "buttonDutyClear";
+            this.buttonDutyClear.Size = new System.Drawing.Size(224, 61);
+            this.buttonDutyClear.TabIndex = 0;
+            this.buttonDutyClear.Text = "重置";
+            this.buttonDutyClear.UseVisualStyleBackColor = true;
+            this.buttonDutyClear.Click += new System.EventHandler(this.buttonDutyClear_Click);
             // 
             // groupBox8
             // 
@@ -1057,9 +1257,9 @@
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.tableLayoutPanel15.Controls.Add(this.groupBox9, 2, 0);
-            this.tableLayoutPanel15.Controls.Add(this.groupUnallocated, 0, 0);
             this.tableLayoutPanel15.Controls.Add(this.groupDutyAllocate, 1, 0);
+            this.tableLayoutPanel15.Controls.Add(this.groupUnallocated, 2, 0);
+            this.tableLayoutPanel15.Controls.Add(this.groupBoxAllocated, 0, 0);
             this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel15.Location = new System.Drawing.Point(3, 27);
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
@@ -1067,60 +1267,6 @@
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel15.Size = new System.Drawing.Size(1056, 511);
             this.tableLayoutPanel15.TabIndex = 0;
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.listAllocatedIndexes);
-            this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox9.Location = new System.Drawing.Point(595, 15);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(15);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(20);
-            this.groupBox9.Size = new System.Drawing.Size(446, 481);
-            this.groupBox9.TabIndex = 2;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "已分配的指标";
-            // 
-            // listAllocatedIndexes
-            // 
-            this.listAllocatedIndexes.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.listAllocatedIndexes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listAllocatedIndexes.FormattingEnabled = true;
-            this.listAllocatedIndexes.ItemHeight = 24;
-            this.listAllocatedIndexes.Location = new System.Drawing.Point(20, 44);
-            this.listAllocatedIndexes.Name = "listAllocatedIndexes";
-            this.listAllocatedIndexes.ScrollAlwaysVisible = true;
-            this.listAllocatedIndexes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listAllocatedIndexes.Size = new System.Drawing.Size(406, 417);
-            this.listAllocatedIndexes.TabIndex = 3;
-            this.listAllocatedIndexes.SelectedIndexChanged += new System.EventHandler(this.listAllocatedIndexes_SelectedIndexChanged);
-            // 
-            // groupUnallocated
-            // 
-            this.groupUnallocated.Controls.Add(this.listUnallocatedIndexes);
-            this.groupUnallocated.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupUnallocated.Location = new System.Drawing.Point(15, 15);
-            this.groupUnallocated.Margin = new System.Windows.Forms.Padding(15);
-            this.groupUnallocated.Name = "groupUnallocated";
-            this.groupUnallocated.Padding = new System.Windows.Forms.Padding(20);
-            this.groupUnallocated.Size = new System.Drawing.Size(445, 481);
-            this.groupUnallocated.TabIndex = 0;
-            this.groupUnallocated.TabStop = false;
-            this.groupUnallocated.Text = "未分配的指标";
-            // 
-            // listUnallocatedIndexes
-            // 
-            this.listUnallocatedIndexes.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.listUnallocatedIndexes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listUnallocatedIndexes.FormattingEnabled = true;
-            this.listUnallocatedIndexes.ItemHeight = 24;
-            this.listUnallocatedIndexes.Location = new System.Drawing.Point(20, 44);
-            this.listUnallocatedIndexes.Name = "listUnallocatedIndexes";
-            this.listUnallocatedIndexes.ScrollAlwaysVisible = true;
-            this.listUnallocatedIndexes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listUnallocatedIndexes.Size = new System.Drawing.Size(405, 417);
-            this.listUnallocatedIndexes.TabIndex = 3;
-            this.listUnallocatedIndexes.SelectedIndexChanged += new System.EventHandler(this.listUnallocatedIndexes_SelectedIndexChanged);
             // 
             // groupDutyAllocate
             // 
@@ -1148,7 +1294,7 @@
             this.buttonUnallocateDutyAll.Name = "buttonUnallocateDutyAll";
             this.buttonUnallocateDutyAll.Size = new System.Drawing.Size(75, 53);
             this.buttonUnallocateDutyAll.TabIndex = 4;
-            this.buttonUnallocateDutyAll.Text = "←All";
+            this.buttonUnallocateDutyAll.Text = "→All";
             this.buttonUnallocateDutyAll.UseVisualStyleBackColor = false;
             this.buttonUnallocateDutyAll.Click += new System.EventHandler(this.buttonUnallocateDutyAll_Click);
             // 
@@ -1161,7 +1307,7 @@
             this.buttonAllocatedDutyAll.Name = "buttonAllocatedDutyAll";
             this.buttonAllocatedDutyAll.Size = new System.Drawing.Size(75, 53);
             this.buttonAllocatedDutyAll.TabIndex = 2;
-            this.buttonAllocatedDutyAll.Text = "All→";
+            this.buttonAllocatedDutyAll.Text = "←All";
             this.buttonAllocatedDutyAll.UseVisualStyleBackColor = false;
             this.buttonAllocatedDutyAll.Click += new System.EventHandler(this.buttonAllocatedDutyAll_Click);
             // 
@@ -1174,7 +1320,7 @@
             this.buttonUnallocateDuty.Name = "buttonUnallocateDuty";
             this.buttonUnallocateDuty.Size = new System.Drawing.Size(75, 53);
             this.buttonUnallocateDuty.TabIndex = 1;
-            this.buttonUnallocateDuty.Text = "←";
+            this.buttonUnallocateDuty.Text = "→";
             this.buttonUnallocateDuty.UseVisualStyleBackColor = false;
             this.buttonUnallocateDuty.Click += new System.EventHandler(this.buttonUnallocateDuty_Click);
             // 
@@ -1187,9 +1333,65 @@
             this.buttonAllocateDuty.Name = "buttonAllocateDuty";
             this.buttonAllocateDuty.Size = new System.Drawing.Size(75, 53);
             this.buttonAllocateDuty.TabIndex = 0;
-            this.buttonAllocateDuty.Text = "→";
+            this.buttonAllocateDuty.Text = "←";
             this.buttonAllocateDuty.UseVisualStyleBackColor = false;
             this.buttonAllocateDuty.Click += new System.EventHandler(this.buttonAllocateDuty_Click);
+            // 
+            // groupUnallocated
+            // 
+            this.groupUnallocated.Controls.Add(this.listUnallocatedIndexes);
+            this.groupUnallocated.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupUnallocated.Location = new System.Drawing.Point(595, 15);
+            this.groupUnallocated.Margin = new System.Windows.Forms.Padding(15);
+            this.groupUnallocated.Name = "groupUnallocated";
+            this.groupUnallocated.Padding = new System.Windows.Forms.Padding(20);
+            this.groupUnallocated.Size = new System.Drawing.Size(446, 481);
+            this.groupUnallocated.TabIndex = 0;
+            this.groupUnallocated.TabStop = false;
+            this.groupUnallocated.Text = "未分配的指标";
+            // 
+            // listUnallocatedIndexes
+            // 
+            this.listUnallocatedIndexes.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.listUnallocatedIndexes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listUnallocatedIndexes.FormattingEnabled = true;
+            this.listUnallocatedIndexes.HorizontalScrollbar = true;
+            this.listUnallocatedIndexes.ItemHeight = 24;
+            this.listUnallocatedIndexes.Location = new System.Drawing.Point(20, 44);
+            this.listUnallocatedIndexes.Name = "listUnallocatedIndexes";
+            this.listUnallocatedIndexes.ScrollAlwaysVisible = true;
+            this.listUnallocatedIndexes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listUnallocatedIndexes.Size = new System.Drawing.Size(406, 417);
+            this.listUnallocatedIndexes.TabIndex = 3;
+            this.listUnallocatedIndexes.SelectedIndexChanged += new System.EventHandler(this.listUnallocatedIndexes_SelectedIndexChanged);
+            // 
+            // groupBoxAllocated
+            // 
+            this.groupBoxAllocated.Controls.Add(this.listAllocatedIndexes);
+            this.groupBoxAllocated.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxAllocated.Location = new System.Drawing.Point(15, 15);
+            this.groupBoxAllocated.Margin = new System.Windows.Forms.Padding(15);
+            this.groupBoxAllocated.Name = "groupBoxAllocated";
+            this.groupBoxAllocated.Padding = new System.Windows.Forms.Padding(20);
+            this.groupBoxAllocated.Size = new System.Drawing.Size(445, 481);
+            this.groupBoxAllocated.TabIndex = 2;
+            this.groupBoxAllocated.TabStop = false;
+            this.groupBoxAllocated.Text = "已分配的指标";
+            // 
+            // listAllocatedIndexes
+            // 
+            this.listAllocatedIndexes.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.listAllocatedIndexes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listAllocatedIndexes.FormattingEnabled = true;
+            this.listAllocatedIndexes.HorizontalScrollbar = true;
+            this.listAllocatedIndexes.ItemHeight = 24;
+            this.listAllocatedIndexes.Location = new System.Drawing.Point(20, 44);
+            this.listAllocatedIndexes.Name = "listAllocatedIndexes";
+            this.listAllocatedIndexes.ScrollAlwaysVisible = true;
+            this.listAllocatedIndexes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listAllocatedIndexes.Size = new System.Drawing.Size(405, 417);
+            this.listAllocatedIndexes.TabIndex = 3;
+            this.listAllocatedIndexes.SelectedIndexChanged += new System.EventHandler(this.listAllocatedIndexes_SelectedIndexChanged);
             // 
             // pageCompletion
             // 
@@ -1201,6 +1403,16 @@
             this.pageCompletion.TabIndex = 4;
             this.pageCompletion.Text = "完成度视图";
             this.pageCompletion.UseVisualStyleBackColor = true;
+            // 
+            // pageExport
+            // 
+            this.pageExport.Location = new System.Drawing.Point(4, 29);
+            this.pageExport.Name = "pageExport";
+            this.pageExport.Padding = new System.Windows.Forms.Padding(3);
+            this.pageExport.Size = new System.Drawing.Size(1540, 698);
+            this.pageExport.TabIndex = 5;
+            this.pageExport.Text = "导出向导";
+            this.pageExport.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
             // 
@@ -1288,6 +1500,7 @@
             // 
             // groupBoxMetaInfo
             // 
+            this.groupBoxMetaInfo.Controls.Add(this.buttonChangeYear);
             this.groupBoxMetaInfo.Controls.Add(this.labelCurrentYear);
             this.groupBoxMetaInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxMetaInfo.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -1300,11 +1513,21 @@
             this.groupBoxMetaInfo.TabStop = false;
             this.groupBoxMetaInfo.Text = "基本信息";
             // 
+            // buttonChangeYear
+            // 
+            this.buttonChangeYear.Location = new System.Drawing.Point(191, 41);
+            this.buttonChangeYear.Name = "buttonChangeYear";
+            this.buttonChangeYear.Size = new System.Drawing.Size(107, 37);
+            this.buttonChangeYear.TabIndex = 1;
+            this.buttonChangeYear.Text = "修改年份";
+            this.buttonChangeYear.UseVisualStyleBackColor = true;
+            this.buttonChangeYear.Click += new System.EventHandler(this.buttonChangeYear_Click);
+            // 
             // labelCurrentYear
             // 
             this.labelCurrentYear.AutoSize = true;
             this.labelCurrentYear.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labelCurrentYear.Location = new System.Drawing.Point(69, 41);
+            this.labelCurrentYear.Location = new System.Drawing.Point(6, 41);
             this.labelCurrentYear.Name = "labelCurrentYear";
             this.labelCurrentYear.Size = new System.Drawing.Size(172, 31);
             this.labelCurrentYear.TabIndex = 0;
@@ -1565,149 +1788,9 @@
             // 
             this.saveDialog.Filter = "Excel 文件|*.xlsx|csv文件|*.csv";
             // 
-            // indexId
+            // openDialog
             // 
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Gainsboro;
-            this.indexId.DefaultCellStyle = dataGridViewCellStyle10;
-            this.indexId.HeaderText = "指标编号";
-            this.indexId.MinimumWidth = 6;
-            this.indexId.Name = "indexId";
-            this.indexId.ReadOnly = true;
-            this.indexId.Visible = false;
-            this.indexId.Width = 125;
-            // 
-            // index_identifier
-            // 
-            this.index_identifier.HeaderText = "一级类别";
-            this.index_identifier.MinimumWidth = 8;
-            this.index_identifier.Name = "index_identifier";
-            this.index_identifier.ReadOnly = true;
-            this.index_identifier.Width = 125;
-            // 
-            // secondaryIdentifier
-            // 
-            this.secondaryIdentifier.HeaderText = "二级类别";
-            this.secondaryIdentifier.MinimumWidth = 6;
-            this.secondaryIdentifier.Name = "secondaryIdentifier";
-            this.secondaryIdentifier.Width = 125;
-            // 
-            // indexName
-            // 
-            this.indexName.HeaderText = "指标名称";
-            this.indexName.MinimumWidth = 6;
-            this.indexName.Name = "indexName";
-            this.indexName.Width = 125;
-            // 
-            // indexType
-            // 
-            this.indexType.HeaderText = "指标类型";
-            this.indexType.Items.AddRange(new object[] {
-            "基础类",
-            "加分类"});
-            this.indexType.MinimumWidth = 6;
-            this.indexType.Name = "indexType";
-            this.indexType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.indexType.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.indexType.Width = 125;
-            // 
-            // weight1
-            // 
-            this.weight1.HeaderText = "权重1";
-            this.weight1.MinimumWidth = 8;
-            this.weight1.Name = "weight1";
-            this.weight1.Width = 125;
-            // 
-            // weight2
-            // 
-            this.weight2.HeaderText = "权重2";
-            this.weight2.MinimumWidth = 8;
-            this.weight2.Name = "weight2";
-            this.weight2.Width = 125;
-            // 
-            // enable_sensitivity
-            // 
-            this.enable_sensitivity.HeaderText = "启用敏感度";
-            this.enable_sensitivity.MinimumWidth = 8;
-            this.enable_sensitivity.Name = "enable_sensitivity";
-            this.enable_sensitivity.Width = 125;
-            // 
-            // sensitivity
-            // 
-            this.sensitivity.HeaderText = "敏感度";
-            this.sensitivity.MinimumWidth = 8;
-            this.sensitivity.Name = "sensitivity";
-            this.sensitivity.Width = 125;
-            // 
-            // DeptId
-            // 
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Gainsboro;
-            this.DeptId.DefaultCellStyle = dataGridViewCellStyle11;
-            this.DeptId.HeaderText = "单位编号";
-            this.DeptId.MinimumWidth = 6;
-            this.DeptId.Name = "DeptId";
-            this.DeptId.ReadOnly = true;
-            this.DeptId.Visible = false;
-            this.DeptId.Width = 120;
-            // 
-            // DeptCode
-            // 
-            this.DeptCode.HeaderText = "单位代码";
-            this.DeptCode.MinimumWidth = 6;
-            this.DeptCode.Name = "DeptCode";
-            this.DeptCode.Width = 150;
-            // 
-            // DeptName
-            // 
-            this.DeptName.HeaderText = "单位名称";
-            this.DeptName.MinimumWidth = 6;
-            this.DeptName.Name = "DeptName";
-            this.DeptName.Width = 150;
-            // 
-            // DeptPopulation
-            // 
-            this.DeptPopulation.HeaderText = "单位人数";
-            this.DeptPopulation.MinimumWidth = 6;
-            this.DeptPopulation.Name = "DeptPopulation";
-            this.DeptPopulation.Width = 150;
-            // 
-            // DeptPunishment
-            // 
-            this.DeptPunishment.HeaderText = "惩罚系数";
-            this.DeptPunishment.MinimumWidth = 6;
-            this.DeptPunishment.Name = "DeptPunishment";
-            this.DeptPunishment.Width = 150;
-            // 
-            // DeptGroup
-            // 
-            this.DeptGroup.HeaderText = "单位组别";
-            this.DeptGroup.MinimumWidth = 6;
-            this.DeptGroup.Name = "DeptGroup";
-            this.DeptGroup.Width = 150;
-            // 
-            // manager_id
-            // 
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.Gainsboro;
-            this.manager_id.DefaultCellStyle = dataGridViewCellStyle12;
-            this.manager_id.HeaderText = "职能部门编号";
-            this.manager_id.MinimumWidth = 6;
-            this.manager_id.Name = "manager_id";
-            this.manager_id.ReadOnly = true;
-            this.manager_id.Visible = false;
-            this.manager_id.Width = 160;
-            // 
-            // manager_code
-            // 
-            this.manager_code.HeaderText = "职能部门代码";
-            this.manager_code.MinimumWidth = 6;
-            this.manager_code.Name = "manager_code";
-            this.manager_code.Width = 200;
-            // 
-            // manager_name
-            // 
-            this.manager_name.HeaderText = "职能部门名称";
-            this.manager_name.MinimumWidth = 6;
-            this.manager_name.Name = "manager_name";
-            this.manager_name.Width = 200;
+            this.openDialog.Filter = "Excel 文件|*.xlsx";
             // 
             // Form1
             // 
@@ -1738,8 +1821,9 @@
             this.groupBox10.ResumeLayout(false);
             this.IndexIdentifierSplit.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.indexIdentifierDataGrid)).EndInit();
-            this.groupBox11.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
+            this.tableLayoutPanel17.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.indexDataGrid)).EndInit();
             this.pageManager.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
@@ -1753,11 +1837,12 @@
             this.groupBox3.ResumeLayout(false);
             this.dutySplit.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
+            this.tableDutyUtil.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
             this.tableLayoutPanel15.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupUnallocated.ResumeLayout(false);
             this.groupDutyAllocate.ResumeLayout(false);
+            this.groupUnallocated.ResumeLayout(false);
+            this.groupBoxAllocated.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -1843,8 +1928,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.DataGridView deptDataGrid;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonDeptImport;
+        private System.Windows.Forms.Button buttonDeptTemplateDump;
         private System.Windows.Forms.ToolStripMenuItem 职责分配视图ToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -1865,15 +1950,15 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.Button buttonIndexDump;
         private System.Windows.Forms.Button buttonIndexRefresh;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button buttonIndexImport;
+        private System.Windows.Forms.Button buttonIndexTemplateDump;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.DataGridView managerDataGrid;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.Button buttonManagerDump;
         private System.Windows.Forms.Button buttonManagerRefresh;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button buttonManagerImport;
+        private System.Windows.Forms.Button buttonManagerTemplateDump;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private System.Windows.Forms.TableLayoutPanel managerInfoSplit;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -1884,7 +1969,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
         private System.Windows.Forms.GroupBox groupUnallocated;
         private System.Windows.Forms.ListBox listUnallocatedIndexes;
-        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.GroupBox groupBoxAllocated;
         private System.Windows.Forms.ListBox listAllocatedIndexes;
         private System.Windows.Forms.TableLayoutPanel tableDutyUtil;
         private System.Windows.Forms.GroupBox groupDutyAllocate;
@@ -1898,12 +1983,27 @@
         private System.Windows.Forms.Button buttonCancelSelectManager;
         private System.Windows.Forms.TextBox textSelectedManager;
         private System.Windows.Forms.TableLayoutPanel IndexIdentifierSplit;
-        private System.Windows.Forms.GroupBox groupBox11;
-        private System.Windows.Forms.ComboBox comboIndexIdentifier;
         private System.Windows.Forms.DataGridView indexIdentifierDataGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn identifier_name;
         private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn manager_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn manager_code;
+        private System.Windows.Forms.DataGridViewTextBoxColumn manager_name;
+        private System.Windows.Forms.TabPage pageExport;
+        private System.Windows.Forms.Button buttonDutyClear;
+        private System.Windows.Forms.Button buttonDutyExportEmptyTable;
+        private System.Windows.Forms.OpenFileDialog openDialog;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptPopulation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptPunishment;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeptGroup;
+        private System.Windows.Forms.Button buttonChangeYear;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.ComboBox comboIndexIdentifier;
         private System.Windows.Forms.DataGridView indexDataGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn indexId;
         private System.Windows.Forms.DataGridViewTextBoxColumn index_identifier;
@@ -1914,15 +2014,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn weight2;
         private System.Windows.Forms.DataGridViewCheckBoxColumn enable_sensitivity;
         private System.Windows.Forms.DataGridViewTextBoxColumn sensitivity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptPopulation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptPunishment;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeptGroup;
-        private System.Windows.Forms.DataGridViewTextBoxColumn manager_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn manager_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn manager_name;
     }
 }
 
