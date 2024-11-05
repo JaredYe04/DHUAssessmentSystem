@@ -294,6 +294,18 @@
     <Compile Include="Dialogs\ChangeYear.Designer.cs">
       <DependentUpon>ChangeYear.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\EditIndexIdentifier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\EditIndexIdentifier.Designer.cs">
+      <DependentUpon>EditIndexIdentifier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FormExportWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\FormExportWizard.Designer.cs">
+      <DependentUpon>FormExportWizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ImportMode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -332,6 +344,12 @@
     <Compile Include="Utils\Logger.cs" />
     <EmbeddedResource Include="Dialogs\ChangeYear.resx">
       <DependentUpon>ChangeYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\EditIndexIdentifier.resx">
+      <DependentUpon>EditIndexIdentifier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FormExportWizard.resx">
+      <DependentUpon>FormExportWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ImportMode.resx">
       <DependentUpon>ImportMode.cs</DependentUpon>

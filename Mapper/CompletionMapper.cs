@@ -19,6 +19,18 @@ namespace 考核系统.Mapper
             }
             return instance;
         }
+
+        public List<Completion> GetCompletionByIndexId(int id)
+        {
+            var sql = $"select * from completion where index_id={id}";
+            return QueryAll(sql);
+        }
+
+        public List<Completion> GetIndexCompletionByYear(int currentYear)
+        {
+            var sql = $"select * from completion where year={currentYear}";
+            return QueryAll(sql);
+        }
     }
 
 }

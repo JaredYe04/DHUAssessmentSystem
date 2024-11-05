@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace 考核系统.Entity
 {
-    public class Completion
+    internal class Completion: DeepCopy<Completion>
     {
         public int id { get; set; }
         public int dept_id { get; set; }
@@ -24,5 +24,6 @@ namespace 考核系统.Entity
             this.target = target;
             this.completed = completed;
         }
+        public Completion() { }
     }
 }

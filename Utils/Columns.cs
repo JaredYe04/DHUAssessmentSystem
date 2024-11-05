@@ -40,6 +40,15 @@ namespace 考核系统.Utils
         identifier_name = 1
     }//指标分类信息表的列
 
+    public enum CompletionColumns
+    {
+        id=0,
+        dept_code = 1,
+        dept_name = 2,
+        target = 3,
+        completed = 4,
+        completion_rate = 5
+    }
     public static class ColumnMap
     {
 
