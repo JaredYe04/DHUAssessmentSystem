@@ -805,7 +805,34 @@ namespace 考核系统
                     managerNode.Nodes.Add(indexDutyNode);
                 }
             }
+            //重构节点，所有有三级类别的节点都放在[总计]下
+            for(int i=0;i< treeDuty.Nodes.Count; i++)
+            {
+                var managerNode = treeDuty.Nodes[i];
+                for (int j = 0; j < managerNode.Nodes.Count; j++)
+                {
+                    var indexNode = managerNode.Nodes[j];
+                    var index = (Index)indexNode.Tag;
+                    if (index.tertiary_identifier != "-1") continue;
+                    for(int k = 0; k < managerNode.Nodes.Count; k++)
+                    {
+                        var subIndexNode = managerNode.Nodes[k];
+                        var subIndex = (Index)subIndexNode.Tag;
+                        if (subIndex.identifier_id == index.identifier_id&&
+                            subIndex.secondary_identifier==index.secondary_identifier&&
+                            subIndex.tertiary_identifier!=index.tertiary_identifier)
+                        {
+                            var newNode= new TreeNode(subIndexNode.Text);
+                            newNode.Tag = subIndexNode.Tag;
+                            indexNode.Nodes.Add(newNode);
+                            managerNode.Nodes.RemoveAt(k);
+                            k--;
 
+                        }
+                    }
+
+                }
+            }
             //2.处理数据绑定
             unbindCompletionIndex();
 

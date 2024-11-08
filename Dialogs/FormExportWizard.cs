@@ -73,9 +73,10 @@ namespace 考核系统.Dialogs
                 progressBar.Value = (i + 1) * 100 / checkListManager.Items.Count;
                 if (checkListManager.GetItemChecked(i))
                 {
-                    FileIO.ExportEmptyCompletionTable(managers[i].Value.id, path);
+                    var manager=managers.Where(m => m.Value.manager_name == checkListManager.Items[i].ToString()).FirstOrDefault();
+                    FileIO.ExportEmptyCompletionTable(manager.Value.id, path);
                     
-                    Logger.Log(path + "\\" + managers[i].Value.manager_name+ "考核表.xlsx 导出成功");
+                    Logger.Log(path + "\\" + manager.Value.manager_name + "考核表.xlsx 导出成功");
                 }
             }
             Cursor = Cursors.Default;
