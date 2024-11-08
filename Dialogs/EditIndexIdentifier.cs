@@ -25,14 +25,14 @@ namespace 考核系统.Dialogs
         public void indexIdentifierDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             object cellValue = indexIdentifierDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-
+            if (cellValue == null) cellValue = "";
             string columnName = Enum.GetName(typeof(IndexIdentifierInfoColumns), e.ColumnIndex);
             if (e.RowIndex >= CommonData.IdentifierInfo.Count)
             {
                 //新增行时，写入数据库
                 var indexIdentifierMapper = IndexIdentifierMapper.GetInstance();
                 var newIndexIdentifierInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new IndexIdentifier()));
-                newIndexIdentifierInfo[columnName] = cellValue;//更新字段值
+                newIndexIdentifierInfo[columnName] = cellValue.ToString();//更新字段值
                 var newIndexIdentifierInfoObj = JsonConvert.DeserializeObject<IndexIdentifier>(JsonConvert.SerializeObject(newIndexIdentifierInfo));
                 indexIdentifierMapper.Add(newIndexIdentifierInfoObj, false);
                 newIndexIdentifierInfoObj = indexIdentifierMapper.GetObject(newIndexIdentifierInfo);//获取刚插入的部门信息，带有id

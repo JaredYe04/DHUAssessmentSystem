@@ -338,6 +338,7 @@ namespace 考核系统
         private void deptDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             object cellValue = deptDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+            if (cellValue == null) cellValue = "0";
             //获取当前格子字段名，根据DeptInfoColumns的枚举值来获取
             string columnName = Enum.GetName(typeof(DeptInfoColumns), e.ColumnIndex);
             if (e.RowIndex>=CommonData.DeptInfo.Count)
@@ -351,11 +352,11 @@ namespace 考核系统
 
                 if (newDeptInfo.Keys.Contains(columnName))
                 {
-                    newDeptInfo[columnName] = cellValue;
+                    newDeptInfo[columnName] = cellValue.ToString();
                 }
                 if(newDeptAnnualInfo.Keys.Contains(columnName))
                 {
-                    newDeptAnnualInfo[columnName] = cellValue;
+                    newDeptAnnualInfo[columnName] = cellValue.ToString();
                 }
                 //由于不知道部门id，所以只能先插入部门信息，然后从数据库中获取id，再插入年度信息
                 var newDeptInfoObj = JsonConvert.DeserializeObject<Department>(JsonConvert.SerializeObject(newDeptInfo));
@@ -391,7 +392,7 @@ namespace 考核系统
 
             
             
-            if (deptInfo.Keys.Contains(columnName)&& deptInfo[columnName].ToString() != cellValue.ToString())
+            if (deptInfo.Keys.Contains(columnName)&& (deptInfo[columnName]==null||deptInfo[columnName].ToString() != cellValue.ToString()))
             {
                 //写数据库
                 var deptMapper = DepartmentMapper.GetInstance();
@@ -407,7 +408,7 @@ namespace 考核系统
                 
             }
 
-            if(deptAnnualInfo.Keys.Contains(columnName) && deptAnnualInfo[columnName].ToString() != cellValue.ToString())
+            if(deptAnnualInfo.Keys.Contains(columnName) && (deptAnnualInfo[columnName]==null||deptAnnualInfo[columnName].ToString() != cellValue.ToString()))
             {
                 //写数据库
                 var deptAnnualInfoMapper = DeptAnnualInfoMapper.GetInstance();
@@ -550,6 +551,9 @@ namespace 考核系统
         {
             mainContainer.SelectedIndex = 4;
             labelView.Text = "完成情况视图";
+            fetchIndexInfo();
+            fetchManagerInfo();
+            fetchDepartmentInfo();
             fetchCompletionInfo();
         }
 
@@ -572,8 +576,8 @@ namespace 考核系统
         {
             object cellValue = indexDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 
-            if (cellValue == null) return;//应对bug:当新的行选中checkbox，然后取消选中，cellValue为null
-
+            if (cellValue == null && e.ColumnIndex == (int)IndexInfoColumns.enable_sensitivity) return;//应对bug:当新的行选中checkbox，然后取消选中，cellValue为null
+            if (cellValue == null) cellValue = "0";
 
             string columnName = Enum.GetName(typeof(IndexInfoColumns), e.ColumnIndex);
             if (e.RowIndex >= CommonData.currentCategoryIndexes.Count)
@@ -593,7 +597,7 @@ namespace 考核系统
                     nextSecondaryIdentifier = CommonData.IndexInfo.Values.Where(index => index.identifier_id == CommonData.selectedIdentifier.id).Max(index => index.secondary_identifier) + 1;
                 }//获取当前一级类别下的最大二级类别，新的二级类别为最大二级类别+1
                 newIndexInfo["secondary_identifier"] = nextSecondaryIdentifier;
-
+                newIndexInfo["tertiary_identifier"] = 0;
 
 
                 var newIndexInfoObj = JsonConvert.DeserializeObject<Index>(JsonConvert.SerializeObject(newIndexInfo));
@@ -601,19 +605,20 @@ namespace 考核系统
                 newIndexInfo.Remove("id");//移除id字段
 
                 newIndexInfoObj = indexMapper.GetObject(newIndexInfo);//获取刚插入的部门信息，带有id
-                
+
                 CommonData.IndexInfo[newIndexInfoObj.id] = Index.Copy(newIndexInfoObj);
 
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.id].Value = newIndexInfoObj.id;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.identifier_id].Value = newIndexInfoObj.identifier_id;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.secondary_identifier].Value = newIndexInfoObj.secondary_identifier;
+                indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.tertiary_identifier].Value = newIndexInfoObj.tertiary_identifier;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.index_name].Value = newIndexInfoObj.index_name;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.index_type].Value = newIndexInfoObj.index_type;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.weight1].Value = newIndexInfoObj.weight1;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.weight2].Value = newIndexInfoObj.weight2;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.enable_sensitivity].Value = newIndexInfoObj.enable_sensitivity;
                 indexDataGrid.Rows[e.RowIndex].Cells[(int)IndexInfoColumns.sensitivity].Value = newIndexInfoObj.sensitivity;
-                
+
                 //将新增的指标信息写入数据表
                 Logger.Log($"新增指标{newIndexInfoObj.id}");
                 return;
@@ -623,38 +628,56 @@ namespace 考核系统
             var indexInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(CommonData.IndexInfo[index_id]));
 
 
-            if (indexInfo[columnName].ToString() != cellValue.ToString())
+            if (indexInfo[columnName] == null || indexInfo[columnName].ToString() != cellValue.ToString())
             {
                 //写数据库
                 var indexMapper = IndexMapper.GetInstance();
                 Logger.Log($"指标{index_id}的{columnName}由{indexInfo[columnName]}变更为{cellValue}");
 
-                if(cellValue is bool)//如果是bool类型，转为int,因为SQLite不支持bool类型
+                if (cellValue is bool)//如果是bool类型，转为int,因为SQLite不支持bool类型
                 {
                     cellValue = (bool)cellValue ? 1 : 0;
                 }
-                if (columnName == "secondary_identifier")
-                {
-                    //如果是二级类别，判断一下是否有重复
-                    if (CommonData.IndexInfo.Values.Any(index =>
-                    index.secondary_identifier == Int32.Parse(cellValue.ToString())
-                    && index.identifier_id == CommonData.selectedIdentifier.id
-                    ))
-                    {
-                        MessageBox.Show("二级类别不能重复", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        indexDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = indexInfo[columnName];
-                        //如果有重复，不做任何操作
-                        return;
-                    }
-                }
+                //if (columnName == "secondary_identifier")
+                //{
+                //    //如果是二级类别，判断一下是否有重复
+                //    if (CommonData.IndexInfo.Values.Any(index =>
+                //    index.secondary_identifier == Int32.Parse(cellValue.ToString())
+                //    && index.identifier_id == CommonData.selectedIdentifier.id
+                //    ))
+                //    {
+                //        MessageBox.Show("二级类别不能重复", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                //        indexDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = indexInfo[columnName];
+                //        //如果有重复，不做任何操作
+                //        return;
+                //    }
+                //}//因为有了三级类别，所以不再需要判断二级类别是否重复
                 indexInfo[columnName] = cellValue;
 
                 var indexInfoObj = JsonConvert.DeserializeObject<Index>(JsonConvert.SerializeObject(indexInfo));
-                
+
                 //更新内存中的数据
                 CommonData.IndexInfo[index_id] = Index.Copy(indexInfoObj);
                 indexMapper.Update(indexInfoObj);
 
+            }
+            //特判三级类别
+            if (e.ColumnIndex == (int)IndexInfoColumns.tertiary_identifier)
+            {
+                //该行为总指标，除了基本信息外，其他信息高亮显示
+                for (int i = 0; i < indexDataGrid.ColumnCount; i++)
+                {
+                    indexDataGrid.Rows[e.RowIndex].Cells[i].Style.BackColor = cellValue.ToString() == "-1" ? Color.LightYellow : Color.White;
+                    //if (i == (int)IndexInfoColumns.secondary_identifier || i == (int)IndexInfoColumns.tertiary_identifier || i == (int)IndexInfoColumns.index_name)
+                    //{
+                    //}
+                    //else
+                    //{
+                    //    //indexDataGrid.Rows[e.RowIndex].Cells[i].ReadOnly = (cellValue.ToString() == "-1");
+                        
+                    //}
+                }
+                
             }
         }
         private void buttonIndexDump_Click(object sender, EventArgs e)
@@ -675,6 +698,7 @@ namespace 考核系统
                 fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.id].Value = index.Value.id;
                 fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.identifier_id].Value = index.Value.identifier_id;
                 fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.secondary_identifier].Value = index.Value.secondary_identifier;
+                fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.tertiary_identifier].Value = index.Value.tertiary_identifier;
                 fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.index_name].Value = index.Value.index_name;
                 fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.index_type].Value = index.Value.index_type;
                 fullIndexDataGrid.Rows[fullIndexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.weight1].Value = index.Value.weight1;
@@ -705,7 +729,7 @@ namespace 考核系统
             List<int> removedIndexIds = new List<int>();
 
             //把删除后的数据表与内存中的数据进行比对，找出被删除的部门
-            foreach (var indexId in CommonData.IndexInfo.Keys)
+            foreach (var indexId in CommonData.currentCategoryIndexes.Keys)
             {
                 bool isRemoved = true;
                 for (int i = 0; i < indexDataGrid.Rows.Count; i++)
@@ -767,9 +791,14 @@ namespace 考核系统
                 var indexDutyList = indexDutyMapper.GetIndexDutyByManagerId(manager.id);
                 foreach (var indexDuty in indexDutyList)
                 {
+                    if (!CommonData.IndexInfo.ContainsKey(indexDuty.index_id)) continue;
                     var nodeText =
                         CommonData.IndexInfo[indexDuty.index_id].identifier_id.ToString() + "." +
-                        CommonData.IndexInfo[indexDuty.index_id].secondary_identifier.ToString() + " " +
+                        CommonData.IndexInfo[indexDuty.index_id].secondary_identifier.ToString() +
+                        (CommonData.IndexInfo[indexDuty.index_id].tertiary_identifier != "0"
+                        && CommonData.IndexInfo[indexDuty.index_id].tertiary_identifier != "-1"
+                        ? ("." + CommonData.IndexInfo[indexDuty.index_id].tertiary_identifier) : "")
+                        + " " +
                         CommonData.IndexInfo[indexDuty.index_id].index_name;
                     var indexDutyNode = new TreeNode(nodeText);
                     indexDutyNode.Tag = CommonData.IndexInfo[indexDuty.index_id];
@@ -820,7 +849,7 @@ namespace 考核系统
             int manager_id = (int)managerDataGrid.Rows[e.RowIndex].Cells[0].Value;
             var managerInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(CommonData.ManagerInfo[manager_id]));
 
-            if (managerInfo[columnName].ToString() != cellValue.ToString())
+            if (managerInfo[columnName]==null||managerInfo[columnName].ToString() != cellValue.ToString())
             {
                 //写数据库
                 var managerMapper = ManagerMapper.GetInstance();
@@ -1084,12 +1113,21 @@ namespace 考核系统
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.id].Value = index.id;
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.identifier_id].Value = index.identifier_id;
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.secondary_identifier].Value = index.secondary_identifier;
+                indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.tertiary_identifier].Value = index.tertiary_identifier;
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.index_name].Value = index.index_name;
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.index_type].Value = index.index_type;
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.weight1].Value = index.weight1;
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.weight2].Value = index.weight2;
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.enable_sensitivity].Value = index.enable_sensitivity;
                 indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells[(int)IndexInfoColumns.sensitivity].Value = index.sensitivity;
+
+                if (index.tertiary_identifier == "-1")
+                {
+                    foreach(DataGridViewCell cell in indexDataGrid.Rows[indexDataGrid.Rows.Count - 2].Cells)
+                    {
+                        cell.Style.BackColor = Color.LightYellow;
+                    }
+                }
             }
         }
 
@@ -1374,10 +1412,12 @@ namespace 考核系统
                 //indexObj.id = row.Cells[(int)IndexInfoColumns.id].Value == null ? -1 : Int32.Parse(row.Cells[(int)IndexInfoColumns.id].Value.ToString());
                 indexObj.identifier_id = Int32.Parse(row.Cells[(int)IndexInfoColumns.identifier_id].Value.ToString());
                 indexObj.secondary_identifier = Int32.Parse(row.Cells[(int)IndexInfoColumns.secondary_identifier].Value.ToString());
+                indexObj.tertiary_identifier = row.Cells[(int)IndexInfoColumns.tertiary_identifier].Value == null ? "": row.Cells[(int)IndexInfoColumns.tertiary_identifier].Value.ToString();
                 indexObj.index_name = row.Cells[(int)IndexInfoColumns.index_name].Value.ToString();
                 indexObj.index_type = row.Cells[(int)IndexInfoColumns.index_type].Value.ToString();
                 indexObj.weight1 = row.Cells[(int)IndexInfoColumns.weight1].Value == null ? 0 : double.Parse(row.Cells[(int)IndexInfoColumns.weight1].Value.ToString());
                 indexObj.weight2 = row.Cells[(int)IndexInfoColumns.weight2].Value == null ? 0 : double.Parse(row.Cells[(int)IndexInfoColumns.weight2].Value.ToString());
+                if (row.Cells[(int)IndexInfoColumns.enable_sensitivity].Value == null) row.Cells[(int)IndexInfoColumns.enable_sensitivity].Value = 0;
                 indexObj.enable_sensitivity = Int32.Parse(row.Cells[(int)IndexInfoColumns.enable_sensitivity].Value.ToString());
                 indexObj.sensitivity = row.Cells[(int)IndexInfoColumns.sensitivity].Value == null ? 0 : double.Parse(row.Cells[(int)IndexInfoColumns.sensitivity].Value.ToString());
                 
@@ -1474,6 +1514,9 @@ namespace 考核系统
                 }
 
             }
+            var lastRow = completionDataGrid.Rows[completionDataGrid.Rows.Count - 1];
+            lastRow.Cells[(int)CompletionColumns.target].ReadOnly = true;
+            lastRow.Cells[(int)CompletionColumns.completed].ReadOnly = true;
         }
         private void unbindCompletionIndex()
         {
@@ -1488,7 +1531,8 @@ namespace 考核系统
             //由于某些指标在数据库中没有完成度信息，所以要先创建空的完成度信息
             var completionMapper = CompletionMapper.GetInstance();
             var completionList = completionMapper.GetCompletionByIndexId(index.id);
-            if(completionList.Count == 0)
+            var currentYear = CommonData.CurrentYear;
+            if (completionList.Count < CommonData.DeptInfo.Count)
             {
                 var depts= CommonData.DeptInfo.Values.Select(x => x.Item1);
                 foreach (var dept in depts)
@@ -1497,8 +1541,16 @@ namespace 考核系统
                     completion.index_id = index.id;
                     completion.dept_id = dept.id;
                     completion.year = CommonData.CurrentYear;
-                    completionMapper.Add(completion);
-                    CommonData.currentIndexCompletion[dept.id] = completion;
+                    //如果没有完成度信息，就创建一个，有的话就不创建
+                    if(!completionList.Any(x => x.dept_id == dept.id && x.index_id==index.id && x.year==currentYear))
+                    {
+                        completionMapper.Add(completion);
+                    }
+                    if (CommonData.currentIndexCompletion != null)
+                    {
+                        //当目前选中了指标，并正在初始化时，要把新创建的完成度信息加入到内存中，但如果没有选中指标，就不需要加入内存
+                        CommonData.currentIndexCompletion[dept.id] = completion;
+                    }
                     CommonData.CompletionInfo[completion.id] = completion;
                 }
                 Logger.Log($"为指标{index.index_name}创建了{depts.Count()}个部门的完成度信息");
@@ -1524,7 +1576,7 @@ namespace 考核系统
             int completion_id = (int)completionDataGrid.Rows[e.RowIndex].Cells[0].Value;
             var completionInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(CommonData.CompletionInfo[completion_id]));
 
-            if (completionInfo[columnName].ToString() != cellValue.ToString())
+            if (completionInfo[columnName] == null || completionInfo[columnName].ToString() != cellValue.ToString())
             {
                 //写数据库
                 var completionMapper = CompletionMapper.GetInstance();
@@ -1543,9 +1595,10 @@ namespace 考核系统
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonCompletionExport_Click(object sender, EventArgs e)
         {
             fetchIndexInfo();
+            fetchDepartmentInfo();
             foreach (var index in CommonData.IndexInfo.Values)
             {
                 initCompletion(index);
@@ -1553,10 +1606,24 @@ namespace 考核系统
             fetchManagerInfo();
             fetchDutyInfo();
             fetchIndexIdentifierInfo();
-            fetchDepartmentInfo();
             fetchCompletionInfo();
             var formExportWizard=new FormExportWizard();
             formExportWizard.ShowDialog();
+        }
+
+        private void buttonCompletionImport_Click(object sender, EventArgs e)
+        {
+            multiOpenDialog.ShowDialog();
+            if(multiOpenDialog.FileNames.Length == 0)
+            {
+                return;
+            }
+            int idx = 1;
+            foreach (var filename in multiOpenDialog.FileNames)
+            {
+                FileIO.ImportCompletionTable(filename);
+                Logger.Log($"{idx++}/{multiOpenDialog.FileNames.Length}导入{filename}已完成");
+            }
         }
     }
 }

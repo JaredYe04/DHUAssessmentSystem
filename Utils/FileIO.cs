@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using 考核系统.Entity;
+using 考核系统.Mapper;
 namespace 考核系统.Utils
 {
     internal class FileIO
@@ -316,7 +317,12 @@ namespace 考核系统.Utils
                     range.Merge();
                     range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
                     range.Borders.LineStyle = 1;
-                    range.value2 = index.identifier_id.ToString()+"."+index.secondary_identifier + ":" + index.index_name;
+                    string valueString= index.identifier_id.ToString() + "." + index.secondary_identifier.ToString();
+                    valueString += index.tertiary_identifier == "0" ? "" : "." + index.tertiary_identifier;//三级指标
+                    valueString += ":" + index.index_name;
+                    range.value2 = valueString;
+
+
                     range.Font.Bold = true;
                     range.Font.Size = 12;
                     range.WrapText = true;
@@ -328,6 +334,7 @@ namespace 考核系统.Utils
                     foreach (var dept in depts)
                     {
                         var cur_completion= completions.Values.FirstOrDefault(completion => completion.dept_id == dept.Item1.id && completion.index_id == index.id);
+                        if(cur_completion==null) { continue; }
                         if (cur_completion.target != 0)
                         {
                             sheet.Cells[dept_idx2, index_col_idx].Value = cur_completion.target;
@@ -362,6 +369,96 @@ namespace 考核系统.Utils
 
             excel.ActiveWorkbook.SaveAs(fileName);
             excel.Quit();
+
+        }
+        public static void ImportCompletionTable(string fileName)
+        {
+            var excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.Visible = false;
+            var workbook = excel.Workbooks.Open(fileName);
+            var sheet_count = workbook.Sheets.Count;
+            var completions = CommonData.CompletionInfo;
+            var compleitonMapper = CompletionMapper.GetInstance();
+            var currentYear = CommonData.CurrentYear;
+            var depts = CommonData.DeptInfo.Values;
+            for (int i = 1; i <= sheet_count; i++)
+            {
+                var worksheet = workbook.Sheets.Item[i];
+                workbook.Sheets.Item[i].Select();
+                var currentDepts=new List<Department>();
+
+                int row_idx = 4;
+                while(true)
+                {
+                    var dept_code = worksheet.Cells[row_idx, 1].Value;
+                    if (dept_code == null) break;
+                    var department = depts.FirstOrDefault(dept => dept.Item1.dept_code == dept_code.ToString());
+                    if (department != null)
+                    {
+                        currentDepts.Add(department.Item1);
+                    }
+                    row_idx++;
+                }//读取单位信息
+                int index_col_idx = 3;
+
+                while (true)
+                {
+                    var index_name_raw = worksheet.Cells[2, index_col_idx].Value;
+                    if (index_name_raw == null) break;
+                    string code= index_name_raw.ToString().Split(':')[0];
+                    int identifier_id = Convert.ToInt32(code.Split('.')[0]);
+                    int secondary_identifier = Convert.ToInt32(code.Split('.')[1]);
+
+                    string tertiary_identifier = code.Split('.').Length <= 2 ? "0" : code.Split('.')[2];//三级指标
+                    var index = CommonData.IndexInfo.Values.FirstOrDefault
+                        (idx => idx.identifier_id == identifier_id 
+                        && idx.secondary_identifier == secondary_identifier
+                        && idx.tertiary_identifier == tertiary_identifier
+                        );
+                    if (index != null)
+                    {
+                        for (int j = 0; j < currentDepts.Count; j++)
+                        {
+                            var cur_completion = new Completion();
+                            cur_completion.dept_id = currentDepts[j].id;
+                            cur_completion.index_id = index.id;
+                            
+
+                            cur_completion.target = worksheet.Cells[j + 4, index_col_idx].Value == null ? 0 : Convert.ToDouble(worksheet.Cells[j + 4, index_col_idx].Value);
+                            
+                            if(worksheet.Cells[j + 4, index_col_idx].Value.ToString().Contains("以三年为周期进行考核"))
+                            {
+                                continue;//跳过
+                            }
+                            cur_completion.completed = worksheet.Cells[j + 4, index_col_idx + 1].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + 4, index_col_idx + 1].Value);
+                            cur_completion.year = currentYear;
+                            if (
+                                completions.Any(com=> com.Value.dept_id==cur_completion.dept_id&&
+                                            com.Value.index_id == cur_completion.index_id &&
+                                            com.Value.year == cur_completion.year)
+                                )
+                            {
+                                var completion = completions.Values.FirstOrDefault(com => com.dept_id == cur_completion.dept_id &&
+                                            com.index_id == cur_completion.index_id &&
+                                            com.year == cur_completion.year);
+                                cur_completion.id = completion.id;
+                                cur_completion.target = completion.target;
+
+                                compleitonMapper.Update(cur_completion);
+                                Logger.Log($"在{currentYear}年，部门{currentDepts[j].dept_name}的{index.index_name}的完成数为{cur_completion.completed}");
+                            }
+                            else
+                            {
+                                compleitonMapper.Add(cur_completion);//按理来说不会执行到这里
+                            }
+                        }
+                    }
+                    index_col_idx += 2;
+                }
+
+
+
+            }
 
         }
     }

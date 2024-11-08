@@ -20,12 +20,13 @@ namespace 考核系统.Utils
         id = 0,
         identifier_id = 1,
         secondary_identifier = 2,
-        index_name = 3,
-        index_type = 4,
-        weight1 = 5,
-        weight2 = 6,
-        enable_sensitivity = 7,
-        sensitivity = 8
+        tertiary_identifier = 3,
+        index_name = 4,
+        index_type = 5,
+        weight1 = 6,
+        weight2 = 7,
+        enable_sensitivity = 8,
+        sensitivity = 9
     }//指标信息表的列
     public enum ManagerInfoColumns
     {

@@ -41,8 +41,16 @@ namespace 考核系统.Dialogs
             int idx = 0;
             foreach (var manager in managers)
             {
-                checkListManager.Items.Add(manager.Value.manager_name);
-                checkListManager.SetItemChecked(idx++, true);
+                
+                if(!CommonData.DutyInfo.Any(x => x.Value.manager_id == manager.Value.id))
+                {
+                    continue;
+                }
+                else
+                {
+                    checkListManager.Items.Add(manager.Value.manager_name);
+                    checkListManager.SetItemChecked(idx++, true);
+                }
             }
             checkListManager.Tag = managers;//绑定数据
         }
