@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -150,6 +150,16 @@
             this.completion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.completion_rate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pageExport = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel22 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel23 = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonExportMain = new System.Windows.Forms.Button();
+            this.tableLayoutPanel24 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel25 = new System.Windows.Forms.TableLayoutPanel();
+            this.exportProgressBar = new System.Windows.Forms.ProgressBar();
+            this.labelExportMessage = new System.Windows.Forms.Label();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.textBoxSummary = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
             this.labelView = new System.Windows.Forms.Label();
@@ -181,6 +191,7 @@
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
             this.openDialog = new System.Windows.Forms.OpenFileDialog();
             this.multiOpenDialog = new System.Windows.Forms.OpenFileDialog();
+            this.buttonGroupManagement = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.mainTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -222,6 +233,13 @@
             this.groupBox10.SuspendLayout();
             this.tableLayoutPanel21.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.completionDataGrid)).BeginInit();
+            this.pageExport.SuspendLayout();
+            this.tableLayoutPanel22.SuspendLayout();
+            this.tableLayoutPanel23.SuspendLayout();
+            this.tableLayoutPanel24.SuspendLayout();
+            this.groupBox14.SuspendLayout();
+            this.tableLayoutPanel25.SuspendLayout();
+            this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -392,7 +410,7 @@
             // 修改年份ToolStripMenuItem1
             // 
             this.修改年份ToolStripMenuItem1.Name = "修改年份ToolStripMenuItem1";
-            this.修改年份ToolStripMenuItem1.Size = new System.Drawing.Size(182, 34);
+            this.修改年份ToolStripMenuItem1.Size = new System.Drawing.Size(270, 34);
             this.修改年份ToolStripMenuItem1.Text = "修改年份";
             this.修改年份ToolStripMenuItem1.Click += new System.EventHandler(this.修改年份ToolStripMenuItem1_Click);
             // 
@@ -513,8 +531,8 @@
             // 
             // DeptId
             // 
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
-            this.DeptId.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.Gainsboro;
+            this.DeptId.DefaultCellStyle = dataGridViewCellStyle13;
             this.DeptId.HeaderText = "单位编号";
             this.DeptId.MinimumWidth = 6;
             this.DeptId.Name = "DeptId";
@@ -561,6 +579,7 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.buttonGroupManagement, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptDump, 0, 3);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptRefresh, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptImport, 0, 1);
@@ -860,8 +879,8 @@
             // 
             // indexId
             // 
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
-            this.indexId.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.Gainsboro;
+            this.indexId.DefaultCellStyle = dataGridViewCellStyle14;
             this.indexId.HeaderText = "指标编号";
             this.indexId.MinimumWidth = 6;
             this.indexId.Name = "indexId";
@@ -987,8 +1006,8 @@
             // 
             // manager_id
             // 
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
-            this.manager_id.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.Gainsboro;
+            this.manager_id.DefaultCellStyle = dataGridViewCellStyle15;
             this.manager_id.HeaderText = "职能部门编号";
             this.manager_id.MinimumWidth = 6;
             this.manager_id.Name = "manager_id";
@@ -1579,8 +1598,8 @@
             // 
             // dept_code
             // 
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dept_code.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dept_code.DefaultCellStyle = dataGridViewCellStyle16;
             this.dept_code.HeaderText = "教学科研单位编号";
             this.dept_code.MinimumWidth = 8;
             this.dept_code.Name = "dept_code";
@@ -1589,8 +1608,8 @@
             // 
             // DeptName1
             // 
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.DeptName1.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.DeptName1.DefaultCellStyle = dataGridViewCellStyle17;
             this.DeptName1.HeaderText = "单位名称";
             this.DeptName1.MinimumWidth = 8;
             this.DeptName1.Name = "DeptName1";
@@ -1613,8 +1632,8 @@
             // 
             // completion_rate
             // 
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.completion_rate.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.completion_rate.DefaultCellStyle = dataGridViewCellStyle18;
             this.completion_rate.HeaderText = "完成率";
             this.completion_rate.MinimumWidth = 8;
             this.completion_rate.Name = "completion_rate";
@@ -1623,6 +1642,7 @@
             // 
             // pageExport
             // 
+            this.pageExport.Controls.Add(this.tableLayoutPanel22);
             this.pageExport.Location = new System.Drawing.Point(4, 29);
             this.pageExport.Name = "pageExport";
             this.pageExport.Padding = new System.Windows.Forms.Padding(3);
@@ -1630,6 +1650,136 @@
             this.pageExport.TabIndex = 5;
             this.pageExport.Text = "导出向导";
             this.pageExport.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel22
+            // 
+            this.tableLayoutPanel22.ColumnCount = 2;
+            this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel22.Controls.Add(this.tableLayoutPanel23, 1, 0);
+            this.tableLayoutPanel22.Controls.Add(this.tableLayoutPanel24, 0, 0);
+            this.tableLayoutPanel22.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel22.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel22.Name = "tableLayoutPanel22";
+            this.tableLayoutPanel22.RowCount = 1;
+            this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel22.Size = new System.Drawing.Size(1534, 692);
+            this.tableLayoutPanel22.TabIndex = 0;
+            // 
+            // tableLayoutPanel23
+            // 
+            this.tableLayoutPanel23.ColumnCount = 1;
+            this.tableLayoutPanel23.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel23.Controls.Add(this.buttonExportMain, 0, 2);
+            this.tableLayoutPanel23.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel23.Location = new System.Drawing.Point(1230, 3);
+            this.tableLayoutPanel23.Name = "tableLayoutPanel23";
+            this.tableLayoutPanel23.RowCount = 5;
+            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel23.Size = new System.Drawing.Size(301, 686);
+            this.tableLayoutPanel23.TabIndex = 0;
+            // 
+            // buttonExportMain
+            // 
+            this.buttonExportMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonExportMain.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonExportMain.Location = new System.Drawing.Point(20, 294);
+            this.buttonExportMain.Margin = new System.Windows.Forms.Padding(20);
+            this.buttonExportMain.Name = "buttonExportMain";
+            this.buttonExportMain.Size = new System.Drawing.Size(261, 97);
+            this.buttonExportMain.TabIndex = 0;
+            this.buttonExportMain.Text = "导出计算总表";
+            this.buttonExportMain.UseVisualStyleBackColor = true;
+            this.buttonExportMain.Click += new System.EventHandler(this.buttonExportMain_Click);
+            // 
+            // tableLayoutPanel24
+            // 
+            this.tableLayoutPanel24.ColumnCount = 1;
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel24.Controls.Add(this.groupBox14, 0, 1);
+            this.tableLayoutPanel24.Controls.Add(this.groupBox13, 0, 0);
+            this.tableLayoutPanel24.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel24.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel24.Name = "tableLayoutPanel24";
+            this.tableLayoutPanel24.RowCount = 2;
+            this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel24.Size = new System.Drawing.Size(1221, 686);
+            this.tableLayoutPanel24.TabIndex = 1;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Controls.Add(this.tableLayoutPanel25);
+            this.groupBox14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox14.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox14.Location = new System.Drawing.Point(50, 520);
+            this.groupBox14.Margin = new System.Windows.Forms.Padding(50, 40, 50, 40);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(1121, 126);
+            this.groupBox14.TabIndex = 3;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "导出进度";
+            // 
+            // tableLayoutPanel25
+            // 
+            this.tableLayoutPanel25.ColumnCount = 1;
+            this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel25.Controls.Add(this.exportProgressBar, 0, 1);
+            this.tableLayoutPanel25.Controls.Add(this.labelExportMessage, 0, 0);
+            this.tableLayoutPanel25.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel25.Location = new System.Drawing.Point(3, 35);
+            this.tableLayoutPanel25.Name = "tableLayoutPanel25";
+            this.tableLayoutPanel25.RowCount = 2;
+            this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.72727F));
+            this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 52.27273F));
+            this.tableLayoutPanel25.Size = new System.Drawing.Size(1115, 88);
+            this.tableLayoutPanel25.TabIndex = 0;
+            // 
+            // exportProgressBar
+            // 
+            this.exportProgressBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.exportProgressBar.Location = new System.Drawing.Point(3, 44);
+            this.exportProgressBar.Name = "exportProgressBar";
+            this.exportProgressBar.Size = new System.Drawing.Size(1109, 41);
+            this.exportProgressBar.TabIndex = 0;
+            // 
+            // labelExportMessage
+            // 
+            this.labelExportMessage.AutoSize = true;
+            this.labelExportMessage.Location = new System.Drawing.Point(3, 0);
+            this.labelExportMessage.Name = "labelExportMessage";
+            this.labelExportMessage.Size = new System.Drawing.Size(0, 31);
+            this.labelExportMessage.TabIndex = 1;
+            // 
+            // groupBox13
+            // 
+            this.groupBox13.Controls.Add(this.textBoxSummary);
+            this.groupBox13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox13.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox13.Location = new System.Drawing.Point(50, 100);
+            this.groupBox13.Margin = new System.Windows.Forms.Padding(50, 100, 50, 100);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(1121, 280);
+            this.groupBox13.TabIndex = 2;
+            this.groupBox13.TabStop = false;
+            this.groupBox13.Text = "数据摘要";
+            // 
+            // textBoxSummary
+            // 
+            this.textBoxSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxSummary.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBoxSummary.Location = new System.Drawing.Point(3, 40);
+            this.textBoxSummary.Multiline = true;
+            this.textBoxSummary.Name = "textBoxSummary";
+            this.textBoxSummary.ReadOnly = true;
+            this.textBoxSummary.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxSummary.Size = new System.Drawing.Size(1115, 237);
+            this.textBoxSummary.TabIndex = 0;
             // 
             // splitContainer1
             // 
@@ -2015,6 +2165,19 @@
             this.multiOpenDialog.Multiselect = true;
             this.multiOpenDialog.RestoreDirectory = true;
             // 
+            // buttonGroupManagement
+            // 
+            this.buttonGroupManagement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonGroupManagement.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonGroupManagement.Location = new System.Drawing.Point(34, 580);
+            this.buttonGroupManagement.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonGroupManagement.Name = "buttonGroupManagement";
+            this.buttonGroupManagement.Size = new System.Drawing.Size(233, 66);
+            this.buttonGroupManagement.TabIndex = 5;
+            this.buttonGroupManagement.Text = "管理分组";
+            this.buttonGroupManagement.UseVisualStyleBackColor = true;
+            this.buttonGroupManagement.Click += new System.EventHandler(this.buttonGroupManagement_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -2074,6 +2237,15 @@
             this.tableLayoutPanel21.ResumeLayout(false);
             this.tableLayoutPanel21.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.completionDataGrid)).EndInit();
+            this.pageExport.ResumeLayout(false);
+            this.tableLayoutPanel22.ResumeLayout(false);
+            this.tableLayoutPanel23.ResumeLayout(false);
+            this.tableLayoutPanel24.ResumeLayout(false);
+            this.groupBox14.ResumeLayout(false);
+            this.tableLayoutPanel25.ResumeLayout(false);
+            this.tableLayoutPanel25.PerformLayout();
+            this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -2262,6 +2434,17 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn enable_sensitivity;
         private System.Windows.Forms.DataGridViewTextBoxColumn sensitivity;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel22;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel23;
+        private System.Windows.Forms.Button buttonExportMain;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel24;
+        private System.Windows.Forms.GroupBox groupBox13;
+        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel25;
+        private System.Windows.Forms.ProgressBar exportProgressBar;
+        private System.Windows.Forms.Label labelExportMessage;
+        private System.Windows.Forms.TextBox textBoxSummary;
+        private System.Windows.Forms.Button buttonGroupManagement;
     }
 }
 

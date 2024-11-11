@@ -74,7 +74,7 @@ namespace 考核系统
                 if(deptAnnualInfo == null)
                 {
 
-                    deptAnnualInfo = new DeptAnnualInfo(deptList[i].id, year, 0, 0, "组1");
+                    deptAnnualInfo = new DeptAnnualInfo(deptList[i].id, year, 0, 0, "");
                     deptAnnualInfoMapper.Add(deptAnnualInfo);
                 }
                 deptDataGrid.Rows[i].Cells[(int)DeptInfoColumns.dept_population].Value = deptAnnualInfo.dept_population;
@@ -281,6 +281,7 @@ namespace 考核系统
             mainContainer.SelectedIndex = 0;
             labelView.Text = "教学科研单位视图";
             fetchDepartmentInfo();
+            fetchGroupsInfo();
         }
 
         private void 指标视图ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -348,7 +349,7 @@ namespace 考核系统
                 var deptAnnualInfoMapper = DeptAnnualInfoMapper.GetInstance();
 
                 var newDeptInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new Department()));
-                var newDeptAnnualInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new DeptAnnualInfo(-1, CommonData.CurrentYear, 0, 0, "组1")));
+                var newDeptAnnualInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new DeptAnnualInfo(-1, CommonData.CurrentYear, 0, 0, "")));
 
                 if (newDeptInfo.Keys.Contains(columnName))
                 {
@@ -1101,6 +1102,9 @@ namespace 考核系统
 
         private void indexIdentifierDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
             => editIndexIdentifier.indexIdentifierDataGrid_CellEndEdit(sender, e);
+
+        private void fetchGroupsInfo()
+            =>editGroups.fetchGroupsInfo();
         public void updateComboIndexIdentifier()
         {
             var currentSelectedIndexIdentifier = (IndexIdentifier)comboIndexIdentifier.SelectedItem;
@@ -1190,8 +1194,20 @@ namespace 考核系统
         {
             mainContainer.SelectedIndex = 5;
             labelView.Text = "导出向导";
+            textBoxSummary.Text = exportSummary();
         }
-
+        private string exportSummary()
+        {
+            fetchAll();
+            var summary = new StringBuilder();
+            summary.AppendLine("导出时间：" + DateTime.Now.ToString("yyyy-MM-dd"));
+            summary.AppendLine("教学与科研单位数量：" + CommonData.DeptInfo.Count);
+            summary.AppendLine("当前年份：" + CommonData.CurrentYear);
+            summary.AppendLine("指标分类数：" + CommonData.IdentifierInfo.Count);
+            summary.AppendLine("指标总数：" + CommonData.IndexInfo.Count);
+            summary.AppendLine("职能部门数：" + CommonData.ManagerInfo.Count);
+            return summary.ToString();
+        }
         private void buttonIndexTemplateDump_Click(object sender, EventArgs e)
         {
             saveDialog.FileName = "考核指标信息模板.xlsx";
@@ -1232,7 +1248,10 @@ namespace 考核系统
             
 
             openDialog.Title = "请选择要导入的部门信息文件";
-            openDialog.ShowDialog();
+            if(openDialog.ShowDialog()==DialogResult.Cancel)
+            {
+                return;
+            }
             if (openDialog.FileName == "")
             {
                 return;
@@ -1305,7 +1324,10 @@ namespace 考核系统
 
 
             openDialog.Title = "请选择要导入的职能部门信息文件";
-            openDialog.ShowDialog();
+            if(openDialog.ShowDialog() == DialogResult.Cancel)
+            {
+                return;
+            }
             if (openDialog.FileName == "")
             {
                 return;
@@ -1369,10 +1391,13 @@ namespace 考核系统
 
 
             openDialog.Title = "请选择要导入的考核指标信息文件";
-            openDialog.ShowDialog();
+            if(openDialog.ShowDialog() == DialogResult.Cancel)
+            {
+                return;
+            }
             //如果用户在openDialog点了取消，就不打开
 
-            
+
 
             if (openDialog.FileName == "")
             {
@@ -1477,6 +1502,7 @@ namespace 考核系统
             changeYear.ShowDialog();
         }
         private EditIndexIdentifier editIndexIdentifier = new EditIndexIdentifier();
+        private EditGroups editGroups = new EditGroups();
         private void buttonEditIdentifier_Click(object sender, EventArgs e)
         {
             editIndexIdentifier.ShowDialog();
@@ -1610,7 +1636,6 @@ namespace 考核系统
                 Logger.Log($"部门{completion_id}的{columnName}由{completionInfo[columnName]}变更为{cellValue}");
 
                 completionInfo[columnName] = cellValue;
-
                 var completionInfoObj = JsonConvert.DeserializeObject<Completion>(JsonConvert.SerializeObject(completionInfo));
 
                 CommonData.currentIndexCompletion[completion_id] = Completion.Copy(completionInfoObj);
@@ -1624,24 +1649,18 @@ namespace 考核系统
 
         private void buttonCompletionExport_Click(object sender, EventArgs e)
         {
-            fetchIndexInfo();
-            fetchDepartmentInfo();
-            foreach (var index in CommonData.IndexInfo.Values)
-            {
-                initCompletion(index);
-            }
-            fetchManagerInfo();
-            fetchDutyInfo();
-            fetchIndexIdentifierInfo();
-            fetchCompletionInfo();
+            fetchAll();
             var formExportWizard=new FormExportWizard();
             formExportWizard.ShowDialog();
         }
 
         private void buttonCompletionImport_Click(object sender, EventArgs e)
         {
-            multiOpenDialog.ShowDialog();
-            if(multiOpenDialog.FileNames.Length == 0)
+            if(multiOpenDialog.ShowDialog()== DialogResult.Cancel)
+            {
+                return;
+            }
+            if (multiOpenDialog.FileNames.Length == 0)
             {
                 return;
             }
@@ -1651,6 +1670,48 @@ namespace 考核系统
                 FileIO.ImportCompletionTable(filename);
                 Logger.Log($"{idx++}/{multiOpenDialog.FileNames.Length}导入{filename}已完成");
             }
+        }
+        private void fetchAll()
+        {
+            fetchIndexInfo();
+            fetchGroupsInfo();
+            fetchDepartmentInfo();
+            foreach (var index in CommonData.IndexInfo.Values)
+            {
+                initCompletion(index);
+            }
+            fetchManagerInfo();
+            fetchDutyInfo();
+            fetchIndexIdentifierInfo();
+            fetchCompletionInfo();
+        }
+        private void exportCallback(string message,int progress)
+        {
+            labelExportMessage.Text = message;
+            exportProgressBar.Value = progress;
+        }
+        private void buttonExportMain_Click(object sender, EventArgs e)
+        {
+            saveDialog.FileName=DateTime.Now.ToString("yyyy-MM-dd") + "汇总计算表.xlsx";
+            if (saveDialog.ShowDialog() == DialogResult.Cancel)
+            {
+                return;
+            }
+            if (saveDialog.FileName == "")
+            {
+                return;
+            }
+            exportProgressBar.Value = 0;
+            labelExportMessage.Text = "";
+            fetchAll();
+
+            FileIO.ExportMain(saveDialog.FileName,exportCallback);
+            MessageBox.Show("导出完成","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
+        }
+
+        private void buttonGroupManagement_Click(object sender, EventArgs e)
+        {
+            editGroups.ShowDialog();
         }
     }
 }

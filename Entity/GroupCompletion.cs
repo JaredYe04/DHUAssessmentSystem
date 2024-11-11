@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace 考核系统.Entity
 {
-    internal class Completion: DeepCopy<Completion>
+    internal class GroupCompletion: DeepCopy<GroupCompletion>
     {
         public int id { get; set; }
-        public int dept_id { get; set; }
+        public int group_id { get; set; }
         public int year { get; set; }
         public int index_id { get; set; }
         public int target { get; set; }
         public int completed { get; set; }
 
-        public Completion(int completion_id, int dept_id, int year, int index_id, int target, int completed)
+        public GroupCompletion(int completion_id, int group_id, int year, int index_id, int target, int completed)
         {
             this.id = completion_id;
-            this.dept_id = dept_id;
+            this.group_id = group_id;
             this.year = year;
             this.index_id = index_id;
             this.target = target;
             this.completed = completed;
         }
-        public Completion() { }
+        public GroupCompletion() { }
         public double completion_rate
         {
             get

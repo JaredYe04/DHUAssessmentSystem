@@ -50,6 +50,11 @@ namespace 考核系统.Utils
         completed = 4,
         completion_rate = 5
     }
+    public enum GroupColumns
+    {
+        id = 0,
+        group_name = 1
+    }
     public static class ColumnMap
     {
 
@@ -83,5 +88,6 @@ namespace 考核系统.Utils
             {ManagerInfoColumns.manager_code,"职能部门代码"},
             {ManagerInfoColumns.manager_name,"职能部门名称"}
         };
+
     }
 }

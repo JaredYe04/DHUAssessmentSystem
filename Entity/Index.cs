@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,14 @@ namespace 考核系统.Entity
         }
         public Index()
         {
+        }
+        public double BasicTheoreticalFullScore//5.单项基础类指标完成度理论满分
+        {
+            get
+            {
+                if (index_type == "加分类") return 0;
+                return 100 * weight1 * weight2;
+            }
         }
     }
 }

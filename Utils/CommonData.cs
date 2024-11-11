@@ -25,6 +25,7 @@ namespace 考核系统.Utils
         public static Dictionary<int, Manager> ManagerInfo { get; set; }
         public static Dictionary<int, IndexIdentifier> IdentifierInfo { get; set; }
         public static Dictionary<int,IndexDuty>DutyInfo { get; set; }
+        public static Dictionary<int, Groups> GroupInfo { get; set; }
         public static Dictionary<int, Index> UnallocatedIndexes
         {
             get

@@ -6,29 +6,29 @@ using System.Threading.Tasks;
 using 考核系统.Entity;
 namespace 考核系统.Mapper
 {
-    internal class CompletionMapper : BaseMapper<Completion>
+    internal class GroupCompletionMapper : BaseMapper<Completion>
     {
-        private static CompletionMapper instance;
-        private CompletionMapper() : base("completion")
+        private static GroupCompletionMapper instance;
+        private GroupCompletionMapper() : base("group_completion")
         { }
-        public static CompletionMapper GetInstance()
+        public static GroupCompletionMapper GetInstance()
         {
             if (instance == null)
             {
-                instance = new CompletionMapper();
+                instance = new GroupCompletionMapper();
             }
             return instance;
         }
 
         public List<Completion> GetCompletionByIndexId(int id)
         {
-            var sql = $"select * from completion where index_id={id}";
+            var sql = $"select * from group_completion where index_id={id}";
             return QueryAll(sql);
         }
 
         public List<Completion> GetIndexCompletionByYear(int currentYear)
         {
-            var sql = $"select * from completion where year={currentYear}";
+            var sql = $"select * from group_completion where year={currentYear}";
             return QueryAll(sql);
         }
         public void Update(Completion completion)

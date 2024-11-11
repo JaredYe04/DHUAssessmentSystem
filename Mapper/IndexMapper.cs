@@ -20,6 +20,12 @@ namespace 考核系统.Mapper
             }
             return instance;
         }
+        //重写Update方法
+        public void Update(Index index)
+        {
+            string[] bypassKeys = { "BasicTheoreticalFullScore" };
+            base.Update(index, bypassKeys);
+        }
     }
 
 }

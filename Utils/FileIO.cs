@@ -2,14 +2,17 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 using 考核系统.Entity;
 using 考核系统.Mapper;
+using 考核系统.Utils.CalcUtils;
 namespace 考核系统.Utils
 {
     internal class FileIO
@@ -572,5 +575,261 @@ namespace 考核系统.Utils
             }
             index_col_idx += 2;
         }
+        public delegate void ExportCallback(string message, int progress);
+        public static void ExportMain(string filename,ExportCallback exportCallback)
+        {
+            var globalDeptInfo = GlobalDeptInfo.GetInstance();
+            var deptInfo = CommonData.DeptInfo.Values;
+            
+            exportCallback("初始化Excel...", 0);
+            var currentYear = CommonData.CurrentYear;
+            var excel= new Microsoft.Office.Interop.Excel.Application();
+            excel.Visible = false;
+            excel.Application.Workbooks.Add(true);
+            var workbook = excel.Application.Workbooks.Item[1];
+            var worksheet = workbook.Worksheets.Item[1];
+            worksheet.Name = "汇总计算";
+
+            var range = worksheet.Range["A1:F1"];
+            range.Merge();
+            range.Value2 = "指标信息";
+            range.Font.Size = 20;
+            range.Font.Bold = true;
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            int property_row_idx = 2;//如果后面需要更改，可以直接改这个值，不用一个一个改
+            int property_col_idx_start = 1;
+
+
+
+            exportCallback("导出元数据", 5);
+
+
+            int property_col_idx = property_col_idx_start;
+            worksheet.Cells[property_row_idx, property_col_idx].Value = "指标名称";
+            worksheet.Cells[property_row_idx, property_col_idx].Font.Bold = true;
+            worksheet.Cells[property_row_idx, property_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            property_col_idx++;
+            worksheet.Cells[property_row_idx, property_col_idx].Value = "指标类型";
+            worksheet.Cells[property_row_idx, property_col_idx].Font.Bold = true;
+            worksheet.Cells[property_row_idx, property_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            property_col_idx++;
+            worksheet.Cells[property_row_idx, property_col_idx].Value = "一级权重";
+            worksheet.Cells[property_row_idx, property_col_idx].Font.Bold = true;
+            worksheet.Cells[property_row_idx, property_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            property_col_idx++;
+            worksheet.Cells[property_row_idx, property_col_idx].Value = "二级权重";
+            worksheet.Cells[property_row_idx, property_col_idx].Font.Bold = true;
+            worksheet.Cells[property_row_idx, property_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            property_col_idx++;
+            worksheet.Cells[property_row_idx, property_col_idx].Value = "敏感性指标权重";
+            worksheet.Cells[property_row_idx, property_col_idx].Font.Bold = true;
+            worksheet.Cells[property_row_idx, property_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            property_col_idx++;
+            worksheet.Cells[property_row_idx, property_col_idx].Value = currentYear.ToString() + "年全校总完成值";
+            worksheet.Cells[property_row_idx, property_col_idx].Font.Bold = true;
+            worksheet.Cells[property_row_idx, property_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            property_col_idx++;
+
+            int row_idx = property_row_idx + 1;
+            var indexes = CommonData.IndexInfo.Values;
+            var globalIndexInfo = GlobalIndexInfo.GetInstance();
+            exportCallback("写入指标元数据", 10);
+            foreach (var index in indexes)
+            {
+                var nameString = index.identifier_id.ToString() + "." + index.secondary_identifier.ToString();
+                nameString += (index.tertiary_identifier == "0" || index.tertiary_identifier == "-1")
+                    ? "" : "." + index.tertiary_identifier;//三级指标
+                nameString += ":" + index.index_name;
+                property_col_idx = property_col_idx_start;
+                worksheet.Cells[row_idx, property_col_idx].Value = nameString;
+                worksheet.Cells[row_idx, property_col_idx].Font.Bold = true;
+                worksheet.Columns[property_col_idx].ColumnWidth = 60;
+                property_col_idx++;
+                worksheet.Cells[row_idx, property_col_idx++].Value = index.index_type;
+                worksheet.Cells[row_idx, property_col_idx++].Value = index.weight1;
+                worksheet.Cells[row_idx, property_col_idx++].Value = index.weight2;
+                worksheet.Cells[row_idx, property_col_idx++].Value = index.sensitivity;
+                worksheet.Cells[row_idx, property_col_idx++].Value = globalIndexInfo.GlobalCompletion(index);
+                row_idx++;
+            }
+            worksheet.Cells[row_idx, property_col_idx_start].Value = "总分";
+            worksheet.Cells[row_idx, property_col_idx_start].Font.Bold = true;
+            worksheet.Cells[row_idx, property_col_idx_start].Interior.Color = ColorTranslator.ToOle(Color.LightGreen);
+
+
+            int dept_col_idx_start = property_col_idx;
+            int dept_col_idx = dept_col_idx_start;
+            int dept_col_width = 8;//目标，完成，完成率，1,2,3,4,5
+
+
+
+            double progress_per_dept = 90 / deptInfo.Count;
+            double progress = 10;
+            double progress_per_index = progress_per_dept / indexes.Count;
+            int dept_idx = 0;
+            foreach (var dept in deptInfo)
+            {
+                
+                var deptAnnualInfo = dept.Item2;
+                var l_col_idx=Num2Column(dept_col_idx);
+                var r_col_idx = Num2Column(dept_col_idx + dept_col_width - 1);
+                range = worksheet.Range[l_col_idx + "1:" + r_col_idx + "1"];
+                range.Merge();
+                range.Value2 = dept.Item1.dept_name+$"({deptAnnualInfo.dept_population}人)";
+                range.Font.Size = 16;
+                range.Font.Bold = true;
+                range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+
+                worksheet.Cells[property_row_idx, dept_col_idx].Value = $"{deptAnnualInfo.year}年目标值";
+                worksheet.Cells[property_row_idx, dept_col_idx].WrapText = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.Yellow);
+                dept_col_idx++;
+
+                worksheet.Cells[property_row_idx, dept_col_idx].Value = $"{deptAnnualInfo.year}年完成";
+                worksheet.Cells[property_row_idx, dept_col_idx].WrapText = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.Yellow);
+                dept_col_idx++;
+
+                worksheet.Cells[property_row_idx, dept_col_idx].Value = $"{deptAnnualInfo.year}年完成率";
+                worksheet.Cells[property_row_idx, dept_col_idx].WrapText = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.Yellow);
+                dept_col_idx++;
+                //基础类完成度得分
+                worksheet.Cells[property_row_idx, dept_col_idx].Value = "基础类完成度得分";
+                worksheet.Cells[property_row_idx, dept_col_idx].WrapText = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGreen);
+                dept_col_idx++;
+                //加分类完成度得分
+                worksheet.Cells[property_row_idx, dept_col_idx].Value = "加分类完成度得分";
+                worksheet.Cells[property_row_idx, dept_col_idx].WrapText = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.Orange);
+                    dept_col_idx++;
+                //基础类人均贡献度得分
+                worksheet.Cells[property_row_idx, dept_col_idx].Value = "基础类人均贡献度得分";
+                worksheet.Cells[property_row_idx, dept_col_idx].WrapText = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.MediumPurple);
+                dept_col_idx++;
+                //敏感性指标得分
+                worksheet.Cells[property_row_idx, dept_col_idx].Value = "敏感性指标得分";
+                worksheet.Cells[property_row_idx, dept_col_idx].WrapText = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+                dept_col_idx++;
+                //基础类指标完成度理论满分
+                worksheet.Cells[property_row_idx, dept_col_idx].Value = "基础类指标完成度理论满分";
+                worksheet.Cells[property_row_idx, dept_col_idx].WrapText = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[property_row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightBlue);
+                dept_col_idx++;
+
+                row_idx = property_row_idx + 1;//从表头下一行开始
+                double BasicCompletionScoreSum = 0;
+                double BonusCompletionScoreSum = 0;
+                double BasicCompletionScorePerCapitaSum = 0;
+                double SensitivityScoreSum = 0;
+                double BasicTheoreticalFullScoreSum = 0;
+
+                
+                foreach (var index in indexes)
+                {
+                    progress += progress_per_index;
+                    exportCallback($"正在导出{dept.Item1.dept_name}的{index.index_name}", (int)progress);
+                    dept_col_idx = dept_col_idx_start;
+                    var completion = CommonData.CompletionInfo.Values.FirstOrDefault
+                        (com => com.dept_id == dept.Item1.id &&
+                    com.index_id == index.id &&
+                    com.year==deptAnnualInfo.year);
+                    
+                    if (completion != null)
+                    {
+                        var calcUnit = new CalcUnit(index, dept.Item1, deptAnnualInfo, completion);
+
+                        if (completion.target != 0)
+                            worksheet.Cells[row_idx, dept_col_idx].Value = completion.target;
+                        dept_col_idx++;
+
+                        if(completion.completed != 0)
+                            worksheet.Cells[row_idx, dept_col_idx].Value = completion.completed;
+                        dept_col_idx++;
+
+                        if (completion.completion_rate != 0)
+                            worksheet.Cells[row_idx, dept_col_idx].Value = completion.completion_rate;
+                        
+                        dept_col_idx++;
+                        //todo 等于0的话，不显示，显示空
+
+                        if (calcUnit.BasicCompletionScore != 0)
+                            worksheet.Cells[row_idx, dept_col_idx].Value = calcUnit.BasicCompletionScore;
+                        BasicCompletionScoreSum += calcUnit.BasicCompletionScore;
+                        dept_col_idx++;
+
+                        if (calcUnit.BonusCompletionScore != 0)
+                            worksheet.Cells[row_idx, dept_col_idx].Value = calcUnit.BonusCompletionScore;
+                        BonusCompletionScoreSum += calcUnit.BonusCompletionScore;
+                        dept_col_idx++;
+
+                        if (calcUnit.BasicCompletionScorePerCapita != 0)
+                            worksheet.Cells[row_idx, dept_col_idx].Value = calcUnit.BasicCompletionScorePerCapita;
+                        BasicCompletionScorePerCapitaSum += calcUnit.BasicCompletionScorePerCapita;
+                        dept_col_idx++;
+
+                        if (calcUnit.SensitivityScore != 0)
+                            worksheet.Cells[row_idx, dept_col_idx].Value = calcUnit.SensitivityScore;
+                        SensitivityScoreSum += calcUnit.SensitivityScore;
+                        dept_col_idx++;
+
+                        if (calcUnit.BasicTheoreticalFullScore != 0)
+                            worksheet.Cells[row_idx, dept_col_idx].Value = calcUnit.BasicTheoreticalFullScore;
+                        BasicTheoreticalFullScoreSum += calcUnit.BasicTheoreticalFullScore;
+                        dept_col_idx++;
+
+                        row_idx++;
+                    }
+                }
+                dept_col_idx = dept_col_idx_start + 3;//从基础类完成度得分开始，只要后5列
+
+                worksheet.Cells[row_idx, dept_col_idx].Value = BasicCompletionScoreSum;
+                worksheet.Cells[row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGreen);
+                dept_col_idx++;
+
+                worksheet.Cells[row_idx, dept_col_idx].Value = BonusCompletionScoreSum;
+                worksheet.Cells[row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.Orange);
+                dept_col_idx++;
+
+                worksheet.Cells[row_idx, dept_col_idx].Value = BasicCompletionScorePerCapitaSum;
+                worksheet.Cells[row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.MediumPurple);
+                dept_col_idx++;
+
+                worksheet.Cells[row_idx, dept_col_idx].Value = SensitivityScoreSum;
+                worksheet.Cells[row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+                dept_col_idx++;
+
+                worksheet.Cells[row_idx, dept_col_idx].Value = BasicTheoreticalFullScoreSum;
+                worksheet.Cells[row_idx, dept_col_idx].Font.Bold = true;
+                worksheet.Cells[row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightBlue);
+                dept_col_idx++;
+
+                dept_col_idx_start += dept_col_width;//下一个单位的起始列
+            }
+            progress = 100;
+            exportCallback($"导出完成", (int)progress);
+            excel.Rows[property_row_idx].RowHeight = 30;
+
+            excel.ActiveWorkbook.SaveAs(filename);
+            excel.Quit();
+
+        }
+
+        
     }
 }

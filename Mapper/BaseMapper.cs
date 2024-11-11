@@ -94,12 +94,20 @@ namespace 考核系统.Mapper
                 Logger.Log(e.Message, LogType.ERROR);
             }
         }
-        public void Update(T obj)
+        public void Update(T obj, string[] bypassKeys=null)
         {
             try
             {
                 string json = JsonConvert.SerializeObject(obj);
                 Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                if(bypassKeys != null)
+                {
+                    foreach (var key in bypassKeys)
+                    {
+                        dict.Remove(key);
+                    }
+                }
+
                 string set = string.Join(",", dict.Where(x => x.Key != keyName).Select(x => $"{x.Key}='{x.Value}'"));
                 string sql = $"update {tableName} set {set} where {keyName} = '{dict[keyName]}'";
                 DB.GetInstance().ExecuteNonQuery(sql);
