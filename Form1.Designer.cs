@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -191,7 +192,11 @@
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
             this.openDialog = new System.Windows.Forms.OpenFileDialog();
             this.multiOpenDialog = new System.Windows.Forms.OpenFileDialog();
-            this.buttonGroupManagement = new System.Windows.Forms.Button();
+            this.menuGroups = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createGroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.cancelGroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.editGroupTarget = new System.Windows.Forms.ToolStripMenuItem();
+            this.editGroupCompletion = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.mainTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -267,6 +272,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).BeginInit();
             this.splitContainer9.Panel1.SuspendLayout();
             this.splitContainer9.SuspendLayout();
+            this.menuGroups.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -410,7 +416,7 @@
             // 修改年份ToolStripMenuItem1
             // 
             this.修改年份ToolStripMenuItem1.Name = "修改年份ToolStripMenuItem1";
-            this.修改年份ToolStripMenuItem1.Size = new System.Drawing.Size(270, 34);
+            this.修改年份ToolStripMenuItem1.Size = new System.Drawing.Size(182, 34);
             this.修改年份ToolStripMenuItem1.Text = "修改年份";
             this.修改年份ToolStripMenuItem1.Click += new System.EventHandler(this.修改年份ToolStripMenuItem1_Click);
             // 
@@ -531,8 +537,8 @@
             // 
             // DeptId
             // 
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.Gainsboro;
-            this.DeptId.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
+            this.DeptId.DefaultCellStyle = dataGridViewCellStyle1;
             this.DeptId.HeaderText = "单位编号";
             this.DeptId.MinimumWidth = 6;
             this.DeptId.Name = "DeptId";
@@ -579,7 +585,6 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.buttonGroupManagement, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptDump, 0, 3);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptRefresh, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptImport, 0, 1);
@@ -879,8 +884,8 @@
             // 
             // indexId
             // 
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.Gainsboro;
-            this.indexId.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.indexId.DefaultCellStyle = dataGridViewCellStyle2;
             this.indexId.HeaderText = "指标编号";
             this.indexId.MinimumWidth = 6;
             this.indexId.Name = "indexId";
@@ -1006,8 +1011,8 @@
             // 
             // manager_id
             // 
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.Gainsboro;
-            this.manager_id.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.manager_id.DefaultCellStyle = dataGridViewCellStyle3;
             this.manager_id.HeaderText = "职能部门编号";
             this.manager_id.MinimumWidth = 6;
             this.manager_id.Name = "manager_id";
@@ -1571,6 +1576,7 @@
             // 
             // completionDataGrid
             // 
+            this.completionDataGrid.AllowUserToAddRows = false;
             this.completionDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.completionDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
@@ -1579,6 +1585,7 @@
             this.target,
             this.completion,
             this.completion_rate});
+            this.completionDataGrid.ContextMenuStrip = this.menuGroups;
             this.completionDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.completionDataGrid.Location = new System.Drawing.Point(3, 55);
             this.completionDataGrid.Name = "completionDataGrid";
@@ -1598,8 +1605,8 @@
             // 
             // dept_code
             // 
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dept_code.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dept_code.DefaultCellStyle = dataGridViewCellStyle4;
             this.dept_code.HeaderText = "教学科研单位编号";
             this.dept_code.MinimumWidth = 8;
             this.dept_code.Name = "dept_code";
@@ -1608,8 +1615,8 @@
             // 
             // DeptName1
             // 
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.DeptName1.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.DeptName1.DefaultCellStyle = dataGridViewCellStyle5;
             this.DeptName1.HeaderText = "单位名称";
             this.DeptName1.MinimumWidth = 8;
             this.DeptName1.Name = "DeptName1";
@@ -1632,8 +1639,8 @@
             // 
             // completion_rate
             // 
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.completion_rate.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.completion_rate.DefaultCellStyle = dataGridViewCellStyle6;
             this.completion_rate.HeaderText = "完成率";
             this.completion_rate.MinimumWidth = 8;
             this.completion_rate.Name = "completion_rate";
@@ -2165,18 +2172,42 @@
             this.multiOpenDialog.Multiselect = true;
             this.multiOpenDialog.RestoreDirectory = true;
             // 
-            // buttonGroupManagement
+            // menuGroups
             // 
-            this.buttonGroupManagement.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonGroupManagement.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonGroupManagement.Location = new System.Drawing.Point(34, 580);
-            this.buttonGroupManagement.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.buttonGroupManagement.Name = "buttonGroupManagement";
-            this.buttonGroupManagement.Size = new System.Drawing.Size(233, 66);
-            this.buttonGroupManagement.TabIndex = 5;
-            this.buttonGroupManagement.Text = "管理分组";
-            this.buttonGroupManagement.UseVisualStyleBackColor = true;
-            this.buttonGroupManagement.Click += new System.EventHandler(this.buttonGroupManagement_Click);
+            this.menuGroups.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuGroups.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createGroup,
+            this.cancelGroup,
+            this.editGroupTarget,
+            this.editGroupCompletion});
+            this.menuGroups.Name = "menuGroups";
+            this.menuGroups.Size = new System.Drawing.Size(241, 157);
+            this.menuGroups.Text = "分组";
+            this.menuGroups.Opening += new System.ComponentModel.CancelEventHandler(this.menuGroups_Opening);
+            // 
+            // createGroup
+            // 
+            this.createGroup.Name = "createGroup";
+            this.createGroup.Size = new System.Drawing.Size(240, 30);
+            this.createGroup.Text = "创建分组";
+            // 
+            // cancelGroup
+            // 
+            this.cancelGroup.Name = "cancelGroup";
+            this.cancelGroup.Size = new System.Drawing.Size(240, 30);
+            this.cancelGroup.Text = "取消分组";
+            // 
+            // editGroupTarget
+            // 
+            this.editGroupTarget.Name = "editGroupTarget";
+            this.editGroupTarget.Size = new System.Drawing.Size(240, 30);
+            this.editGroupTarget.Text = "编辑小组目标";
+            // 
+            // editGroupCompletion
+            // 
+            this.editGroupCompletion.Name = "editGroupCompletion";
+            this.editGroupCompletion.Size = new System.Drawing.Size(240, 30);
+            this.editGroupCompletion.Text = "编辑小组完成数";
             // 
             // Form1
             // 
@@ -2281,6 +2312,7 @@
             this.splitContainer9.Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).EndInit();
             this.splitContainer9.ResumeLayout(false);
+            this.menuGroups.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2444,7 +2476,11 @@
         private System.Windows.Forms.ProgressBar exportProgressBar;
         private System.Windows.Forms.Label labelExportMessage;
         private System.Windows.Forms.TextBox textBoxSummary;
-        private System.Windows.Forms.Button buttonGroupManagement;
+        private System.Windows.Forms.ContextMenuStrip menuGroups;
+        private System.Windows.Forms.ToolStripMenuItem createGroup;
+        private System.Windows.Forms.ToolStripMenuItem cancelGroup;
+        private System.Windows.Forms.ToolStripMenuItem editGroupTarget;
+        private System.Windows.Forms.ToolStripMenuItem editGroupCompletion;
     }
 }
 

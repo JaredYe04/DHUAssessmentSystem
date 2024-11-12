@@ -20,9 +20,9 @@ namespace 考核系统.Mapper
             return instance;
         }
 
-        public List<Completion> GetCompletionByIndexId(int id)
+        public List<Completion> GetCompletionByIndexId(int id,int year)
         {
-            var sql = $"select * from completion where index_id={id}";
+            var sql = $"select * from completion where index_id={id} and year={year}";
             return QueryAll(sql);
         }
 
@@ -35,6 +35,11 @@ namespace 考核系统.Mapper
         {
             string[] bypassKeys = { "completion_rate" };
             base.Update(completion, bypassKeys);
+        }
+        public void Add(Completion completion, bool AutoId = true)
+        {
+            string[] bypassKeys = { "completion_rate" };
+            base.Add(completion, AutoId, bypassKeys);
         }
     }
 

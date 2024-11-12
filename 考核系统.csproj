@@ -17,6 +17,22 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -80,6 +96,18 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>99459B18F290219A6DA7FD4D3A1AECCAF4A12625</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>考核系统_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -312,11 +340,23 @@
     <Compile Include="Dialogs\FormExportWizard.Designer.cs">
       <DependentUpon>FormExportWizard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\GeneralNumberInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\GeneralNumberInput.Designer.cs">
+      <DependentUpon>GeneralNumberInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ImportMode.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\ImportMode.Designer.cs">
       <DependentUpon>ImportMode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\TypeGroupName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TypeGroupName.Designer.cs">
+      <DependentUpon>TypeGroupName.cs</DependentUpon>
     </Compile>
     <Compile Include="Entity\GroupCompletion.cs" />
     <Compile Include="Entity\Groups.cs" />
@@ -354,7 +394,9 @@
     <Compile Include="Utils\CommonData.cs" />
     <Compile Include="Utils\EventBus.cs" />
     <Compile Include="Utils\FileIO.cs" />
+    <Compile Include="Utils\HashColor.cs" />
     <Compile Include="Utils\Logger.cs" />
+    <Compile Include="Utils\NaturalComparer.cs" />
     <EmbeddedResource Include="Dialogs\ChangeYear.resx">
       <DependentUpon>ChangeYear.cs</DependentUpon>
     </EmbeddedResource>
@@ -367,8 +409,14 @@
     <EmbeddedResource Include="Dialogs\FormExportWizard.resx">
       <DependentUpon>FormExportWizard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\GeneralNumberInput.resx">
+      <DependentUpon>GeneralNumberInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ImportMode.resx">
       <DependentUpon>ImportMode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TypeGroupName.resx">
+      <DependentUpon>TypeGroupName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -405,6 +453,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="考核系统_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -416,6 +465,18 @@
     <Content Include="DhuAssessment.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

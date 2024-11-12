@@ -26,6 +26,11 @@ namespace 考核系统.Mapper
             string[] bypassKeys = { "BasicTheoreticalFullScore" };
             base.Update(index, bypassKeys);
         }
+        public void Add(Index index, bool AutoId = true)
+        {
+            string[] bypassKeys = { "BasicTheoreticalFullScore" };
+            base.Add(index, AutoId, bypassKeys);
+        }
     }
 
 }

@@ -259,7 +259,13 @@ namespace 考核系统.Utils
             var indexes_idx=duties.Select(duty=>duty.index_id).Distinct().ToList();
             var indexes = CommonData.IndexInfo.Values.Where(index => indexes_idx.Contains(index.id)).ToList();
             var groupedIndexes=indexes.GroupBy(index => index.identifier_id).ToDictionary(group => group.Key, group => group.ToList());
-            var depts = CommonData.DeptInfo.Values;
+            
+            
+            var deptsRaw = CommonData.DeptInfo.Values;
+            //depts按照dept_code排序，使用NaturalComparer
+            var depts = deptsRaw.OrderBy(dept => dept.Item1.dept_code, new NaturalComparer()).ToList();
+
+
             var excel = new Microsoft.Office.Interop.Excel.Application();
             var completions = CommonData.CompletionInfo;
             //每个指标分组一个sheet，一个sheet包含该指标组下的所有指标
@@ -315,16 +321,20 @@ namespace 考核系统.Utils
                 sheet.Cells[info_row_idx, 1].Value = "单位代码";
                 sheet.Cells[info_row_idx, 1].Font.Bold = true;
                 sheet.Cells[info_row_idx, 1].Font.Size = 14;
+                sheet.Cells[info_row_idx, 1].Borders.LineStyle = 1;
                 sheet.Cells[info_row_idx, 2].Value = "单位名称";
                 sheet.Cells[info_row_idx, 2].Font.Size = 14;
                 sheet.Cells[info_row_idx, 2].Font.Bold = true;
+                sheet.Cells[info_row_idx, 2].Borders.LineStyle = 1;
                 int dept_idx = 5;
                 foreach(var dept in depts)
                 {
                     sheet.Cells[dept_idx, 1].Value = dept.Item1.dept_code;
                     sheet.Cells[dept_idx, 1].Font.Bold = true;
+                    sheet.Cells[dept_idx, 1].Borders.LineStyle = 1;
                     sheet.Cells[dept_idx, 2].Value = dept.Item1.dept_name;
                     sheet.Cells[dept_idx, 2].Font.Bold = true;
+                    sheet.Cells[dept_idx, 2].Borders.LineStyle = 1;
                     dept_idx++;
                 }
                 dept_idx--;
@@ -398,10 +408,12 @@ namespace 考核系统.Utils
             sheet.Cells[info_row_idx, index_col_idx].HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
             sheet.Cells[info_row_idx, index_col_idx].Font.Bold = true;
             sheet.Cells[info_row_idx, index_col_idx].Font.size = 13;
+            sheet.Cells[info_row_idx, index_col_idx].Borders.LineStyle = 1;
             sheet.Cells[info_row_idx, index_col_idx + 1].Value = currentYear.ToString() + "年完成";
             sheet.Cells[info_row_idx, index_col_idx + 1].HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
             sheet.Cells[info_row_idx, index_col_idx + 1].Font.Bold = true;
             sheet.Cells[info_row_idx, index_col_idx + 1].Font.size = 13;
+            sheet.Cells[info_row_idx, index_col_idx + 1].Borders.LineStyle = 1;
             string col_char1 = Num2Column(index_col_idx);
             string col_char2 = Num2Column(index_col_idx + 1);
             range = worksheet.Range[col_char1 + (subIndex?"3":"2")+":" + col_char2 + "3"];//todo
@@ -423,29 +435,107 @@ namespace 考核系统.Utils
             //range.Rows.RowHeight = range.Rows.RowHeight * 1.5;
             //range.Columns.ColumnWidth = range.Columns.ColumnWidth * 1.5;
             int dept_idx2 = 5;
-            var depts = CommonData.DeptInfo.Values;
+            var deptsRaw = CommonData.DeptInfo.Values;
+
+            //depts按照dept_code排序，使用NaturalComparer
+            var depts = deptsRaw.OrderBy(dept => dept.Item1.dept_code, new NaturalComparer()).ToList();
+
             var completions = CommonData.CompletionInfo;
+            var group_completions = CommonData.GroupCompletionInfo;
+            var visitedDepts=new HashSet<int>();
+            var groupMapper = GroupsMapper.GetInstance();
+            int dept_iter_idx = 0;
             foreach (var dept in depts)
             {
-                var cur_completion = completions.Values.FirstOrDefault(completion => completion.dept_id == dept.Item1.id && completion.index_id == index.id);
-                if (cur_completion == null) { continue; }
-                if (cur_completion.target != 0)
+                if(visitedDepts.Contains(dept.Item1.id))
                 {
-                    sheet.Cells[dept_idx2, index_col_idx].Value = cur_completion.target;
+                    dept_iter_idx++;
+                    continue;
+                }
+                var group=groupMapper.GetGroupByDeptCode(dept.Item1.dept_code, index.id);
+                if (group!=null)
+                {
+                    var cur_groupCompletion= group_completions.Values.FirstOrDefault(completion => completion.group_id == group.id);
+                    int group_start_row_idx = dept_idx2;
+                    int group_end_row_idx = dept_idx2;
+                    if (cur_groupCompletion != null)
+                    {
+                        int cnt = 0;
+                        int search_idx = dept_iter_idx;
+                        var naturalComparer = new NaturalComparer();
+                        while (
+                            search_idx<depts.Count
+                            &&
+                            naturalComparer.Between(group.l_bound, group.r_bound, depts[search_idx++].Item1.dept_code)
+                            )
+                        {
+                            visitedDepts.Add(depts[search_idx - 1].Item1.id);
+                            ++cnt;
+                        }
+                        group_end_row_idx = group_start_row_idx + cnt - 1;
+                        if(cur_groupCompletion.target != 0)
+                        {
+                            var group_range = worksheet.Range[col_char1 + group_start_row_idx.ToString() + ":" + col_char1 + group_end_row_idx.ToString()];
+                            group_range.Merge();
+                            group_range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                            group_range.Borders.LineStyle = 1;
+                            group_range.Value2 = cur_groupCompletion.target.ToString();
 
-                    sheet.Cells[dept_idx2, index_col_idx + 1].Value = cur_completion.completed == 0 ? "" : cur_completion.completed.ToString();
+                            group_range = worksheet.Range[col_char2 + group_start_row_idx.ToString() + ":" + col_char2 + group_end_row_idx.ToString()];
+                            group_range.Merge();
+                            group_range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                            group_range.Borders.LineStyle = 1;
+                            group_range.Value2 = cur_groupCompletion.completed == 0 ? "" : cur_groupCompletion.completed.ToString();
+                        }
+                        else
+                        {
+                            //以三年为周期进行考核
+                            var bypass_range = worksheet.Range[col_char1 + group_start_row_idx.ToString() + ":" + col_char2 + group_end_row_idx.ToString()];
+                            bypass_range.Merge();
+                            bypass_range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                            bypass_range.Value2 = "以三年为周期进行考核";
+                            bypass_range.Borders.LineStyle = 1;
+                            bypass_range.Font.Bold = true;
+                            //bypass_range.Font.Italic = true;
+
+                        }
+                        dept_idx2 = group_end_row_idx + 1;
+                    }
+                    else
+                    {
+                        //按理来说不会执行到这里
+                        
+                    }
+
+
                 }
                 else
                 {
-                    var bypass_range = worksheet.Range[col_char1 + dept_idx2.ToString() + ":" + col_char2 + dept_idx2.ToString()];
-                    bypass_range.Merge();
-                    bypass_range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
-                    bypass_range.Value2 = "以三年为周期进行考核";
-                    bypass_range.Font.Bold = true;
-                    bypass_range.Font.Italic = true;
-                }
+                    var cur_completion = completions.Values.FirstOrDefault(completion => completion.dept_id == dept.Item1.id && completion.index_id == index.id);
+                    if (cur_completion == null) { continue; }
 
-                dept_idx2++;
+                    if (cur_completion.target != 0)
+                    {
+                        sheet.Cells[dept_idx2, index_col_idx].Value = cur_completion.target;
+                        sheet.Cells[dept_idx2, index_col_idx].Borders.LineStyle = 1;
+                        sheet.Cells[dept_idx2, index_col_idx + 1].Value = cur_completion.completed == 0 ? "" : cur_completion.completed.ToString();
+                        sheet.Cells[dept_idx2, index_col_idx + 1].Borders.LineStyle = 1;
+                    }
+                    else
+                    {
+                        var bypass_range = worksheet.Range[col_char1 + dept_idx2.ToString() + ":" + col_char2 + dept_idx2.ToString()];
+                        bypass_range.Merge();
+                        bypass_range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                        bypass_range.Value2 = "以三年为周期进行考核";
+                        bypass_range.Font.Bold = true;
+                        //bypass_range.Font.Italic = true;
+                        bypass_range.Borders.LineStyle = 1;
+                    }
+
+                    dept_idx2++;
+                    visitedDepts.Add(dept.Item1.id);
+                }
+                dept_iter_idx++;
             }
             index_col_idx += 2;
         }
@@ -570,6 +660,7 @@ namespace 考核系统.Utils
                     else
                     {
                         compleitonMapper.Add(cur_completion);//按理来说不会执行到这里
+                        CommonData.CompletionInfo[cur_completion.id] = cur_completion;
                     }
                 }
             }

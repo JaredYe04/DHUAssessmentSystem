@@ -15,6 +15,8 @@ using 考核系统.Mapper;
 using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 using static 考核系统.Form1;
+using System.IO;
+
 namespace 考核系统
 {
     public partial class Form1 : Form
@@ -248,9 +250,205 @@ namespace 考核系统
             Logger.Log("欢迎使用DHU考核系统");
             mainContainer.SizeMode = TabSizeMode.Fixed;//用户只能从菜单栏切换视图
             fetchDepartmentInfo();
+            menuGroups.Items[0].Click += createGroupClick;
+            menuGroups.Items[1].Click += removeGroupClick;
+            menuGroups.Items[2].Click += editGroupTargetClick;
+            menuGroups.Items[3].Click += editGroupCompletionClick;
+        }
+
+        private void editGroupInfo(bool isTarget)
+        {
+            var selectedCells = completionDataGrid.SelectedCells;
+            //根据Cells所在的行，获取选中的行范围
+            var selectedRows = new List<int>();
+            var groupSet = new HashSet<Groups>();
+            foreach (DataGridViewCell cell in selectedCells)
+            {
+                if (!selectedRows.Contains(cell.RowIndex))
+                {
+                    selectedRows.Add(cell.RowIndex);
+                }
+            }
+            selectedRows.Sort();
+            foreach (var row in selectedRows)
+            {
+                var deptCode = completionDataGrid.Rows[row].Cells[(int)CompletionColumns.dept_code].Value.ToString();
+                if (deptCode.Contains(":"))
+                {
+                    deptCode = deptCode.Split(':')[1].Trim();
+                }
+                var group = GroupsMapper.GetInstance().GetGroupByDeptCode(deptCode, CommonData.currentCompletionIndex.id);
+                if (group != null)
+                {
+                    groupSet.Add(group);
+                }
+            }
+            if (groupSet.Count == 0)
+            {
+                MessageBox.Show("未找到分组!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            string caption = isTarget ? $"修改 {groupSet.First().group_name} (等)小组目标值" : $"修改 {groupSet.First().group_name} (等)小组完成值";
+            var generalNumberInput = new GeneralNumberInput(caption);
+            generalNumberInput.ShowDialog();
+            if (generalNumberInput.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+            var target = Int32.Parse(generalNumberInput.textNumber.Text);
+            var groupCompletionMapper = GroupCompletionMapper.GetInstance();
+            foreach (var group in groupSet)
+            {
+                var groupCompletion = CommonData.currentIndexGroupCompletion[group.id];
+                if(isTarget)
+                {
+                    groupCompletion.target = target;
+                    CommonData.currentIndexGroupCompletion[group.id] = groupCompletion;
+                    groupCompletionMapper.Update(groupCompletion);
+                    Logger.Log($"修改组{group.group_name}目标值为{target}");
+                }
+                else
+                {
+                    groupCompletion.completed = target;
+                    CommonData.currentIndexGroupCompletion[group.id] = groupCompletion;
+                    groupCompletionMapper.Update(groupCompletion);
+                    Logger.Log($"修改组{group.group_name}完成值为{target}");
+                }
+            }
+            switchCompletionMode();
+        }
+        private void editGroupTargetClick(object sender, EventArgs e)
+        {
+            editGroupInfo(true);
+
+        }
+        private void editGroupCompletionClick(object sender, EventArgs e)
+        {
+            editGroupInfo(false);
+        }
+        private void createGroupClick(object sender, EventArgs e)
+        {
+
+            var selectedCells = completionDataGrid.SelectedCells;
+            //根据Cells所在的行，获取选中的行范围
+            var selectedRows = new List<int>();
+            foreach (DataGridViewCell cell in selectedCells)
+            {
+                if (!selectedRows.Contains(cell.RowIndex))
+                {
+                    selectedRows.Add(cell.RowIndex);
+                }
+            }
+            if (selectedRows.Count <2)
+            {
+                MessageBox.Show("请选择至少两行的数据", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            //从小到大排序
+            selectedRows.Sort();
+
+            foreach(var row in selectedRows)
+            {
+                var deptCode = completionDataGrid.Rows[row].Cells[(int)CompletionColumns.dept_code].Value.ToString();
+                var group = GroupsMapper.GetInstance().GetGroupByDeptCode(deptCode,CommonData.currentCompletionIndex.id);
+                if(group != null)
+                {
+                    MessageBox.Show("部门" + deptCode + "已经分配到" + group.group_name + "组，无法再分配！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+            }
+
+            string l_bound = completionDataGrid.Rows[selectedRows[0]].Cells[(int)CompletionColumns.dept_code].Value.ToString();
+            string r_bound = completionDataGrid.Rows[selectedRows[selectedRows.Count - 1]].Cells[(int)CompletionColumns.dept_code].Value.ToString();
+            var typeGroupName = new TypeGroupName();
+            typeGroupName.ShowDialog();
+            if(typeGroupName.DialogResult!=DialogResult.OK)
+            {
+                return;
+            }
+            var groupName = typeGroupName.textGroupName.Text;
+            var groupsMapper = GroupsMapper.GetInstance();
+            var newGroup = new Groups(-1, CommonData.currentCompletionIndex.id, groupName, l_bound, r_bound);
+            groupsMapper.Add(newGroup);
+            var newGroupJson = JsonConvert.DeserializeObject<Dictionary<string,object>>(JsonConvert.SerializeObject(newGroup));
+            newGroupJson.Remove("id");
+            newGroup = groupsMapper.GetObject(newGroupJson);
+            CommonData.GroupInfo[newGroup.id] = Groups.Copy(newGroup);
+            
+            initCompletion(CommonData.currentCompletionIndex);//创建小组的完成度信息
+            Logger.Log($"新增组{groupName}");
+            switchCompletionMode();
 
         }
 
+        private void removeGroupClick(object sender, EventArgs e)
+        {
+            var selectedCells = completionDataGrid.SelectedCells;
+            //根据Cells所在的行，获取选中的行范围
+            var selectedRows = new List<int>();
+            foreach (DataGridViewCell cell in selectedCells)
+            {
+                if (!selectedRows.Contains(cell.RowIndex))
+                {
+                    selectedRows.Add(cell.RowIndex);
+                }
+            }
+            foreach (var row in selectedRows)
+            {
+                var rawDeptCode = completionDataGrid.Rows[row].Cells[(int)CompletionColumns.dept_code].Value.ToString();
+                if (rawDeptCode.Contains(":"))
+                {
+                    var deptCode = rawDeptCode.Split(':')[1].Trim();
+                    var groupsMapper = GroupsMapper.GetInstance();
+                    var group = groupsMapper.GetGroupByDeptCode(deptCode, CommonData.currentCompletionIndex.id);
+                    groupsMapper.Remove(group.id.ToString());
+                    switchCompletionMode();
+                    Logger.Log($"删除组{group.group_name}");
+                    
+                }
+            }
+        }
+        private void switchCompletionMode()//用于将分组和单独部门的完成度信息切换，高亮展示
+        {
+            for(int i = 0; i < completionDataGrid.Rows.Count; i++)
+            {
+                var deptCode = completionDataGrid.Rows[i].Cells[(int)CompletionColumns.dept_code].Value.ToString();
+                if (deptCode.Contains(":"))
+                {
+                    deptCode = deptCode.Split(':')[1].Trim();
+                }
+
+                var group = GroupsMapper.GetInstance().GetGroupByDeptCode(deptCode, CommonData.currentCompletionIndex.id);
+                if (group == null)
+                {
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.dept_code].Value = deptCode;
+
+                    var completion_id= Int32.Parse(completionDataGrid.Rows[i].Cells[(int)CompletionColumns.id].Value.ToString());
+                    var completion = CommonData.CompletionInfo[completion_id];
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.target].Value = completion.target;
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.target].Style.BackColor = Color.White;
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.target].ReadOnly = false;
+
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.completed].Value = completion.completed;
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.completed].Style.BackColor = Color.White;
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.completed].ReadOnly = false;
+                    
+                }
+                else
+                {
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.dept_code].Value = group.group_name + " : " + deptCode;
+                    var groupCompletion = CommonData.currentIndexGroupCompletion[group.id];
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.target].Value = $"小组目标:{groupCompletion.target}";
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.target].Style.BackColor = HashColor.GetColor(group.group_name);
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.target].ReadOnly = true;
+
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.completed].Value = $"小组完成:{groupCompletion.completed}";
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.completed].Style.BackColor = HashColor.GetColor(group.group_name);
+                    completionDataGrid.Rows[i].Cells[(int)CompletionColumns.completed].ReadOnly = true;
+                }
+                calcCompletionRate(i);
+            }
+        }
         private void label2_Click(object sender, EventArgs e)
         {
 
@@ -339,7 +537,7 @@ namespace 考核系统
         private void deptDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             object cellValue = deptDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-            if (cellValue == null) cellValue = "0";
+            //if (cellValue == null) cellValue = "0";
             //获取当前格子字段名，根据DeptInfoColumns的枚举值来获取
             string columnName = Enum.GetName(typeof(DeptInfoColumns), e.ColumnIndex);
             if (e.RowIndex>=CommonData.DeptInfo.Count)
@@ -353,11 +551,17 @@ namespace 考核系统
 
                 if (newDeptInfo.Keys.Contains(columnName))
                 {
-                    newDeptInfo[columnName] = cellValue.ToString();
+                    if (cellValue != null)
+                        newDeptInfo[columnName] = cellValue.ToString();
+                    else
+                        newDeptInfo[columnName] = null;
                 }
                 if(newDeptAnnualInfo.Keys.Contains(columnName))
                 {
-                    newDeptAnnualInfo[columnName] = cellValue.ToString();
+                    if (cellValue != null)
+                        newDeptAnnualInfo[columnName] = cellValue.ToString();
+                    else
+                        newDeptAnnualInfo[columnName] = null;
                 }
                 //由于不知道部门id，所以只能先插入部门信息，然后从数据库中获取id，再插入年度信息
                 var newDeptInfoObj = JsonConvert.DeserializeObject<Department>(JsonConvert.SerializeObject(newDeptInfo));
@@ -393,7 +597,7 @@ namespace 考核系统
 
             
             
-            if (deptInfo.Keys.Contains(columnName)&& (deptInfo[columnName]==null||deptInfo[columnName].ToString() != cellValue.ToString()))
+            if (deptInfo.Keys.Contains(columnName)&& (deptInfo[columnName]==null|| cellValue==null||deptInfo[columnName].ToString() != cellValue.ToString()))
             {
                 //写数据库
                 var deptMapper = DepartmentMapper.GetInstance();
@@ -409,7 +613,7 @@ namespace 考核系统
                 
             }
 
-            if(deptAnnualInfo.Keys.Contains(columnName) && (deptAnnualInfo[columnName]==null||deptAnnualInfo[columnName].ToString() != cellValue.ToString()))
+            if(deptAnnualInfo.Keys.Contains(columnName) && (deptAnnualInfo[columnName]==null||cellValue==null||deptAnnualInfo[columnName].ToString() != cellValue.ToString()))
             {
                 //写数据库
                 var deptAnnualInfoMapper = DeptAnnualInfoMapper.GetInstance();
@@ -774,6 +978,7 @@ namespace 考核系统
         {
             
             fetchManagerInfo();
+            fetchGroupsInfo();
             fetchDepartmentInfo();
             fetchDutyInfo();
 
@@ -846,6 +1051,17 @@ namespace 考核系统
             foreach (var indexCompletion in indexCompletionList)
             {
                 CommonData.CompletionInfo[indexCompletion.id] = Completion.Copy(indexCompletion);
+            }
+
+            //分组完成情况
+            if (CommonData.GroupCompletionInfo == null) CommonData.GroupCompletionInfo = new Dictionary<int, GroupCompletion>();
+            CommonData.GroupCompletionInfo.Clear();
+            var groupCompletionMapper = GroupCompletionMapper.GetInstance();
+            var groupCompletionList = groupCompletionMapper.GetIndexCompletionByYear(CommonData.CurrentYear);
+            CommonData.GroupCompletionInfo = new Dictionary<int, GroupCompletion>();
+            foreach (var groupCompletion in groupCompletionList)
+            {
+                CommonData.GroupCompletionInfo[groupCompletion.id] = GroupCompletion.Copy(groupCompletion);
             }
 
         }
@@ -1516,46 +1732,116 @@ namespace 考核系统
         private void calcCompletionRate(int row_idx)
         {
             var row = completionDataGrid.Rows[row_idx];
-            if(
-                row.Cells[(int)CompletionColumns.target].Value== null ||
-                row.Cells[(int)CompletionColumns.completed].Value == null||
-                Int32.Parse(row.Cells[(int)CompletionColumns.target].Value.ToString()) == 0||
-                Int32.Parse(row.Cells[(int)CompletionColumns.completed].Value.ToString()) == 0
-                )
+            if (row.Cells[(int)CompletionColumns.target].Value.ToString().Contains("小组"))
             {
-                row.Cells[(int)CompletionColumns.completion_rate].Value = "";
+                int target = Int32.Parse(row.Cells[(int)CompletionColumns.target].Value.ToString().Substring("小组目标:".Length));
+                int completion = Int32.Parse(row.Cells[(int)CompletionColumns.completed].Value.ToString().Substring("小组完成:".Length));
+                if(target == 0)
+                {
+                    row.Cells[(int)CompletionColumns.completion_rate].Value = "";
+                }
+                else
+                {
+                    double rate = (double)completion / target;
+                    row.Cells[(int)CompletionColumns.completion_rate].Value = rate.ToString("P");
+                }
             }
-            int target = Int32.Parse(row.Cells[(int)CompletionColumns.target].Value.ToString());
-            int completion = Int32.Parse(row.Cells[(int)CompletionColumns.completed].Value.ToString());
-            double rate = (double)completion / target;
-            row.Cells[(int)CompletionColumns.completion_rate].Value = rate.ToString("P");
+            else
+            {
+                if (
+                    row.Cells[(int)CompletionColumns.target].Value == null ||
+                    row.Cells[(int)CompletionColumns.completed].Value == null ||
+                    Int32.Parse(row.Cells[(int)CompletionColumns.target].Value.ToString()) == 0 ||
+                    Int32.Parse(row.Cells[(int)CompletionColumns.completed].Value.ToString()) == 0
+                    )
+                {
+                    row.Cells[(int)CompletionColumns.completion_rate].Value = "";
+                }
+                int target = Int32.Parse(row.Cells[(int)CompletionColumns.target].Value.ToString());
+                int completion = Int32.Parse(row.Cells[(int)CompletionColumns.completed].Value.ToString());
+                double rate = (double)completion / target;
+                row.Cells[(int)CompletionColumns.completion_rate].Value = rate.ToString("P");
+            }
+
         }
+        //private void switchCompletionMode(GroupCompletion groupCompletion)
+        //{
+        //    //对于某些单位，如果是在组内，而当年对该组有考核目标(target!=0)，则单位本身就不需要再有考核目标，
+        //    //因此需要把在组内的所有单位Enabled设置为false,并不允许编辑
+        //    //todo
+        //    var deptMapper=DepartmentMapper.GetInstance();
+        //    var currentYear = CommonData.CurrentYear;
+        //    var deptsInGroup=deptMapper.GetDepartmentsByGroupName(CommonData.GroupInfo[groupCompletion.group_id].group_name,currentYear);
+        //    foreach (var dept in deptsInGroup)
+        //    {
+        //        if (CommonData.currentIndexCompletion.ContainsKey(dept.id))
+        //        {
+        //            var row = completionDataGrid.Rows.Cast<DataGridViewRow>()
+        //                .FirstOrDefault(x =>
+        //                x.Cells[(int)CompletionColumns.id].Value.ToString()
+        //                        == CommonData.currentIndexCompletion[dept.id].id.ToString()
+        //                        && !(x.Cells[(int)CompletionColumns.dept_code].Value.ToString().StartsWith("[小组]"))
+        //                //需要排除小组的行，因为小组的行id和部门的行id可能相同
+
+        //                );
+        //            bool flag = groupCompletion.target == 0;//等于0说明不需要考虑组，可以编辑单个部门
+        //            if (row != null)
+        //            {
+        //                row.Cells[(int)CompletionColumns.target].ReadOnly = !flag;
+        //                row.Cells[(int)CompletionColumns.target].Style.BackColor = flag ? Color.White : Color.LightGray;
+        //                row.Cells[(int)CompletionColumns.completed].ReadOnly = !flag;
+        //                row.Cells[(int)CompletionColumns.completed].Style.BackColor = flag ? Color.White : Color.LightGray;
+        //            }
+        //            if (!flag)
+        //            {
+        //                Logger.Log($"部门{dept.dept_code}在小组{CommonData.GroupInfo[groupCompletion.group_id].group_name}中，不需要考核目标");
+        //            }
+        //        }
+        //    }
+        //}
         private void bindCompletionIndex()
         {
             if (CommonData.currentIndexCompletion == null)
             {
                 CommonData.currentIndexCompletion = new Dictionary<int, Completion>();
             }
-            
+            if(CommonData.currentIndexGroupCompletion == null)
+            {
+                CommonData.currentIndexGroupCompletion = new Dictionary<int, GroupCompletion>();
+            }
+            var currentYear = CommonData.CurrentYear;
             if (treeDuty.SelectedNode != null && treeDuty.SelectedNode.Tag is Index)
             {
                 labelCurrentIndexCompletion.Text = "当前指标:" + treeDuty.SelectedNode.Text;
                 var index = (Index)treeDuty.SelectedNode.Tag;
                 initCompletion(index);
                 CommonData.currentCompletionIndex = index;
-                var completionList = CompletionMapper.GetInstance().GetCompletionByIndexId(index.id);
+
+                var completionList = CompletionMapper.GetInstance().GetCompletionByIndexId(index.id, currentYear);
                 foreach (var completion in completionList)
                 {
-                    if (!CommonData.currentIndexCompletion.ContainsKey(completion.dept_id))
-                    {
-                        CommonData.currentIndexCompletion.Add(completion.dept_id, completion);
-                    }
+                    CommonData.currentIndexCompletion[completion.dept_id] = completion;
                 }
-                var completions = CommonData.currentIndexCompletion;
-                completionDataGrid.Rows.Clear();
-                foreach (var item in completions)
+                var groupCompletionList=GroupCompletionMapper.GetInstance().GetCompletionByIndexId(index.id, currentYear);
+                foreach (var groupCompletion in groupCompletionList)
                 {
-                    var completion = item.Value;
+                    CommonData.currentIndexGroupCompletion[groupCompletion.group_id] = groupCompletion;
+
+                }
+
+                var completions = CommonData.currentIndexCompletion.Values.ToList();
+
+                //把completions按照dept_code字典序排序，但是可能有数字，例如a1,..,a10,a11，需要按照数字大小排序
+
+                //completions = completions.OrderBy(x => CommonData.DeptInfo[x.dept_id].Item1.dept_code).ToList();
+
+                completions = completions.OrderBy(x => CommonData.DeptInfo[x.dept_id].Item1.dept_code, new NaturalComparer()).ToList();
+
+
+
+                completionDataGrid.Rows.Clear();
+                foreach (var completion in completions)
+                {
                     var dept= CommonData.DeptInfo[completion.dept_id].Item1;
                     var row= completionDataGrid.Rows[completionDataGrid.Rows.Add()];
                     row.Cells[(int)CompletionColumns.id].Value = completion.id;
@@ -1565,11 +1851,31 @@ namespace 考核系统
                     row.Cells[(int)CompletionColumns.completed].Value = completion.completed;
                     calcCompletionRate(row.Index);
                 }
+                switchCompletionMode();
+                //var groupCompletions= CommonData.currentIndexGroupCompletion;
+                //foreach(var item in groupCompletions)
+                //{
+                //    var group_completion = item.Value;
+                //    var group = CommonData.GroupInfo[group_completion.group_id];
+                //    var row = completionDataGrid.Rows[completionDataGrid.Rows.Add()];
+                //    row.Cells[(int)CompletionColumns.id].Value = group_completion.id;
+                //    row.Cells[(int)CompletionColumns.dept_code].Value = $"[小组]{group.id}";
+                //    row.Cells[(int)CompletionColumns.dept_code].Style.BackColor = Color.Gold;
+
+                //    row.Cells[(int)CompletionColumns.dept_name].Value = group.group_name;
+                //    row.Cells[(int)CompletionColumns.dept_name].Style.BackColor = Color.Gold;
+
+                //    row.Cells[(int)CompletionColumns.target].Value = group_completion.target;
+                //    row.Cells[(int)CompletionColumns.completed].Value = group_completion.completed;
+                //    calcCompletionRate(row.Index);
+                //    switchCompletionMode(group_completion);
+                //}
 
             }
-            var lastRow = completionDataGrid.Rows[completionDataGrid.Rows.Count - 1];
-            lastRow.Cells[(int)CompletionColumns.target].ReadOnly = true;
-            lastRow.Cells[(int)CompletionColumns.completed].ReadOnly = true;
+           
+            //var lastRow = completionDataGrid.Rows[completionDataGrid.Rows.Count - 1];
+            //lastRow.Cells[(int)CompletionColumns.target].ReadOnly = true;
+            //lastRow.Cells[(int)CompletionColumns.completed].ReadOnly = true;
         }
         private void unbindCompletionIndex()
         {
@@ -1583,11 +1889,22 @@ namespace 考核系统
         {
             //由于某些指标在数据库中没有完成度信息，所以要先创建空的完成度信息
             var completionMapper = CompletionMapper.GetInstance();
-            var completionList = completionMapper.GetCompletionByIndexId(index.id);
+            var completionList = completionMapper.GetCompletionByIndexId(index.id, CommonData.CurrentYear);
+
             var currentYear = CommonData.CurrentYear;
+            var bound = true;
+            foreach(var dept in CommonData.DeptInfo.Values)
+            {
+                if (!completionList.Any(x => x.dept_id == dept.Item1.id && x.index_id == index.id && x.year == currentYear))
+                {
+                    bound = false;
+                    break;
+                }
+            }
             if (completionList.Count < CommonData.DeptInfo.Count)
             {
                 var depts= CommonData.DeptInfo.Values.Select(x => x.Item1);
+                int cnt = 0;
                 foreach (var dept in depts)
                 {
                     var completion = new Completion();
@@ -1598,15 +1915,74 @@ namespace 考核系统
                     if(!completionList.Any(x => x.dept_id == dept.id && x.index_id==index.id && x.year==currentYear))
                     {
                         completionMapper.Add(completion);
+
+                        var map= JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(completion));
+                        map.Remove("id");
+                        map.Remove("completion_rate");
+                        completion = completionMapper.GetObject(map);//获取刚刚插入的数据的id
+                        ++cnt;
+
                     }
                     if (CommonData.currentIndexCompletion != null)
                     {
                         //当目前选中了指标，并正在初始化时，要把新创建的完成度信息加入到内存中，但如果没有选中指标，就不需要加入内存
                         CommonData.currentIndexCompletion[dept.id] = completion;
-                    }
+                    }//todo:是否要移到里面
                     CommonData.CompletionInfo[completion.id] = completion;
                 }
-                Logger.Log($"为指标{index.index_name}创建了{depts.Count()}个部门的完成度信息");
+                Logger.Log($"为指标{index.index_name}创建了{cnt}个部门的完成度信息");
+            }
+            var groupsMapper = GroupsMapper.GetInstance();
+            var currentIndexGroups=groupsMapper.GetGroupsByIndexId(index.id);
+
+
+            var groupCompletionMapper = GroupCompletionMapper.GetInstance();
+            var groupCompletionList = groupCompletionMapper.GetCompletionByIndexId(index.id, CommonData.CurrentYear);
+            bound = true;
+            foreach (var currentIndexGroup in currentIndexGroups)
+            {
+                if(!groupCompletionList.Any(x => x.group_id == currentIndexGroup.id && x.index_id == index.id && x.year == currentYear))
+                {
+                    bound = false;
+                    break;
+                }
+            }
+            if (!bound)
+            {
+                int cnt = 0;
+                foreach (var group in currentIndexGroups)
+                {
+                    var completion = new GroupCompletion();
+                    
+                    completion.index_id = index.id;
+                    completion.group_id = group.id;
+                    completion.year = CommonData.CurrentYear;
+                    var exists =
+                        groupCompletionList.Any(x => x.group_id == group.id && x.index_id == index.id && x.year == CommonData.CurrentYear);
+                    if (exists)
+                    {
+                        completion= groupCompletionList.First(x => x.group_id == group.id && x.index_id == index.id && x.year == CommonData.CurrentYear);
+                    }
+                    //如果没有完成度信息，就创建一个，有的话就不创建
+                    if (!groupCompletionList.Any(x => x.group_id == group.id && x.index_id == index.id && x.year == currentYear))
+                    {
+                        groupCompletionMapper.Add(completion);
+                        var map = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(completion));
+                        map.Remove("id");
+                        map.Remove("completion_rate");
+                        completion = groupCompletionMapper.GetObject(map);//获取刚刚插入的数据的id
+                        ++cnt;
+
+                    }
+                    if (CommonData.currentIndexGroupCompletion != null)
+                    {
+                        //当目前选中了指标，并正在初始化时，要把新创建的完成度信息加入到内存中，但如果没有选中指标，就不需要加入内存
+                        CommonData.currentIndexGroupCompletion[group.id] = completion;
+
+                    }
+                    CommonData.GroupCompletionInfo[completion.id] = completion;
+                }
+                Logger.Log($"为指标{index.index_name}创建了{cnt}个小组的完成度信息");
             }
         }
         private void treeDuty_DoubleClick(object sender, EventArgs e)
@@ -1625,26 +2001,53 @@ namespace 考核系统
             object cellValue = completionDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 
             string columnName = Enum.GetName(typeof(CompletionColumns), e.ColumnIndex);
+
+
+            //if (completionDataGrid.Rows[e.RowIndex].Cells[(int)CompletionColumns.dept_code].Value.ToString().StartsWith("[小组]"))
+            //{
+            //    int group_completion_id = (int)completionDataGrid.Rows[e.RowIndex].Cells[0].Value;
+            //    var group_id = Int32.Parse(completionDataGrid.Rows[e.RowIndex].Cells[(int)CompletionColumns.dept_code].Value.ToString().Substring(4));
+            //    var groupCompletionInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(CommonData.GroupCompletionInfo[group_completion_id]));
+            //    if (groupCompletionInfo[columnName] == null || groupCompletionInfo[columnName].ToString() != cellValue.ToString())
+            //    {
+            //        //写数据库
+            //        var groupCompletionMapper = GroupCompletionMapper.GetInstance();
+            //        Logger.Log($"小组{group_id}的{columnName}由{groupCompletionInfo[columnName]}变更为{cellValue}");
+
+            //        groupCompletionInfo[columnName] = cellValue;
+            //        var groupCompletionInfoObj = JsonConvert.DeserializeObject<GroupCompletion>(JsonConvert.SerializeObject(groupCompletionInfo));
+            //        CommonData.currentIndexGroupCompletion[group_id] = GroupCompletion.Copy(groupCompletionInfoObj);
+            //        CommonData.GroupCompletionInfo[group_completion_id]=GroupCompletion.Copy(groupCompletionInfoObj);
+            //        groupCompletionMapper.Update(groupCompletionInfoObj);
+            //        calcCompletionRate(e.RowIndex);
+            //        switchCompletionMode(groupCompletionInfoObj);
+            //    }
+            //}
+            //else 
+            //{
+                int completion_id = (int)completionDataGrid.Rows[e.RowIndex].Cells[0].Value;
+                int dept_id = CommonData.CompletionInfo[completion_id].dept_id;
+                var completionInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(CommonData.CompletionInfo[completion_id]));
+                if (completionInfo[columnName] == null || completionInfo[columnName].ToString() != cellValue.ToString())
+                {
+                    //写数据库
+                    var completionMapper = CompletionMapper.GetInstance();
+                    Logger.Log($"部门{dept_id}的{columnName}由{completionInfo[columnName]}变更为{cellValue}");
+
+                    completionInfo[columnName] = cellValue;
+                    var completionInfoObj = JsonConvert.DeserializeObject<Completion>(JsonConvert.SerializeObject(completionInfo));
+
+                    CommonData.currentIndexCompletion[dept_id] = Completion.Copy(completionInfoObj);
+                    CommonData.CompletionInfo[completion_id] = Completion.Copy(completionInfoObj);
+                    completionMapper.Update(completionInfoObj);
+
+                    calcCompletionRate(e.RowIndex);
+                }
+
+
+
+            //}
             
-            int completion_id = (int)completionDataGrid.Rows[e.RowIndex].Cells[0].Value;
-            var completionInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(CommonData.CompletionInfo[completion_id]));
-
-            if (completionInfo[columnName] == null || completionInfo[columnName].ToString() != cellValue.ToString())
-            {
-                //写数据库
-                var completionMapper = CompletionMapper.GetInstance();
-                Logger.Log($"部门{completion_id}的{columnName}由{completionInfo[columnName]}变更为{cellValue}");
-
-                completionInfo[columnName] = cellValue;
-                var completionInfoObj = JsonConvert.DeserializeObject<Completion>(JsonConvert.SerializeObject(completionInfo));
-
-                CommonData.currentIndexCompletion[completion_id] = Completion.Copy(completionInfoObj);
-
-                completionMapper.Update(completionInfoObj);
-
-                calcCompletionRate(e.RowIndex);
-
-            }
         }
 
         private void buttonCompletionExport_Click(object sender, EventArgs e)
@@ -1709,9 +2112,41 @@ namespace 考核系统
             MessageBox.Show("导出完成","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
         }
 
-        private void buttonGroupManagement_Click(object sender, EventArgs e)
+        private void menuGroups_Opening(object sender, CancelEventArgs e)
         {
-            editGroups.ShowDialog();
+            var selectedCells = completionDataGrid.SelectedCells;
+            //根据Cells所在的行，获取选中的行范围
+            var selectedRows = new List<int>();
+            foreach (DataGridViewCell cell in selectedCells)
+            {
+                if (!selectedRows.Contains(cell.RowIndex))
+                {
+                    selectedRows.Add(cell.RowIndex);
+                }
+            }
+            selectedRows.Sort();
+            bool flag = false;
+            foreach (var row in selectedRows)
+            {
+                var deptCode = completionDataGrid.Rows[row].Cells[(int)CompletionColumns.dept_code].Value.ToString();
+                if (deptCode.Contains(':'))
+                {
+                    deptCode = deptCode.Split(':')[1].Trim();
+                }
+                var group = GroupsMapper.GetInstance().GetGroupByDeptCode(deptCode, CommonData.currentCompletionIndex.id);
+                if (group != null)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            menuGroups.Items[2].Enabled = flag;
+            menuGroups.Items[3].Enabled = flag;
         }
+
+        //private void buttonGroupManagement_Click(object sender, EventArgs e)
+        //{
+        //    //editGroups.ShowDialog();
+        //}
     }
 }

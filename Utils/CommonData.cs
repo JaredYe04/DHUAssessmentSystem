@@ -54,8 +54,10 @@ namespace 考核系统.Utils
         }
         public static bool userEditing = true;// 标志，用户是否正在编辑
 
-        public static Dictionary<int,Completion> currentIndexCompletion { get; set; }//当前选中的指标的完成情况
+        public static Dictionary<int,Completion> currentIndexCompletion { get; set; }//当前选中的指标的完成情况，键是dept_id,不是completion的id
+        public static Dictionary<int, GroupCompletion> currentIndexGroupCompletion { get; set; }//当前选中的指标的分组完成情况，键是group_id，不是groupCompletion的id
         public static Dictionary<int,Completion> CompletionInfo { get; set; }//所有指标的完成情况
+        public static Dictionary<int, GroupCompletion> GroupCompletionInfo { get; set; }//所有指标的分组完成情况
         public static Index currentCompletionIndex { get; set; }
     }
 }

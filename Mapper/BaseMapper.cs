@@ -47,13 +47,20 @@ namespace 考核系统.Mapper
             string sql = $"select * from '{tableName}'";
             return QueryAll(sql);
         }
-        public void Add(T obj,bool AutoId=true)
+        public void Add(T obj,bool AutoId=true, string[] bypassKeys = null)
         {
             try
             {
                 string json = JsonConvert.SerializeObject(obj);
                 Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-                if(AutoId)
+                if (bypassKeys != null)
+                {
+                    foreach (var key in bypassKeys)
+                    {
+                        dict.Remove(key);
+                    }
+                }
+                if (AutoId)
                 {
                     dict.Remove(keyName);
                 }
