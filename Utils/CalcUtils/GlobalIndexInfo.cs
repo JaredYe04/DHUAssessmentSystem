@@ -13,7 +13,10 @@ namespace 考核系统.Utils.CalcUtils
     {
         private static List<Entity.Index> indexInfo;
         private static List<Completion> completionColumns;
+        private static List<Department> departmentColumns;
         private static GlobalIndexInfo instance;
+        private static List<GroupCompletion> groupCompletionColumns;
+        private static int currentYear;
         private GlobalIndexInfo() {
             
             var indexMapper = IndexMapper.GetInstance();
@@ -22,6 +25,13 @@ namespace 考核系统.Utils.CalcUtils
             var completionMapper = CompletionMapper.GetInstance();
             sql = "select * from completion";
             completionColumns = completionMapper.QueryAll(sql);
+            var groupCompletionMapper = GroupCompletionMapper.GetInstance();
+            sql = "select * from group_completion";
+            groupCompletionColumns = groupCompletionMapper.QueryAll(sql);
+            var deptMapper = DepartmentMapper.GetInstance();
+            sql = "select * from department";
+            departmentColumns = deptMapper.QueryAll(sql);
+            currentYear = CommonData.CurrentYear;
         }
         public static GlobalIndexInfo GetInstance()
         {
@@ -35,7 +45,29 @@ namespace 考核系统.Utils.CalcUtils
         public int GlobalCompletion(Entity.Index index)
         {
             //返回全校某指标的完成数之和
-            return completionColumns.Where(completion => completion.index_id == index.id).Sum(completion => completion.completed);
+            int individualData = completionColumns.Where(completion => completion.index_id == index.id).Sum(completion => completion.completed);
+            int groupData = groupCompletionColumns.Where
+                (groupCompletion => groupCompletion.index_id == index.id
+                && groupCompletion.year == currentYear).Sum(groupCompletion => groupCompletion.completed);
+            var groups = GroupsMapper.GetInstance().GetGroupsByIndexId(index.id);
+            int additionalData = 0;
+            //要去除合并分组之前，各部门各自的完成数
+            foreach (var completion in completionColumns)
+            {
+                var dept_id = completion.dept_id;
+                var dept_code = departmentColumns.Where(dept => dept.id == dept_id).First().dept_code;
+                //使用NaturalComparer类的Between方法判断dept_id是否在group的左右边界之间
+
+                foreach (var group in groups)
+                {
+                    if (new NaturalComparer().Between(group.l_bound, group.r_bound, dept_code))
+                    {
+                        additionalData += completion.completed;
+                        break;
+                    }
+                }
+            }
+            return individualData + groupData - additionalData;
         }
         public double BasicTheoreticalFullScoreSum//6.单项基础类指标完成度理论满分总分
         {

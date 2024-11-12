@@ -10,10 +10,53 @@
  Target Server Version : 3035005
  File Encoding         : 65001
 
- Date: 30/10/2024 11:16:10
+ Date: 12/11/2024 18:26:59
 */
 
-PRAGMA foreign_keys = false;
+PRAGMA FOREIGN_KEYS=ON;
+
+-- ----------------------------
+-- Table structure for _groups_old_20241112
+-- ----------------------------
+DROP TABLE IF EXISTS "_groups_old_20241112";
+CREATE TABLE "_groups_old_20241112" (
+  "id" INTEGER NOT NULL,
+  "group_name" TEXT NOT NULL,
+  "l_bound" TEXT,
+  "r_bound" TEXT,
+  PRIMARY KEY ("id")
+);
+
+-- ----------------------------
+-- Table structure for _groups_old_20241112_1
+-- ----------------------------
+DROP TABLE IF EXISTS "_groups_old_20241112_1";
+CREATE TABLE "_groups_old_20241112_1" (
+  "id" INTEGER NOT NULL,
+  "index_id" INTEGER NOT NULL,
+  "group_name" TEXT NOT NULL,
+  "l_bound" TEXT,
+  "r_bound" TEXT,
+  PRIMARY KEY ("id")
+);
+
+-- ----------------------------
+-- Table structure for _indexes_old_20241107
+-- ----------------------------
+DROP TABLE IF EXISTS "_indexes_old_20241107";
+CREATE TABLE "_indexes_old_20241107" (
+  "id" integer NOT NULL,
+  "identifier_id" INTEGER,
+  "secondary_identifier" integer,
+  "index_name" TEXT,
+  "index_type" TEXT,
+  "weight1" real,
+  "weight2" real,
+  "enable_sensitivity" integer,
+  "sensitivity" real,
+  PRIMARY KEY ("id"),
+  CONSTRAINT "identifier_id" FOREIGN KEY ("identifier_id") REFERENCES "index_identifier" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 -- ----------------------------
 -- Table structure for completion
@@ -27,8 +70,8 @@ CREATE TABLE "completion" (
   "target" integer,
   "completed" integer,
   PRIMARY KEY ("id"),
-  CONSTRAINT "dept_id" FOREIGN KEY ("dept_id") REFERENCES "department" ("dept_id") ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT "index_id" FOREIGN KEY ("index_id") REFERENCES "index" ("index_id") ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT "dept_id" FOREIGN KEY ("dept_id") REFERENCES "department" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT "index_id" FOREIGN KEY ("index_id") REFERENCES "indexes" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- ----------------------------
@@ -58,19 +101,33 @@ CREATE TABLE "dept_annual_info" (
 );
 
 -- ----------------------------
--- Table structure for index
+-- Table structure for group_completion
 -- ----------------------------
-DROP TABLE IF EXISTS "index";
-CREATE TABLE "index" (
+DROP TABLE IF EXISTS "group_completion";
+CREATE TABLE "group_completion" (
   "id" integer NOT NULL,
-  "index_code" text NOT NULL,
-  "index_name" TEXT,
-  "index_type" TEXT,
-  "weight1" real,
-  "weight2" real,
-  "enable_sensitivity" numeric,
-  "sensitivity" real,
-  PRIMARY KEY ("id")
+  "group_id" integer NOT NULL,
+  "year" integer NOT NULL,
+  "index_id" integer NOT NULL,
+  "target" integer,
+  "completed" integer,
+  PRIMARY KEY ("id"),
+  CONSTRAINT "group_id" FOREIGN KEY ("group_id") REFERENCES "groups" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT "index_id" FOREIGN KEY ("index_id") REFERENCES "indexes" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ----------------------------
+-- Table structure for groups
+-- ----------------------------
+DROP TABLE IF EXISTS "groups";
+CREATE TABLE "groups" (
+  "id" INTEGER NOT NULL,
+  "index_id" INTEGER NOT NULL,
+  "group_name" TEXT NOT NULL,
+  "l_bound" TEXT,
+  "r_bound" TEXT,
+  PRIMARY KEY ("id"),
+  CONSTRAINT "index_id" FOREIGN KEY ("index_id") REFERENCES "indexes" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- ----------------------------
@@ -81,10 +138,39 @@ CREATE TABLE "index_duty" (
   "id" integer NOT NULL,
   "manager_id" integer NOT NULL,
   "index_id" integer NOT NULL,
-  "enable_assessment" numeric,
+  "enable_assessment" integer,
   PRIMARY KEY ("id"),
   CONSTRAINT "manager_id" FOREIGN KEY ("manager_id") REFERENCES "manager" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT "index_id" FOREIGN KEY ("index_id") REFERENCES "index" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT "index_id" FOREIGN KEY ("index_id") REFERENCES "indexes" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ----------------------------
+-- Table structure for index_identifier
+-- ----------------------------
+DROP TABLE IF EXISTS "index_identifier";
+CREATE TABLE "index_identifier" (
+  "id" INTEGER NOT NULL,
+  "identifier_name" TEXT,
+  PRIMARY KEY ("id")
+);
+
+-- ----------------------------
+-- Table structure for indexes
+-- ----------------------------
+DROP TABLE IF EXISTS "indexes";
+CREATE TABLE "indexes" (
+  "id" integer NOT NULL,
+  "identifier_id" INTEGER,
+  "secondary_identifier" integer,
+  "tertiary_identifier" TEXT,
+  "index_name" TEXT,
+  "index_type" TEXT,
+  "weight1" real,
+  "weight2" real,
+  "enable_sensitivity" integer,
+  "sensitivity" real,
+  PRIMARY KEY ("id"),
+  CONSTRAINT "identifier_id" FOREIGN KEY ("identifier_id") REFERENCES "index_identifier" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- ----------------------------

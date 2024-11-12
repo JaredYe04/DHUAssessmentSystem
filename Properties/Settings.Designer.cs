@@ -22,16 +22,5 @@ namespace 考核系统.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\DhuAssessment.accdb" +
-            "")]
-        public string DhuAssessmentConnectionString {
-            get {
-                return ((string)(this["DhuAssessmentConnectionString"]));
-            }
-        }
     }
 }

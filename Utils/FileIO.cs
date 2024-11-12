@@ -546,9 +546,10 @@ namespace 考核系统.Utils
             var workbook = excel.Workbooks.Open(fileName);
             var sheet_count = workbook.Sheets.Count;
             var completions = CommonData.CompletionInfo;
-            var compleitonMapper = CompletionMapper.GetInstance();
+            var completionMapper = CompletionMapper.GetInstance();
             var currentYear = CommonData.CurrentYear;
-            var depts = CommonData.DeptInfo.Values;
+            var deptsRaw = CommonData.DeptInfo.Values;
+            var depts= deptsRaw.OrderBy(dept => dept.Item1.dept_code, new NaturalComparer()).ToList();
             for (int i = 1; i <= sheet_count; i++)
             {
                 var worksheet = workbook.Sheets.Item[i];
@@ -563,7 +564,7 @@ namespace 考核系统.Utils
                     var department = depts.FirstOrDefault(dept => dept.Item1.dept_code == dept_code.ToString());
                     if (department != null)
                     {
-                        currentDepts.Add(department.Item1);
+                        currentDepts.Add(department.Item1);//由于导出的时候是按照dept_code排序的，所以这里也是按照dept_code排序的
                     }
                     row_idx++;
                 }//读取单位信息
@@ -606,7 +607,8 @@ namespace 考核系统.Utils
         {
             var currentYear = CommonData.CurrentYear;
             var completions = CommonData.CompletionInfo;
-            var compleitonMapper = CompletionMapper.GetInstance();
+            var completionMapper = CompletionMapper.GetInstance();
+            var groupCompletionMapper=GroupCompletionMapper.GetInstance();
             Entity.Index index = null;
             if (index_name_raw!="总计")
             {
@@ -625,43 +627,96 @@ namespace 考核系统.Utils
                 index = importedMainIndex;
             }
             int value_row_offset = 5;
+            var groupsMapper = GroupsMapper.GetInstance();
             if (index != null)
             {
                 for (int j = 0; j < currentDepts.Count; j++)
                 {
-                    var cur_completion = new Completion();
-                    cur_completion.dept_id = currentDepts[j].id;
-                    cur_completion.index_id = index.id;
-
-                    if (worksheet.Cells[j + value_row_offset, index_col_idx].Value.ToString().Contains("以三年为周期进行考核"))
+                    //要判断是单独的，还是组的
+                    var group= groupsMapper.GetGroupByDeptCode(currentDepts[j].dept_code, index.id);
+                    if (group != null)
                     {
-                        continue;//跳过
-                    }
-                    cur_completion.target = worksheet.Cells[j + value_row_offset, index_col_idx].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx].Value);
+                        var cur_group_completion = new GroupCompletion();
+                        cur_group_completion.group_id = group.id;
+                        cur_group_completion.year = currentYear;
+                        int delta_j = 0;
+
+                        while(j+delta_j< currentDepts.Count && groupsMapper.GetGroupByDeptCode(currentDepts[j + delta_j].dept_code, index.id).id == group.id)
+                        {
+                            delta_j++;
+                        }
+                        delta_j--;
+                        //delta_j代表某个组里面有多少个部门-1 , -1是因为下一轮循环会加1
+
+                        if (worksheet.Cells[j + value_row_offset, index_col_idx].Value.ToString().Contains("以三年为周期进行考核")|| worksheet.Cells[j + value_row_offset, index_col_idx].Value.ToString()=="")
+                        {
+                            j += delta_j;
+                            continue;
+                        }
+                        cur_group_completion.target = worksheet.Cells[j + value_row_offset, index_col_idx].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx].Value);
+                        cur_group_completion.completed = worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value);
+                        cur_group_completion.index_id = index.id;
 
 
-                    cur_completion.completed = worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value);
-                    cur_completion.year = currentYear;
-                    if (
-                        completions.Any(com => com.Value.dept_id == cur_completion.dept_id &&
-                                    com.Value.index_id == cur_completion.index_id &&
-                                    com.Value.year == cur_completion.year)
-                        )
-                    {
-                        var completion = completions.Values.FirstOrDefault(com => com.dept_id == cur_completion.dept_id &&
-                                    com.index_id == cur_completion.index_id &&
-                                    com.year == cur_completion.year);
-                        cur_completion.id = completion.id;
-                        cur_completion.target = completion.target;
+                        if (cur_group_completion.target != 0)
+                        {
+                            if (CommonData.GroupCompletionInfo.Any
+                                (com => com.Value.group_id == cur_group_completion.group_id &&
+                            com.Value.year == cur_group_completion.year &&
+                            com.Value.index_id==cur_group_completion.index_id))
+                            {
+                                var group_completion = CommonData.GroupCompletionInfo.Values.FirstOrDefault(com => com.group_id == cur_group_completion.group_id && com.year == cur_group_completion.year);
+                                cur_group_completion.id = group_completion.id;
+                                groupCompletionMapper.Update(cur_group_completion);
+                                Logger.Log($"在{currentYear}年，部门{currentDepts[j].dept_name}的{index.index_name}的完成数为{cur_group_completion.completed}");
+                            }
+                            else
+                            {
+                                //groupCompletionMapper.Add(cur_group_completion);
+                                //CommonData.GroupCompletionInfo[cur_group_completion.id] = cur_group_completion;
+                                //按理来说不会执行到这里，因为数据库里肯定已经有了
+                            }
+                        }
+                        j += delta_j;
 
-                        compleitonMapper.Update(cur_completion);
-                        Logger.Log($"在{currentYear}年，部门{currentDepts[j].dept_name}的{index.index_name}的完成数为{cur_completion.completed}");
                     }
                     else
                     {
-                        compleitonMapper.Add(cur_completion);//按理来说不会执行到这里
-                        CommonData.CompletionInfo[cur_completion.id] = cur_completion;
+                        var cur_completion = new Completion();
+                        cur_completion.dept_id = currentDepts[j].id;
+                        cur_completion.index_id = index.id;
+
+                        if (worksheet.Cells[j + value_row_offset, index_col_idx].Value.ToString().Contains("以三年为周期进行考核")|| worksheet.Cells[j + value_row_offset, index_col_idx].Value.ToString()=="")
+                        {
+                            continue;//跳过
+                        }
+                        cur_completion.target = worksheet.Cells[j + value_row_offset, index_col_idx].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx].Value);
+
+
+                        cur_completion.completed = worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value);
+                        cur_completion.year = currentYear;
+                        if (
+                            completions.Any(com => com.Value.dept_id == cur_completion.dept_id &&
+                                        com.Value.index_id == cur_completion.index_id &&
+                                        com.Value.year == cur_completion.year)
+                            )
+                        {
+                            var completion = completions.Values.FirstOrDefault(com => com.dept_id == cur_completion.dept_id &&
+                                        com.index_id == cur_completion.index_id &&
+                                        com.year == cur_completion.year);
+                            cur_completion.id = completion.id;
+                            cur_completion.target = completion.target;
+
+                            completionMapper.Update(cur_completion);
+                            Logger.Log($"在{currentYear}年，部门{currentDepts[j].dept_name}的{index.index_name}的完成数为{cur_completion.completed}");
+                        }
+                        else
+                        {
+                            //completionMapper.Add(cur_completion);//按理来说不会执行到这里，因为数据库里肯定已经有了
+                            //CommonData.CompletionInfo[cur_completion.id] = cur_completion;
+                        }
                     }
+
                 }
             }
             index_col_idx += 2;
@@ -836,7 +891,24 @@ namespace 考核系统.Utils
                         (com => com.dept_id == dept.Item1.id &&
                     com.index_id == index.id &&
                     com.year==deptAnnualInfo.year);
+                    var group= GroupsMapper.GetInstance().GetGroupByDeptCode(dept.Item1.dept_code, index.id);
                     
+                    if (group != null)
+                    {
+                        var group_completion=CommonData.GroupCompletionInfo.Values.FirstOrDefault
+                            (com => com.group_id == group.id &&
+                            com.year == deptAnnualInfo.year &&
+                            com.index_id == index.id);
+                        if (group_completion != null)
+                        {
+                            if (group_completion.target != 0)
+                            {
+                                completion.target = group_completion.target;
+                                completion.completed = group_completion.completed;
+                            }
+                        }
+                    }
+
                     if (completion != null)
                     {
                         var calcUnit = new CalcUnit(index, dept.Item1, deptAnnualInfo, completion);

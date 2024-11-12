@@ -249,7 +249,7 @@ namespace 考核系统
             Logger.logger = textLogger;
             Logger.Log("欢迎使用DHU考核系统");
             mainContainer.SizeMode = TabSizeMode.Fixed;//用户只能从菜单栏切换视图
-            fetchDepartmentInfo();
+            fetchAll();
             menuGroups.Items[0].Click += createGroupClick;
             menuGroups.Items[1].Click += removeGroupClick;
             menuGroups.Items[2].Click += editGroupTargetClick;
@@ -2142,6 +2142,47 @@ namespace 考核系统
             }
             menuGroups.Items[2].Enabled = flag;
             menuGroups.Items[3].Enabled = flag;
+        }
+
+        private void 数据库转储ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveDialog.FileName = "数据库转储" + DateTime.Now.ToString("yyyy-MM-dd") + ".db";
+            var oldFilter= saveDialog.Filter;
+            saveDialog.Filter = "数据库文件(*.db)|*.db";
+            if(saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                DB.BackupDatabaseToSqliteFile(saveDialog.FileName);
+                MessageBox.Show("数据库转储完成", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
+            saveDialog.Filter = oldFilter;
+
+
+        }
+
+        private void 重置数据库ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dialogResult=MessageBox.Show("重置数据库会清空所有数据，确定要继续吗？", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if(dialogResult == DialogResult.OK)
+            {
+                DB.ResetDatabase();
+                CommonData.Reset();
+                fetchAll();
+                MessageBox.Show("数据库已重置", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void 恢复数据库ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openDialog.Title= "请选择要恢复的数据库文件";
+            var oldFilter = openDialog.Filter;
+            openDialog.Filter = "数据库文件(*.db)|*.db";
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                DB.RestoreDatabaseFromSqliteFile(openDialog.FileName);
+                MessageBox.Show("数据库恢复完成", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            openDialog.Filter = oldFilter;
         }
 
         //private void buttonGroupManagement_Click(object sender, EventArgs e)

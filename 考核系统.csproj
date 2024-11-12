@@ -311,11 +311,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DhuAssessmentDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DhuAssessmentDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\ChangeYear.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -432,16 +427,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="DhuAssessmentDataSet.xsc">
-      <DependentUpon>DhuAssessmentDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="DhuAssessmentDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DhuAssessmentDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DhuAssessmentDataSet.xss">
-      <DependentUpon>DhuAssessmentDataSet.xsd</DependentUpon>
+    <None Include="DhuAssessment.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -460,11 +447,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\DataSources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DhuAssessment.accdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

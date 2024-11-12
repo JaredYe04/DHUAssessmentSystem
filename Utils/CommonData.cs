@@ -59,5 +59,22 @@ namespace 考核系统.Utils
         public static Dictionary<int,Completion> CompletionInfo { get; set; }//所有指标的完成情况
         public static Dictionary<int, GroupCompletion> GroupCompletionInfo { get; set; }//所有指标的分组完成情况
         public static Index currentCompletionIndex { get; set; }
+
+        internal static void Reset()
+        {
+            //清空所有静态数据(不为null)
+            foreach (var property in typeof(CommonData).GetProperties())
+            {
+                if (property.PropertyType.IsGenericType)
+                {
+                    var dict = property.GetValue(null);
+                    if (dict != null)
+                    {
+                        dict.GetType().GetMethod("Clear").Invoke(dict, null);
+                    }
+                }
+            }
+
+        }
     }
 }
