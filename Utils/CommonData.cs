@@ -20,6 +20,7 @@ namespace 考核系统.Utils
                 EventBus.OnYearChanged(currentYear);
             }
         }
+        
         public static Dictionary<int,Tuple<Department,DeptAnnualInfo>> DeptInfo { get; set; }
         public static Dictionary<int, Index> IndexInfo { get; set; }
         public static Dictionary<int, Manager> ManagerInfo { get; set; }
@@ -34,6 +35,10 @@ namespace 考核系统.Utils
                 Dictionary<int, Index> unallocatedIndex = new Dictionary<int, Index>();
                 foreach (var index in IndexInfo.Values)
                 {
+                    if(index.tertiary_identifier==Consts.subIndexPlaceholder)
+                    {
+                        continue;//子指标不单独分配，直接分配给父指标
+                    }
                     if (!DutyInfo.Values.Any(duty => duty.index_id == index.id))
                     {
                         unallocatedIndex.Add(index.id, index);

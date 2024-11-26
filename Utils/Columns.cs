@@ -25,8 +25,7 @@ namespace 考核系统.Utils
         index_type = 5,
         weight1 = 6,
         weight2 = 7,
-        enable_sensitivity = 8,
-        sensitivity = 9
+        sensitivity = 8
     }//指标信息表的列
     public enum ManagerInfoColumns
     {
@@ -76,8 +75,7 @@ namespace 考核系统.Utils
             {IndexInfoColumns.index_name,"指标名称"},
             {IndexInfoColumns.index_type,"指标类型"},
             {IndexInfoColumns.weight1,"权重1"},
-            {IndexInfoColumns.weight2,"权重2"},
-            {IndexInfoColumns.enable_sensitivity,"启用敏感度"},
+
             {IndexInfoColumns.sensitivity,"敏感度"}
         };
 

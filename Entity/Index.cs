@@ -17,10 +17,9 @@ namespace 考核系统.Entity
         public string index_type { get; set; }
         public double weight1 { get; set; }
         public double weight2 { get; set; }
-        public int enable_sensitivity { get; set; }
         public double sensitivity { get; set; }
 
-        public Index(int index_id, int identifier_id, int secondary_identifier,string tertiary_identifier, string index_name, string index_type, double weight1, double weight2, int enable_sensitivity, double sensitivity)
+        public Index(int index_id, int identifier_id, int secondary_identifier,string tertiary_identifier, string index_name, string index_type, double weight1, double weight2, double sensitivity)
         {
             this.id = index_id;
             this.identifier_id = identifier_id;
@@ -30,7 +29,6 @@ namespace 考核系统.Entity
             this.index_type = index_type;
             this.weight1 = weight1;
             this.weight2 = weight2;
-            this.enable_sensitivity = enable_sensitivity;
             this.sensitivity = sensitivity;
         }
         public Index()

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using 考核系统.Dialogs;
 using 考核系统.Entity;
 using 考核系统.Mapper;
 using 考核系统.Utils.CalcUtils;
@@ -40,6 +41,8 @@ namespace 考核系统.Utils
 
             
             var excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.DisplayAlerts = false;
+
             excel.Visible = false;
             var workbook = excel.Workbooks.Open(fileName);
             var sheet_count = workbook.Sheets.Count;
@@ -121,6 +124,7 @@ namespace 考核系统.Utils
         {
             //第一行为标题，需要合并单元格居中，合并格子数为dataGridView.Columns.Count
             Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.DisplayAlerts = false;
             excel.Visible = false;
             excel.Application.Workbooks.Add(true);
             excel.Cells[1, 1] = header;
@@ -174,6 +178,7 @@ namespace 考核系统.Utils
         {
             //第一行为标题，需要合并单元格居中，合并格子数为dataGridView.Columns.Count
             Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.DisplayAlerts = false;
             excel.Visible = false;
             excel.Application.Workbooks.Add(true);
             var Workbook= excel.Application.Workbooks.Item[1];
@@ -267,6 +272,7 @@ namespace 考核系统.Utils
 
 
             var excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.DisplayAlerts = false;
             var completions = CommonData.CompletionInfo;
             //每个指标分组一个sheet，一个sheet包含该指标组下的所有指标
 
@@ -351,12 +357,12 @@ namespace 考核系统.Utils
 
                     var same_group= currentIndexes.Where(i => i.identifier_id == index.identifier_id && i.secondary_identifier == index.secondary_identifier).ToList();
 
-                    if (same_group.Any(i => i.tertiary_identifier == "-1"))
+                    if (same_group.Any(i => i.tertiary_identifier == Consts.mainIndexPlaceholder))
                     {
                         //说明有总指标，需要合并单元格
                         string main_string = index.identifier_id.ToString() +
                             "." + index.secondary_identifier.ToString() +
-                            "::" + same_group.FirstOrDefault(i => i.tertiary_identifier == "-1").index_name;
+                            "::" + same_group.FirstOrDefault(i => i.tertiary_identifier == Consts.mainIndexPlaceholder).index_name;
                         //分隔符是::,读取时可以用split判断是否是总指标
                         string main_col_left = Num2Column(index_col_idx);
                         string main_col_right = Num2Column(index_col_idx + same_group.Count * 2 - 1);//每个子指标占两列，包括总指标也占两列
@@ -369,6 +375,10 @@ namespace 考核系统.Utils
                         range.Font.Bold = true;
                         range.Font.Size = 20;
                         range.WrapText = true;
+                        //先导出总指标
+                        var main_index = same_group.FirstOrDefault(i => i.tertiary_identifier == Consts.mainIndexPlaceholder);
+                        ExportSingleIndex(ref index_col_idx, range, worksheet, sheet, main_index, info_row_idx, true);//导出单个指标
+                        same_group.Remove(main_index);
                         foreach (var group_idx in same_group)
                         {
                             ExportSingleIndex(ref index_col_idx, range, worksheet, sheet, group_idx,info_row_idx ,true);//导出单个指标
@@ -421,9 +431,9 @@ namespace 考核系统.Utils
             range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
             range.Borders.LineStyle = 1;
             string valueString = index.identifier_id.ToString() + "." + index.secondary_identifier.ToString();
-            valueString += index.tertiary_identifier == "0" ? "" : "." + index.tertiary_identifier;//三级指标
+            valueString += index.tertiary_identifier == Consts.singleIndexPlaceholder ? "" : ".#" + index.id;//三级指标
             valueString += ":" + index.index_name;
-            if (index.tertiary_identifier == "-1")
+            if (index.tertiary_identifier == Consts.mainIndexPlaceholder)
             {
                 valueString = "总计";
             }
@@ -539,9 +549,11 @@ namespace 考核系统.Utils
             }
             index_col_idx += 2;
         }
-        public static void ImportCompletionTable(string fileName)
+
+        public static void ImportCompletionTable(string fileName,ImportCallback callback, ref string errorInfo)
         {
             var excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.DisplayAlerts = false;
             excel.Visible = false;
             var workbook = excel.Workbooks.Open(fileName);
             var sheet_count = workbook.Sheets.Count;
@@ -550,14 +562,20 @@ namespace 考核系统.Utils
             var currentYear = CommonData.CurrentYear;
             var deptsRaw = CommonData.DeptInfo.Values;
             var depts= deptsRaw.OrderBy(dept => dept.Item1.dept_code, new NaturalComparer()).ToList();
+            int progress = 10;
+            callback("读取元数据", progress);
+            int progress_per_sheet = 90 / sheet_count;
             for (int i = 1; i <= sheet_count; i++)
             {
+                progress = 10 + i * progress_per_sheet;
+                callback("正在导入第" + i + "个sheet", progress);
                 var worksheet = workbook.Sheets.Item[i];
                 workbook.Sheets.Item[i].Select();
                 var currentDepts=new List<Department>();
 
                 int row_idx = 5;
-                while(true)
+                callback("正在导入第" + i + "个sheet:读取单位信息", progress);
+                while (true)
                 {
                     var dept_code = worksheet.Cells[row_idx, 1].Value;
                     if (dept_code == null) break;
@@ -565,6 +583,10 @@ namespace 考核系统.Utils
                     if (department != null)
                     {
                         currentDepts.Add(department.Item1);//由于导出的时候是按照dept_code排序的，所以这里也是按照dept_code排序的
+                    }
+                    else
+                    {
+
                     }
                     row_idx++;
                 }//读取单位信息
@@ -574,26 +596,30 @@ namespace 考核系统.Utils
                 {
                     var index_name_raw = worksheet.Cells[2, index_col_idx].Value;
                     if (index_name_raw == null) break;
-
+                    callback("正在导入第" + i + "个sheet:读取指标"+index_name_raw, progress);
                     if (((string)index_name_raw).Contains("::")){
                         
                         string code = index_name_raw.ToString().Split("::".ToCharArray())[0];
+
+
+
                         var main_index = CommonData.IndexInfo.Values.FirstOrDefault
                             (idx => idx.identifier_id == Convert.ToInt32(code.Split('.')[0])
                             && idx.secondary_identifier == Convert.ToInt32(code.Split('.')[1])
-                            && idx.tertiary_identifier == "-1"
+                            && idx.tertiary_identifier == Consts.mainIndexPlaceholder//todo:修改 11.19
                             );
                         int group_cnt= CommonData.IndexInfo.Values.Count(idx => idx.identifier_id == main_index.identifier_id && idx.secondary_identifier == main_index.secondary_identifier);
                         for(i=0; i < group_cnt; i++)
                         {
                             index_name_raw = worksheet.Cells[3, index_col_idx].Value;
-                            ImportSingleIndex(index_name_raw, currentDepts, worksheet, ref index_col_idx, main_index);
+                            if(index_name_raw==null)continue;//如果是空的，说明可能有别的子指标在其他职能部门
+                            ImportSingleIndex(index_name_raw, currentDepts, worksheet, ref index_col_idx,ref errorInfo, main_index);
                         }
                         
                     }
                     else
                     {
-                        ImportSingleIndex(index_name_raw, currentDepts, worksheet, ref index_col_idx);
+                        ImportSingleIndex(index_name_raw, currentDepts, worksheet, ref index_col_idx, ref errorInfo);
                     }
 
                 }
@@ -601,9 +627,16 @@ namespace 考核系统.Utils
 
 
             }
+            workbook.Close();
+            excel.Quit();
+            if(errorInfo != "")
+            {
+                errorInfo = $"{fileName}有以下错误：\r\n" + errorInfo;
+            }
+            callback(fileName + ":" + "导入完成", 100);
 
         }
-        private static void ImportSingleIndex(string index_name_raw, List<Department> currentDepts,dynamic worksheet,ref int index_col_idx,Entity.Index importedMainIndex=null)
+        private static void ImportSingleIndex(string index_name_raw, List<Department> currentDepts,dynamic worksheet,ref int index_col_idx,ref string errorInfo,Entity.Index importedMainIndex=null)
         {
             var currentYear = CommonData.CurrentYear;
             var completions = CommonData.CompletionInfo;
@@ -616,11 +649,26 @@ namespace 考核系统.Utils
                 int identifier_id = Convert.ToInt32(code.Split('.')[0]);
                 int secondary_identifier = Convert.ToInt32(code.Split('.')[1]);
                 string tertiary_identifier = code.Split('.').Length <= 2 ? "0" : code.Split('.')[2];//三级指标
-                index = CommonData.IndexInfo.Values.FirstOrDefault
-                    (idx => idx.identifier_id == identifier_id
-                    && idx.secondary_identifier == secondary_identifier
-                    && idx.tertiary_identifier == tertiary_identifier
-                    );
+                if (tertiary_identifier.StartsWith("#"))
+                {
+                    tertiary_identifier=tertiary_identifier.Substring(1);//#后面的是index_id 
+                    index = CommonData.IndexInfo.Values.FirstOrDefault
+                        (idx => idx.identifier_id == identifier_id
+                        && idx.secondary_identifier == secondary_identifier
+                        && idx.id == Convert.ToInt32(tertiary_identifier)
+                        );
+                }
+                else
+                {
+                    index = CommonData.IndexInfo.Values.FirstOrDefault
+                        (idx => idx.identifier_id == identifier_id
+                        && idx.secondary_identifier == secondary_identifier
+                        );
+                }
+
+
+
+
             }
             else
             {
@@ -653,6 +701,34 @@ namespace 考核系统.Utils
                             j += delta_j;
                             continue;
                         }
+
+                        try
+                        {
+                            Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx].Value);
+                        }
+                        catch (Exception)
+                        {
+                            string errInfo=$"表格中的 {currentYear} 年 {currentDepts[j].dept_name} 的 {index.index_name} 的目标数不合法！";
+                            MessageBox.Show(errInfo, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            errorInfo+= errInfo+ "\r\n";
+                            j += delta_j;
+                            continue;
+                        }
+
+                        try
+                        {
+                            Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value);
+                        }
+                        catch (Exception)
+                        {
+                            string errInfo = $"表格中的 {currentYear} 年 {currentDepts[j].dept_name} 的 {index.index_name} 的完成数不合法！";
+                            MessageBox.Show(errInfo, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            errorInfo += errInfo + "\r\n";
+                            j += delta_j;
+                            continue;
+                        }
+
+
                         cur_group_completion.target = worksheet.Cells[j + value_row_offset, index_col_idx].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx].Value);
                         cur_group_completion.completed = worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value);
                         cur_group_completion.index_id = index.id;
@@ -690,9 +766,36 @@ namespace 考核系统.Utils
                         {
                             continue;//跳过
                         }
+
+
+                        try
+                        {
+                            Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx].Value);
+                        }
+                        catch (Exception)
+                        {
+                            string errInfo = $"表格中的 {currentYear} 年 {currentDepts[j].dept_name} 的 {index.index_name} 的目标数不合法！";
+                            errorInfo += errInfo + "\r\n";
+                            MessageBox.Show(errInfo, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            continue;
+                            
+                        }
+
+                        try
+                        {
+                            Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value);
+                        }
+                        catch (Exception)
+                        {
+                            string errInfo = $"表格中的 {currentYear} 年 {currentDepts[j].dept_name} 的 {index.index_name} 的完成数不合法！";
+                            errorInfo += errInfo + "\r\n";
+                            MessageBox.Show(errInfo, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            continue;
+
+                        }
+
+
                         cur_completion.target = worksheet.Cells[j + value_row_offset, index_col_idx].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx].Value);
-
-
                         cur_completion.completed = worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value == null ? 0 : Convert.ToInt32(worksheet.Cells[j + value_row_offset, index_col_idx + 1].Value);
                         cur_completion.year = currentYear;
                         if (
@@ -719,11 +822,20 @@ namespace 考核系统.Utils
 
                 }
             }
+            else
+            {
+                string err = $"导入的指标中有不存在的指标:{index_name_raw}，请检查!";
+                var result = MessageBox.Show(err
+                , "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                errorInfo += err + "\r\n";
+            }
             index_col_idx += 2;
         }
         public delegate void ExportCallback(string message, int progress);
+        public delegate void ImportCallback(string message, int progress);
         public static void ExportMain(string filename,ExportCallback exportCallback)
         {
+            var deptFinalScores=new Dictionary<int,DeptFinalScore>();
             var globalDeptInfo = GlobalDeptInfo.GetInstance();
             var deptInfo = CommonData.DeptInfo.Values;
             
@@ -731,6 +843,7 @@ namespace 考核系统.Utils
             var currentYear = CommonData.CurrentYear;
             var excel= new Microsoft.Office.Interop.Excel.Application();
             excel.Visible = false;
+            excel.DisplayAlerts = false;
             excel.Application.Workbooks.Add(true);
             var workbook = excel.Application.Workbooks.Item[1];
             var worksheet = workbook.Worksheets.Item[1];
@@ -783,8 +896,8 @@ namespace 考核系统.Utils
             foreach (var index in indexes)
             {
                 var nameString = index.identifier_id.ToString() + "." + index.secondary_identifier.ToString();
-                nameString += (index.tertiary_identifier == "0" || index.tertiary_identifier == "-1")
-                    ? "" : "." + index.tertiary_identifier;//三级指标
+                nameString += (index.tertiary_identifier == Consts.singleIndexPlaceholder || index.tertiary_identifier == Consts.mainIndexPlaceholder)
+                    ? "" : ".#" + index.identifier_id;//三级指标
                 nameString += ":" + index.index_name;
                 property_col_idx = property_col_idx_start;
                 worksheet.Cells[row_idx, property_col_idx].Value = nameString;
@@ -982,15 +1095,259 @@ namespace 考核系统.Utils
                 worksheet.Cells[row_idx, dept_col_idx].Interior.Color = ColorTranslator.ToOle(Color.LightBlue);
                 dept_col_idx++;
 
+                deptFinalScores[dept.Item1.id] = new DeptFinalScore
+                (
+                    dept.Item1,
+                    dept.Item2,
+                    BasicCompletionScoreSum,
+                    BonusCompletionScoreSum,
+                    BasicCompletionScorePerCapitaSum,
+                    SensitivityScoreSum,
+                    BasicTheoreticalFullScoreSum
+                );
                 dept_col_idx_start += dept_col_width;//下一个单位的起始列
             }
+            //新增一个sheet
+
+
+            excel.Worksheets.Add(After: workbook.Sheets[workbook.Sheets.Count]);
+            excel.Worksheets.Item[2].Select();
+            worksheet = workbook.Worksheets.Item[2];
+            worksheet.Name = "客观分统计";
+            progress = 90;
+            exportCallback("正在导出客观分统计", (int)progress);
+            int column_width = 16;//有16列
+            string column_start_char = Num2Column(1);
+            string column_end_char = Num2Column(column_width);
+            range = worksheet.Range[column_start_char + "1:" + column_end_char + "1"];
+            range.Merge();
+            range.Value2 = "客观分统计";
+            range.Font.Size = 22;
+            range.Font.Bold = true;
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            int head_row_idx = 2;
+            int col_idx = 1;
+
+
+            range = worksheet.Range[
+                Num2Column(col_idx) + head_row_idx.ToString() + ":"
+                + Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "序号";
+            range.Font.Bold = true;
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            col_idx++;
+
+            range = worksheet.Range[
+    Num2Column(col_idx) + head_row_idx.ToString() + ":"
+    + Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "部门名称";
+            range.Font.Bold = true;
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            col_idx++;
+
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "组别";
+            range.Font.Bold = true;
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            col_idx++;
+
+
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx + 1) + (head_row_idx).ToString()];
+            range.Merge();
+            range.Value2 = "完成度得分";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+
+            range = worksheet.Range[
+Num2Column(col_idx) + (head_row_idx + 1).ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "基础类指标";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+            range = worksheet.Range[
+Num2Column(col_idx) + (head_row_idx + 1).ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "加分类指标";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx + 1) + (head_row_idx).ToString()];
+            range.Merge();
+            range.Value2 = "贡献度得分";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+
+            range = worksheet.Range[
+Num2Column(col_idx) + (head_row_idx + 1).ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "基础类指标";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+            range = worksheet.Range[
+Num2Column(col_idx) + (head_row_idx + 1).ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "敏感性指标";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+///////////////////////////////////////////
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "客观分合计";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "完成度得分合计\r\n（*25%）";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Color = ColorTranslator.ToOle(Color.Red);
+            range.Font.Bold = true;
+            col_idx++;
+
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "贡献度得分合计\r\n（*25%）";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Color = ColorTranslator.ToOle(Color.Red);
+            range.Font.Bold = true;
+            col_idx++;
+
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "客观分合计（加权后）";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Color = ColorTranslator.ToOle(Color.Red);
+            range.Font.Bold = true;
+            col_idx++;
+
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "客观分归一";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Color = ColorTranslator.ToOle(Color.Red);
+            range.Font.Bold = true;
+            col_idx++;
+            /////////////////////////////////
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "基础类指标完成度理论满分";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "扣分比率";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "扣分";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+            range = worksheet.Range[
+Num2Column(col_idx) + head_row_idx.ToString() + ":"
++ Num2Column(col_idx) + (head_row_idx + 1).ToString()];
+            range.Merge();
+            range.Value2 = "基础指标得分-扣分";
+            range.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+            range.Font.Bold = true;
+            col_idx++;
+            //宽度自适应
+            for (int i = 1; i <= column_width; i++)
+            {
+                worksheet.Columns[i].AutoFit();
+            }
+            //给DeptFinalScores排序,按照FinalScore
+            var deptFinalScoresList = deptFinalScores.Values.ToList();
+            deptFinalScoresList.Sort((x, y) => y.FinalScore.CompareTo(x.FinalScore));
+            row_idx = head_row_idx + 2;
+            double highestScore = deptFinalScoresList[0].WeightedObjectiveScoreSum;
+            double progress_per_dept_final = 10 / deptFinalScoresList.Count;
+            //deptFinalScoresList需要按照每个dept的dept_group分组，并对每组后三分之一进行标记
+            var groups = deptFinalScoresList.GroupBy(x => x.deptAnnualInfo.dept_group);
+
+            foreach (var group in groups)
+            {
+                var list= group.ToList();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    progress = 90 + progress_per_dept_final * i;
+                    exportCallback($"正在导出{list[i].department.dept_name}的客观分", (int)progress);
+                    worksheet.Cells[row_idx, 1].Value = i + 1;
+                    worksheet.Cells[row_idx, 2].Value = list[i].department.dept_name;
+                    worksheet.Cells[row_idx, 3].Value = list[i].deptAnnualInfo.dept_group;
+                    worksheet.Cells[row_idx, 4].Value = list[i].BasicCompletionScoreSum;
+                    worksheet.Cells[row_idx, 5].Value = list[i].BonusCompletionScoreSum;
+                    worksheet.Cells[row_idx, 6].Value = list[i].BasicCompletionScorePerCapitaSum;
+                    worksheet.Cells[row_idx, 7].Value = list[i].SensitivityScoreSum;
+                    worksheet.Cells[row_idx, 8].Value = list[i].ObjectiveScoreSum;
+                    worksheet.Cells[row_idx, 9].Value = list[i].WeightedCompletionScoreSum;
+                    worksheet.Cells[row_idx, 10].Value = list[i].WeightedContributiveScoreSum;
+                    worksheet.Cells[row_idx, 11].Value = list[i].WeightedObjectiveScoreSum;
+                    worksheet.Cells[row_idx, 12].Value = list[i].NormalizedObjectiveScoreSum(highestScore);
+                    worksheet.Cells[row_idx, 13].Value = list[i].BasicTheoreticalFullScoreSum;
+                    worksheet.Cells[row_idx, 14].Value = list[i].PunishRate;
+                    worksheet.Cells[row_idx, 15].Value = list[i].Punishment;
+                    worksheet.Cells[row_idx, 16].Value = list[i].FinalScore;
+
+                    //判断是否是后三分之一（向下取整，例如8个部门，则只取2个）
+                    bool isTopThird = i >= list.Count - list.Count / 3;
+                    if (isTopThird)
+                    {
+                        worksheet.Rows[row_idx].Interior.Color = ColorTranslator.ToOle(Color.LightYellow);
+                        worksheet.Cells[row_idx, 17].Value = "不能评选B及以上";
+                    }
+                    row_idx++;
+                }
+
+
+            }
+
+
             progress = 100;
             exportCallback($"导出完成", (int)progress);
             excel.Rows[property_row_idx].RowHeight = 30;
 
             excel.ActiveWorkbook.SaveAs(filename);
+            workbook.Close();
             excel.Quit();
-
+            
         }
 
         

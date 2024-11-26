@@ -33,7 +33,20 @@ namespace 考核系统.Dialogs
                 var indexIdentifierMapper = IndexIdentifierMapper.GetInstance();
                 var newIndexIdentifierInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(new IndexIdentifier()));
                 newIndexIdentifierInfo[columnName] = cellValue.ToString();//更新字段值
-                var newIndexIdentifierInfoObj = JsonConvert.DeserializeObject<IndexIdentifier>(JsonConvert.SerializeObject(newIndexIdentifierInfo));
+                IndexIdentifier newIndexIdentifierInfoObj = null;
+                try
+                {
+                    newIndexIdentifierInfoObj = JsonConvert.DeserializeObject<IndexIdentifier>(JsonConvert.SerializeObject(newIndexIdentifierInfo));
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show("输入数据格式错误", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    indexIdentifierDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "";
+                    return;
+                }
+
+
                 indexIdentifierMapper.Add(newIndexIdentifierInfoObj, false);
                 newIndexIdentifierInfoObj = indexIdentifierMapper.GetObject(newIndexIdentifierInfo);//获取刚插入的部门信息，带有id
                 CommonData.IdentifierInfo[newIndexIdentifierInfoObj.id] = IndexIdentifier.Copy(newIndexIdentifierInfoObj);
@@ -91,8 +104,20 @@ namespace 考核系统.Dialogs
                 var indexIdentifierMapper = IndexIdentifierMapper.GetInstance();
                 Logger.Log($"指标分类{identifier_id}的{columnName}由{identifierInfo[columnName]}变更为{cellValue}");
                 identifierInfo[columnName] = cellValue;
-                var identifierInfoObj = JsonConvert.DeserializeObject<IndexIdentifier>(JsonConvert.SerializeObject(identifierInfo));
+
+                IndexIdentifier identifierInfoObj = null;
+                try
+                {
+                    identifierInfoObj = JsonConvert.DeserializeObject<IndexIdentifier>(JsonConvert.SerializeObject(identifierInfo));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("输入数据格式错误", "提示", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    indexIdentifierDataGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "";
+                    return;
+                }
                 //更新内存中的数据
+
                 CommonData.IdentifierInfo[identifier_id] = IndexIdentifier.Copy(identifierInfoObj);
                 indexIdentifierMapper.Update(identifierInfoObj);
             }

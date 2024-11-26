@@ -75,11 +75,13 @@ namespace 考核系统.Dialogs
                 {
                     var manager=managers.Where(m => m.Value.manager_name == checkListManager.Items[i].ToString()).FirstOrDefault();
                     FileIO.ExportEmptyCompletionTable(manager.Value.id, path);
-                    
+                    labelExportInfo.Text = "正在导出" + manager.Value.manager_name + "考核表";
                     Logger.Log(path + "\\" + manager.Value.manager_name + "考核表.xlsx 导出成功");
                 }
             }
             Cursor = Cursors.Default;
+            labelExportInfo.Text = "导出完成";
+
             MessageBox.Show("导出成功","提示",MessageBoxButtons.OK,MessageBoxIcon.Information);
             this.Hide();
         }

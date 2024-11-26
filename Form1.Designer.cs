@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +53,9 @@
             this.完成度视图ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.修改年份ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.导出向导ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.数据库转储ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.恢复数据库ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.重置数据库ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainTable = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.mainContainer = new System.Windows.Forms.TabControl();
@@ -67,18 +69,16 @@
             this.DeptPunishment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DeptGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonDeptDump = new System.Windows.Forms.Button();
-            this.buttonDeptRefresh = new System.Windows.Forms.Button();
             this.buttonDeptImport = new System.Windows.Forms.Button();
             this.buttonDeptTemplateDump = new System.Windows.Forms.Button();
+            this.buttonDeptDump = new System.Windows.Forms.Button();
             this.pageIndex = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
-            this.buttonIndexDump = new System.Windows.Forms.Button();
-            this.buttonIndexRefresh = new System.Windows.Forms.Button();
             this.buttonIndexImport = new System.Windows.Forms.Button();
             this.buttonIndexTemplateDump = new System.Windows.Forms.Button();
+            this.buttonIndexDump = new System.Windows.Forms.Button();
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
@@ -90,12 +90,11 @@
             this.indexId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.index_identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.secondaryIdentifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tertiary_identifier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tertiary_identifier = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.indexName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.indexType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.weight1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.weight2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.enable_sensitivity = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.sensitivity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pageManager = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
@@ -104,10 +103,9 @@
             this.manager_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.manager_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonManagerDump = new System.Windows.Forms.Button();
-            this.buttonManagerRefresh = new System.Windows.Forms.Button();
             this.buttonManagerImport = new System.Windows.Forms.Button();
             this.buttonManagerTemplateDump = new System.Windows.Forms.Button();
+            this.buttonManagerDump = new System.Windows.Forms.Button();
             this.pageIndexDuty = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.managerInfoSplit = new System.Windows.Forms.TableLayoutPanel();
@@ -134,7 +132,7 @@
             this.pageCompletion = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonCompletionRefresh = new System.Windows.Forms.Button();
+            this.buttonExportMain = new System.Windows.Forms.Button();
             this.buttonCompletionImport = new System.Windows.Forms.Button();
             this.buttonCompletionExport = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -142,6 +140,10 @@
             this.treeDuty = new System.Windows.Forms.TreeView();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel21 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel25 = new System.Windows.Forms.TableLayoutPanel();
+            this.exportProgressBar = new System.Windows.Forms.ProgressBar();
+            this.labelExportMessage = new System.Windows.Forms.Label();
             this.labelCurrentIndexCompletion = new System.Windows.Forms.Label();
             this.completionDataGrid = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -150,17 +152,14 @@
             this.target = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.completion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.completion_rate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pageExport = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel22 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel23 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonExportMain = new System.Windows.Forms.Button();
-            this.tableLayoutPanel24 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel25 = new System.Windows.Forms.TableLayoutPanel();
-            this.exportProgressBar = new System.Windows.Forms.ProgressBar();
-            this.labelExportMessage = new System.Windows.Forms.Label();
-            this.groupBox13 = new System.Windows.Forms.GroupBox();
-            this.textBoxSummary = new System.Windows.Forms.TextBox();
+            this.menuGroups = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createGroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.cancelGroup = new System.Windows.Forms.ToolStripMenuItem();
+            this.editGroupTarget = new System.Windows.Forms.ToolStripMenuItem();
+            this.editGroupCompletion = new System.Windows.Forms.ToolStripMenuItem();
+            this.tableLayoutPanel26 = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelView = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textLogger = new System.Windows.Forms.TextBox();
@@ -189,17 +188,6 @@
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
             this.openDialog = new System.Windows.Forms.OpenFileDialog();
             this.multiOpenDialog = new System.Windows.Forms.OpenFileDialog();
-            this.menuGroups = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.createGroup = new System.Windows.Forms.ToolStripMenuItem();
-            this.cancelGroup = new System.Windows.Forms.ToolStripMenuItem();
-            this.editGroupTarget = new System.Windows.Forms.ToolStripMenuItem();
-            this.editGroupCompletion = new System.Windows.Forms.ToolStripMenuItem();
-            this.数据库转储ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.重置数据库ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.恢复数据库ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tableLayoutPanel26 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelView = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.mainTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -240,14 +228,11 @@
             this.groupBox9.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.tableLayoutPanel21.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.completionDataGrid)).BeginInit();
-            this.pageExport.SuspendLayout();
-            this.tableLayoutPanel22.SuspendLayout();
-            this.tableLayoutPanel23.SuspendLayout();
-            this.tableLayoutPanel24.SuspendLayout();
             this.groupBox14.SuspendLayout();
             this.tableLayoutPanel25.SuspendLayout();
-            this.groupBox13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.completionDataGrid)).BeginInit();
+            this.menuGroups.SuspendLayout();
+            this.tableLayoutPanel26.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBoxMetaInfo.SuspendLayout();
@@ -271,8 +256,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).BeginInit();
             this.splitContainer9.Panel1.SuspendLayout();
             this.splitContainer9.SuspendLayout();
-            this.menuGroups.SuspendLayout();
-            this.tableLayoutPanel26.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -287,8 +270,7 @@
             this.职能部门视图ToolStripMenuItem,
             this.职责分配视图ToolStripMenuItem,
             this.完成度视图ToolStripMenuItem1,
-            this.设置ToolStripMenuItem,
-            this.导出向导ToolStripMenuItem});
+            this.设置ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
@@ -374,35 +356,35 @@
             // 
             this.教学科研单位视图ToolStripMenuItem.Name = "教学科研单位视图ToolStripMenuItem";
             this.教学科研单位视图ToolStripMenuItem.Size = new System.Drawing.Size(170, 28);
-            this.教学科研单位视图ToolStripMenuItem.Text = "教学科研单位视图";
+            this.教学科研单位视图ToolStripMenuItem.Text = "教学科研单位管理";
             this.教学科研单位视图ToolStripMenuItem.Click += new System.EventHandler(this.部门视图ToolStripMenuItem_Click);
             // 
             // 指标视图ToolStripMenuItem
             // 
             this.指标视图ToolStripMenuItem.Name = "指标视图ToolStripMenuItem";
             this.指标视图ToolStripMenuItem.Size = new System.Drawing.Size(98, 28);
-            this.指标视图ToolStripMenuItem.Text = "指标视图";
+            this.指标视图ToolStripMenuItem.Text = "指标管理";
             this.指标视图ToolStripMenuItem.Click += new System.EventHandler(this.指标视图ToolStripMenuItem_Click);
             // 
             // 职能部门视图ToolStripMenuItem
             // 
             this.职能部门视图ToolStripMenuItem.Name = "职能部门视图ToolStripMenuItem";
             this.职能部门视图ToolStripMenuItem.Size = new System.Drawing.Size(134, 28);
-            this.职能部门视图ToolStripMenuItem.Text = "职能部门视图";
+            this.职能部门视图ToolStripMenuItem.Text = "职能部门管理";
             this.职能部门视图ToolStripMenuItem.Click += new System.EventHandler(this.完成度视图ToolStripMenuItem_Click);
             // 
             // 职责分配视图ToolStripMenuItem
             // 
             this.职责分配视图ToolStripMenuItem.Name = "职责分配视图ToolStripMenuItem";
             this.职责分配视图ToolStripMenuItem.Size = new System.Drawing.Size(134, 28);
-            this.职责分配视图ToolStripMenuItem.Text = "职责分配视图";
+            this.职责分配视图ToolStripMenuItem.Text = "职责分配管理";
             this.职责分配视图ToolStripMenuItem.Click += new System.EventHandler(this.修改年份ToolStripMenuItem_Click);
             // 
             // 完成度视图ToolStripMenuItem1
             // 
             this.完成度视图ToolStripMenuItem1.Name = "完成度视图ToolStripMenuItem1";
             this.完成度视图ToolStripMenuItem1.Size = new System.Drawing.Size(134, 28);
-            this.完成度视图ToolStripMenuItem1.Text = "完成情况视图";
+            this.完成度视图ToolStripMenuItem1.Text = "完成情况管理";
             this.完成度视图ToolStripMenuItem1.Click += new System.EventHandler(this.完成度视图ToolStripMenuItem1_Click);
             // 
             // 设置ToolStripMenuItem
@@ -419,16 +401,30 @@
             // 修改年份ToolStripMenuItem1
             // 
             this.修改年份ToolStripMenuItem1.Name = "修改年份ToolStripMenuItem1";
-            this.修改年份ToolStripMenuItem1.Size = new System.Drawing.Size(182, 34);
+            this.修改年份ToolStripMenuItem1.Size = new System.Drawing.Size(200, 34);
             this.修改年份ToolStripMenuItem1.Text = "修改年份";
             this.修改年份ToolStripMenuItem1.Click += new System.EventHandler(this.修改年份ToolStripMenuItem1_Click);
             // 
-            // 导出向导ToolStripMenuItem
+            // 数据库转储ToolStripMenuItem
             // 
-            this.导出向导ToolStripMenuItem.Name = "导出向导ToolStripMenuItem";
-            this.导出向导ToolStripMenuItem.Size = new System.Drawing.Size(98, 28);
-            this.导出向导ToolStripMenuItem.Text = "导出向导";
-            this.导出向导ToolStripMenuItem.Click += new System.EventHandler(this.导出向导ToolStripMenuItem_Click);
+            this.数据库转储ToolStripMenuItem.Name = "数据库转储ToolStripMenuItem";
+            this.数据库转储ToolStripMenuItem.Size = new System.Drawing.Size(200, 34);
+            this.数据库转储ToolStripMenuItem.Text = "数据库转储";
+            this.数据库转储ToolStripMenuItem.Click += new System.EventHandler(this.数据库转储ToolStripMenuItem_Click);
+            // 
+            // 恢复数据库ToolStripMenuItem
+            // 
+            this.恢复数据库ToolStripMenuItem.Name = "恢复数据库ToolStripMenuItem";
+            this.恢复数据库ToolStripMenuItem.Size = new System.Drawing.Size(200, 34);
+            this.恢复数据库ToolStripMenuItem.Text = "恢复数据库";
+            this.恢复数据库ToolStripMenuItem.Click += new System.EventHandler(this.恢复数据库ToolStripMenuItem_Click);
+            // 
+            // 重置数据库ToolStripMenuItem
+            // 
+            this.重置数据库ToolStripMenuItem.Name = "重置数据库ToolStripMenuItem";
+            this.重置数据库ToolStripMenuItem.Size = new System.Drawing.Size(200, 34);
+            this.重置数据库ToolStripMenuItem.Text = "重置数据库";
+            this.重置数据库ToolStripMenuItem.Click += new System.EventHandler(this.重置数据库ToolStripMenuItem_Click);
             // 
             // mainTable
             // 
@@ -472,7 +468,6 @@
             this.mainContainer.Controls.Add(this.pageManager);
             this.mainContainer.Controls.Add(this.pageIndexDuty);
             this.mainContainer.Controls.Add(this.pageCompletion);
-            this.mainContainer.Controls.Add(this.pageExport);
             this.mainContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainContainer.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.mainContainer.ItemSize = new System.Drawing.Size(0, 25);
@@ -540,8 +535,8 @@
             // 
             // DeptId
             // 
-            dataGridViewCellStyle49.BackColor = System.Drawing.Color.Gainsboro;
-            this.DeptId.DefaultCellStyle = dataGridViewCellStyle49;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
+            this.DeptId.DefaultCellStyle = dataGridViewCellStyle8;
             this.DeptId.HeaderText = "单位编号";
             this.DeptId.MinimumWidth = 6;
             this.DeptId.Name = "DeptId";
@@ -588,10 +583,9 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.buttonDeptDump, 0, 3);
-            this.tableLayoutPanel3.Controls.Add(this.buttonDeptRefresh, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptImport, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.buttonDeptTemplateDump, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.buttonDeptDump, 0, 2);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(1230, 4);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -604,32 +598,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(301, 682);
             this.tableLayoutPanel3.TabIndex = 6;
-            // 
-            // buttonDeptDump
-            // 
-            this.buttonDeptDump.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonDeptDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonDeptDump.Location = new System.Drawing.Point(34, 444);
-            this.buttonDeptDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.buttonDeptDump.Name = "buttonDeptDump";
-            this.buttonDeptDump.Size = new System.Drawing.Size(233, 64);
-            this.buttonDeptDump.TabIndex = 4;
-            this.buttonDeptDump.Text = "导出数据";
-            this.buttonDeptDump.UseVisualStyleBackColor = true;
-            this.buttonDeptDump.Click += new System.EventHandler(this.buttonDeptDump_Click);
-            // 
-            // buttonDeptRefresh
-            // 
-            this.buttonDeptRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonDeptRefresh.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonDeptRefresh.Location = new System.Drawing.Point(34, 308);
-            this.buttonDeptRefresh.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.buttonDeptRefresh.Name = "buttonDeptRefresh";
-            this.buttonDeptRefresh.Size = new System.Drawing.Size(233, 64);
-            this.buttonDeptRefresh.TabIndex = 3;
-            this.buttonDeptRefresh.Text = "刷新";
-            this.buttonDeptRefresh.UseVisualStyleBackColor = true;
-            this.buttonDeptRefresh.Click += new System.EventHandler(this.button3_Click);
             // 
             // buttonDeptImport
             // 
@@ -656,6 +624,19 @@
             this.buttonDeptTemplateDump.Text = "导出Excel模板";
             this.buttonDeptTemplateDump.UseVisualStyleBackColor = true;
             this.buttonDeptTemplateDump.Click += new System.EventHandler(this.buttonDeptTemplateDump_Click);
+            // 
+            // buttonDeptDump
+            // 
+            this.buttonDeptDump.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonDeptDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonDeptDump.Location = new System.Drawing.Point(34, 308);
+            this.buttonDeptDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonDeptDump.Name = "buttonDeptDump";
+            this.buttonDeptDump.Size = new System.Drawing.Size(233, 64);
+            this.buttonDeptDump.TabIndex = 4;
+            this.buttonDeptDump.Text = "导出数据";
+            this.buttonDeptDump.UseVisualStyleBackColor = true;
+            this.buttonDeptDump.Click += new System.EventHandler(this.buttonDeptDump_Click);
             // 
             // pageIndex
             // 
@@ -690,10 +671,9 @@
             this.tableLayoutPanel11.ColumnCount = 1;
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.Controls.Add(this.label3, 0, 4);
-            this.tableLayoutPanel11.Controls.Add(this.buttonIndexDump, 0, 3);
-            this.tableLayoutPanel11.Controls.Add(this.buttonIndexRefresh, 0, 2);
             this.tableLayoutPanel11.Controls.Add(this.buttonIndexImport, 0, 1);
             this.tableLayoutPanel11.Controls.Add(this.buttonIndexTemplateDump, 0, 0);
+            this.tableLayoutPanel11.Controls.Add(this.buttonIndexDump, 0, 2);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel11.Location = new System.Drawing.Point(1230, 4);
             this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -716,32 +696,6 @@
             this.label3.Size = new System.Drawing.Size(280, 96);
             this.label3.TabIndex = 5;
             this.label3.Text = "提示：三级类别编号为0，则说明没有子类别，如果某个考核指标有分指标，请将总指标三级编号标为-1。";
-            // 
-            // buttonIndexDump
-            // 
-            this.buttonIndexDump.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonIndexDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonIndexDump.Location = new System.Drawing.Point(34, 444);
-            this.buttonIndexDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.buttonIndexDump.Name = "buttonIndexDump";
-            this.buttonIndexDump.Size = new System.Drawing.Size(233, 64);
-            this.buttonIndexDump.TabIndex = 4;
-            this.buttonIndexDump.Text = "导出数据";
-            this.buttonIndexDump.UseVisualStyleBackColor = true;
-            this.buttonIndexDump.Click += new System.EventHandler(this.buttonIndexDump_Click);
-            // 
-            // buttonIndexRefresh
-            // 
-            this.buttonIndexRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonIndexRefresh.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonIndexRefresh.Location = new System.Drawing.Point(34, 308);
-            this.buttonIndexRefresh.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.buttonIndexRefresh.Name = "buttonIndexRefresh";
-            this.buttonIndexRefresh.Size = new System.Drawing.Size(233, 64);
-            this.buttonIndexRefresh.TabIndex = 3;
-            this.buttonIndexRefresh.Text = "刷新";
-            this.buttonIndexRefresh.UseVisualStyleBackColor = true;
-            this.buttonIndexRefresh.Click += new System.EventHandler(this.buttonIndexRefresh_Click);
             // 
             // buttonIndexImport
             // 
@@ -768,6 +722,19 @@
             this.buttonIndexTemplateDump.Text = "导出Excel模板";
             this.buttonIndexTemplateDump.UseVisualStyleBackColor = true;
             this.buttonIndexTemplateDump.Click += new System.EventHandler(this.buttonIndexTemplateDump_Click);
+            // 
+            // buttonIndexDump
+            // 
+            this.buttonIndexDump.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonIndexDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonIndexDump.Location = new System.Drawing.Point(34, 308);
+            this.buttonIndexDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonIndexDump.Name = "buttonIndexDump";
+            this.buttonIndexDump.Size = new System.Drawing.Size(233, 64);
+            this.buttonIndexDump.TabIndex = 4;
+            this.buttonIndexDump.Text = "导出数据";
+            this.buttonIndexDump.UseVisualStyleBackColor = true;
+            this.buttonIndexDump.Click += new System.EventHandler(this.buttonIndexDump_Click);
             // 
             // tableLayoutPanel16
             // 
@@ -871,7 +838,6 @@
             this.indexType,
             this.weight1,
             this.weight2,
-            this.enable_sensitivity,
             this.sensitivity});
             this.indexDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.indexDataGrid.Enabled = false;
@@ -887,8 +853,8 @@
             // 
             // indexId
             // 
-            dataGridViewCellStyle50.BackColor = System.Drawing.Color.Gainsboro;
-            this.indexId.DefaultCellStyle = dataGridViewCellStyle50;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
+            this.indexId.DefaultCellStyle = dataGridViewCellStyle7;
             this.indexId.HeaderText = "指标编号";
             this.indexId.MinimumWidth = 6;
             this.indexId.Name = "indexId";
@@ -913,9 +879,15 @@
             // 
             // tertiary_identifier
             // 
-            this.tertiary_identifier.HeaderText = "三级类别编号";
+            this.tertiary_identifier.HeaderText = "是否为子指标";
+            this.tertiary_identifier.Items.AddRange(new object[] {
+            "单项指标",
+            "总指标",
+            "子指标"});
             this.tertiary_identifier.MinimumWidth = 8;
             this.tertiary_identifier.Name = "tertiary_identifier";
+            this.tertiary_identifier.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.tertiary_identifier.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.tertiary_identifier.Width = 155;
             // 
             // indexName
@@ -951,13 +923,6 @@
             this.weight2.Name = "weight2";
             this.weight2.Width = 125;
             // 
-            // enable_sensitivity
-            // 
-            this.enable_sensitivity.HeaderText = "启用敏感度";
-            this.enable_sensitivity.MinimumWidth = 8;
-            this.enable_sensitivity.Name = "enable_sensitivity";
-            this.enable_sensitivity.Width = 125;
-            // 
             // sensitivity
             // 
             this.sensitivity.HeaderText = "敏感度";
@@ -972,7 +937,7 @@
             this.pageManager.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pageManager.Name = "pageManager";
             this.pageManager.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pageManager.Size = new System.Drawing.Size(1540, 698);
+            this.pageManager.Size = new System.Drawing.Size(1540, 696);
             this.pageManager.TabIndex = 2;
             this.pageManager.Text = "职能部门视图";
             this.pageManager.UseVisualStyleBackColor = true;
@@ -990,7 +955,7 @@
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(1534, 690);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(1534, 688);
             this.tableLayoutPanel12.TabIndex = 2;
             // 
             // managerDataGrid
@@ -1006,7 +971,7 @@
             this.managerDataGrid.Name = "managerDataGrid";
             this.managerDataGrid.RowHeadersWidth = 51;
             this.managerDataGrid.RowTemplate.Height = 27;
-            this.managerDataGrid.Size = new System.Drawing.Size(1221, 682);
+            this.managerDataGrid.Size = new System.Drawing.Size(1221, 680);
             this.managerDataGrid.TabIndex = 5;
             this.managerDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.managerDataGrid_CellContentClick);
             this.managerDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.managerDataGrid_CellEndEdit);
@@ -1014,8 +979,8 @@
             // 
             // manager_id
             // 
-            dataGridViewCellStyle51.BackColor = System.Drawing.Color.Gainsboro;
-            this.manager_id.DefaultCellStyle = dataGridViewCellStyle51;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
+            this.manager_id.DefaultCellStyle = dataGridViewCellStyle9;
             this.manager_id.HeaderText = "职能部门编号";
             this.manager_id.MinimumWidth = 6;
             this.manager_id.Name = "manager_id";
@@ -1041,10 +1006,9 @@
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Controls.Add(this.buttonManagerDump, 0, 3);
-            this.tableLayoutPanel13.Controls.Add(this.buttonManagerRefresh, 0, 2);
             this.tableLayoutPanel13.Controls.Add(this.buttonManagerImport, 0, 1);
             this.tableLayoutPanel13.Controls.Add(this.buttonManagerTemplateDump, 0, 0);
+            this.tableLayoutPanel13.Controls.Add(this.buttonManagerDump, 0, 2);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel13.Location = new System.Drawing.Point(1230, 4);
             this.tableLayoutPanel13.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -1055,34 +1019,8 @@
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(301, 682);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(301, 680);
             this.tableLayoutPanel13.TabIndex = 6;
-            // 
-            // buttonManagerDump
-            // 
-            this.buttonManagerDump.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonManagerDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonManagerDump.Location = new System.Drawing.Point(34, 444);
-            this.buttonManagerDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.buttonManagerDump.Name = "buttonManagerDump";
-            this.buttonManagerDump.Size = new System.Drawing.Size(233, 64);
-            this.buttonManagerDump.TabIndex = 4;
-            this.buttonManagerDump.Text = "导出数据";
-            this.buttonManagerDump.UseVisualStyleBackColor = true;
-            this.buttonManagerDump.Click += new System.EventHandler(this.buttonManagerDump_Click);
-            // 
-            // buttonManagerRefresh
-            // 
-            this.buttonManagerRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonManagerRefresh.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonManagerRefresh.Location = new System.Drawing.Point(34, 308);
-            this.buttonManagerRefresh.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.buttonManagerRefresh.Name = "buttonManagerRefresh";
-            this.buttonManagerRefresh.Size = new System.Drawing.Size(233, 64);
-            this.buttonManagerRefresh.TabIndex = 3;
-            this.buttonManagerRefresh.Text = "刷新";
-            this.buttonManagerRefresh.UseVisualStyleBackColor = true;
-            this.buttonManagerRefresh.Click += new System.EventHandler(this.buttonManagerRefresh_Click);
             // 
             // buttonManagerImport
             // 
@@ -1110,6 +1048,19 @@
             this.buttonManagerTemplateDump.UseVisualStyleBackColor = true;
             this.buttonManagerTemplateDump.Click += new System.EventHandler(this.buttonManagerTemplateDump_Click);
             // 
+            // buttonManagerDump
+            // 
+            this.buttonManagerDump.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonManagerDump.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonManagerDump.Location = new System.Drawing.Point(34, 308);
+            this.buttonManagerDump.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonManagerDump.Name = "buttonManagerDump";
+            this.buttonManagerDump.Size = new System.Drawing.Size(233, 64);
+            this.buttonManagerDump.TabIndex = 4;
+            this.buttonManagerDump.Text = "导出数据";
+            this.buttonManagerDump.UseVisualStyleBackColor = true;
+            this.buttonManagerDump.Click += new System.EventHandler(this.buttonManagerDump_Click);
+            // 
             // pageIndexDuty
             // 
             this.pageIndexDuty.Controls.Add(this.tableLayoutPanel14);
@@ -1117,7 +1068,7 @@
             this.pageIndexDuty.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pageIndexDuty.Name = "pageIndexDuty";
             this.pageIndexDuty.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pageIndexDuty.Size = new System.Drawing.Size(1540, 698);
+            this.pageIndexDuty.Size = new System.Drawing.Size(1540, 696);
             this.pageIndexDuty.TabIndex = 3;
             this.pageIndexDuty.Text = "职责分配视图";
             this.pageIndexDuty.UseVisualStyleBackColor = true;
@@ -1134,7 +1085,7 @@
             this.tableLayoutPanel14.Name = "tableLayoutPanel14";
             this.tableLayoutPanel14.RowCount = 1;
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(1534, 690);
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(1534, 688);
             this.tableLayoutPanel14.TabIndex = 0;
             // 
             // managerInfoSplit
@@ -1149,7 +1100,7 @@
             this.managerInfoSplit.RowCount = 2;
             this.managerInfoSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.managerInfoSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.managerInfoSplit.Size = new System.Drawing.Size(454, 684);
+            this.managerInfoSplit.Size = new System.Drawing.Size(454, 682);
             this.managerInfoSplit.TabIndex = 0;
             // 
             // groupBox1
@@ -1224,14 +1175,14 @@
             this.dutySplit.RowCount = 2;
             this.dutySplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.dutySplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.dutySplit.Size = new System.Drawing.Size(1068, 684);
+            this.dutySplit.Size = new System.Drawing.Size(1068, 682);
             this.dutySplit.TabIndex = 1;
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.tableDutyUtil);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 550);
+            this.groupBox4.Location = new System.Drawing.Point(3, 548);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(1062, 131);
             this.groupBox4.TabIndex = 0;
@@ -1274,7 +1225,7 @@
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox8.Location = new System.Drawing.Point(3, 3);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(1062, 541);
+            this.groupBox8.Size = new System.Drawing.Size(1062, 539);
             this.groupBox8.TabIndex = 1;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "职能分配";
@@ -1293,7 +1244,7 @@
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
             this.tableLayoutPanel15.RowCount = 1;
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(1056, 511);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(1056, 509);
             this.tableLayoutPanel15.TabIndex = 0;
             // 
             // groupDutyAllocate
@@ -1308,7 +1259,7 @@
             this.groupDutyAllocate.Margin = new System.Windows.Forms.Padding(15);
             this.groupDutyAllocate.Name = "groupDutyAllocate";
             this.groupDutyAllocate.Padding = new System.Windows.Forms.Padding(20);
-            this.groupDutyAllocate.Size = new System.Drawing.Size(75, 481);
+            this.groupDutyAllocate.Size = new System.Drawing.Size(75, 479);
             this.groupDutyAllocate.TabIndex = 3;
             this.groupDutyAllocate.TabStop = false;
             this.groupDutyAllocate.Text = "分配";
@@ -1373,7 +1324,7 @@
             this.groupUnallocated.Margin = new System.Windows.Forms.Padding(15);
             this.groupUnallocated.Name = "groupUnallocated";
             this.groupUnallocated.Padding = new System.Windows.Forms.Padding(20);
-            this.groupUnallocated.Size = new System.Drawing.Size(446, 481);
+            this.groupUnallocated.Size = new System.Drawing.Size(446, 479);
             this.groupUnallocated.TabIndex = 0;
             this.groupUnallocated.TabStop = false;
             this.groupUnallocated.Text = "未分配的指标";
@@ -1389,7 +1340,7 @@
             this.listUnallocatedIndexes.Name = "listUnallocatedIndexes";
             this.listUnallocatedIndexes.ScrollAlwaysVisible = true;
             this.listUnallocatedIndexes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listUnallocatedIndexes.Size = new System.Drawing.Size(406, 417);
+            this.listUnallocatedIndexes.Size = new System.Drawing.Size(406, 415);
             this.listUnallocatedIndexes.TabIndex = 3;
             this.listUnallocatedIndexes.SelectedIndexChanged += new System.EventHandler(this.listUnallocatedIndexes_SelectedIndexChanged);
             // 
@@ -1401,7 +1352,7 @@
             this.groupBoxAllocated.Margin = new System.Windows.Forms.Padding(15);
             this.groupBoxAllocated.Name = "groupBoxAllocated";
             this.groupBoxAllocated.Padding = new System.Windows.Forms.Padding(20);
-            this.groupBoxAllocated.Size = new System.Drawing.Size(445, 481);
+            this.groupBoxAllocated.Size = new System.Drawing.Size(445, 479);
             this.groupBoxAllocated.TabIndex = 2;
             this.groupBoxAllocated.TabStop = false;
             this.groupBoxAllocated.Text = "已分配的指标";
@@ -1417,7 +1368,7 @@
             this.listAllocatedIndexes.Name = "listAllocatedIndexes";
             this.listAllocatedIndexes.ScrollAlwaysVisible = true;
             this.listAllocatedIndexes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listAllocatedIndexes.Size = new System.Drawing.Size(405, 417);
+            this.listAllocatedIndexes.Size = new System.Drawing.Size(405, 415);
             this.listAllocatedIndexes.TabIndex = 3;
             this.listAllocatedIndexes.SelectedIndexChanged += new System.EventHandler(this.listAllocatedIndexes_SelectedIndexChanged);
             // 
@@ -1454,7 +1405,7 @@
             // 
             this.tableLayoutPanel20.ColumnCount = 1;
             this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel20.Controls.Add(this.buttonCompletionRefresh, 0, 2);
+            this.tableLayoutPanel20.Controls.Add(this.buttonExportMain, 0, 2);
             this.tableLayoutPanel20.Controls.Add(this.buttonCompletionImport, 0, 1);
             this.tableLayoutPanel20.Controls.Add(this.buttonCompletionExport, 0, 0);
             this.tableLayoutPanel20.Controls.Add(this.label2, 0, 3);
@@ -1469,18 +1420,18 @@
             this.tableLayoutPanel20.Size = new System.Drawing.Size(302, 684);
             this.tableLayoutPanel20.TabIndex = 0;
             // 
-            // buttonCompletionRefresh
+            // buttonExportMain
             // 
-            this.buttonCompletionRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonCompletionRefresh.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonCompletionRefresh.Location = new System.Drawing.Point(34, 378);
-            this.buttonCompletionRefresh.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
-            this.buttonCompletionRefresh.Name = "buttonCompletionRefresh";
-            this.buttonCompletionRefresh.Size = new System.Drawing.Size(234, 99);
-            this.buttonCompletionRefresh.TabIndex = 4;
-            this.buttonCompletionRefresh.Text = "刷新";
-            this.buttonCompletionRefresh.UseVisualStyleBackColor = true;
-            this.buttonCompletionRefresh.Click += new System.EventHandler(this.buttonCompletionRefresh_Click);
+            this.buttonExportMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonExportMain.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buttonExportMain.Location = new System.Drawing.Point(34, 378);
+            this.buttonExportMain.Margin = new System.Windows.Forms.Padding(34, 36, 34, 36);
+            this.buttonExportMain.Name = "buttonExportMain";
+            this.buttonExportMain.Size = new System.Drawing.Size(234, 99);
+            this.buttonExportMain.TabIndex = 0;
+            this.buttonExportMain.Text = "导出计算总表";
+            this.buttonExportMain.UseVisualStyleBackColor = true;
+            this.buttonExportMain.Click += new System.EventHandler(this.buttonExportMain_Click);
             // 
             // buttonCompletionImport
             // 
@@ -1554,16 +1505,62 @@
             // 
             this.tableLayoutPanel21.ColumnCount = 1;
             this.tableLayoutPanel21.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel21.Controls.Add(this.groupBox14, 0, 2);
             this.tableLayoutPanel21.Controls.Add(this.labelCurrentIndexCompletion, 0, 0);
             this.tableLayoutPanel21.Controls.Add(this.completionDataGrid, 0, 1);
             this.tableLayoutPanel21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel21.Location = new System.Drawing.Point(3, 27);
             this.tableLayoutPanel21.Name = "tableLayoutPanel21";
-            this.tableLayoutPanel21.RowCount = 2;
+            this.tableLayoutPanel21.RowCount = 3;
             this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
-            this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92F));
+            this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 72F));
+            this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel21.Size = new System.Drawing.Size(908, 654);
             this.tableLayoutPanel21.TabIndex = 0;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Controls.Add(this.tableLayoutPanel25);
+            this.groupBox14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox14.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox14.Location = new System.Drawing.Point(0, 522);
+            this.groupBox14.Margin = new System.Windows.Forms.Padding(0);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(908, 132);
+            this.groupBox14.TabIndex = 3;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "总表导出进度";
+            // 
+            // tableLayoutPanel25
+            // 
+            this.tableLayoutPanel25.ColumnCount = 1;
+            this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel25.Controls.Add(this.exportProgressBar, 0, 1);
+            this.tableLayoutPanel25.Controls.Add(this.labelExportMessage, 0, 0);
+            this.tableLayoutPanel25.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel25.Location = new System.Drawing.Point(3, 35);
+            this.tableLayoutPanel25.Name = "tableLayoutPanel25";
+            this.tableLayoutPanel25.RowCount = 2;
+            this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.72727F));
+            this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 52.27273F));
+            this.tableLayoutPanel25.Size = new System.Drawing.Size(902, 94);
+            this.tableLayoutPanel25.TabIndex = 0;
+            // 
+            // exportProgressBar
+            // 
+            this.exportProgressBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.exportProgressBar.Location = new System.Drawing.Point(3, 47);
+            this.exportProgressBar.Name = "exportProgressBar";
+            this.exportProgressBar.Size = new System.Drawing.Size(896, 44);
+            this.exportProgressBar.TabIndex = 0;
+            // 
+            // labelExportMessage
+            // 
+            this.labelExportMessage.AutoSize = true;
+            this.labelExportMessage.Location = new System.Drawing.Point(3, 0);
+            this.labelExportMessage.Name = "labelExportMessage";
+            this.labelExportMessage.Size = new System.Drawing.Size(0, 31);
+            this.labelExportMessage.TabIndex = 1;
             // 
             // labelCurrentIndexCompletion
             // 
@@ -1594,7 +1591,7 @@
             this.completionDataGrid.Name = "completionDataGrid";
             this.completionDataGrid.RowHeadersWidth = 62;
             this.completionDataGrid.RowTemplate.Height = 30;
-            this.completionDataGrid.Size = new System.Drawing.Size(902, 596);
+            this.completionDataGrid.Size = new System.Drawing.Size(902, 464);
             this.completionDataGrid.TabIndex = 1;
             this.completionDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.completionDataGrid_CellEndEdit);
             // 
@@ -1608,8 +1605,8 @@
             // 
             // dept_code
             // 
-            dataGridViewCellStyle52.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dept_code.DefaultCellStyle = dataGridViewCellStyle52;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dept_code.DefaultCellStyle = dataGridViewCellStyle10;
             this.dept_code.HeaderText = "教学科研单位编号";
             this.dept_code.MinimumWidth = 8;
             this.dept_code.Name = "dept_code";
@@ -1618,8 +1615,8 @@
             // 
             // DeptName1
             // 
-            dataGridViewCellStyle53.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.DeptName1.DefaultCellStyle = dataGridViewCellStyle53;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.DeptName1.DefaultCellStyle = dataGridViewCellStyle11;
             this.DeptName1.HeaderText = "单位名称";
             this.DeptName1.MinimumWidth = 8;
             this.DeptName1.Name = "DeptName1";
@@ -1642,154 +1639,89 @@
             // 
             // completion_rate
             // 
-            dataGridViewCellStyle54.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.completion_rate.DefaultCellStyle = dataGridViewCellStyle54;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.completion_rate.DefaultCellStyle = dataGridViewCellStyle12;
             this.completion_rate.HeaderText = "完成率";
             this.completion_rate.MinimumWidth = 8;
             this.completion_rate.Name = "completion_rate";
             this.completion_rate.ReadOnly = true;
             this.completion_rate.Width = 150;
             // 
-            // pageExport
+            // menuGroups
             // 
-            this.pageExport.Controls.Add(this.tableLayoutPanel22);
-            this.pageExport.Location = new System.Drawing.Point(4, 29);
-            this.pageExport.Name = "pageExport";
-            this.pageExport.Padding = new System.Windows.Forms.Padding(3);
-            this.pageExport.Size = new System.Drawing.Size(1540, 698);
-            this.pageExport.TabIndex = 5;
-            this.pageExport.Text = "导出向导";
-            this.pageExport.UseVisualStyleBackColor = true;
+            this.menuGroups.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuGroups.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createGroup,
+            this.cancelGroup,
+            this.editGroupTarget,
+            this.editGroupCompletion});
+            this.menuGroups.Name = "menuGroups";
+            this.menuGroups.Size = new System.Drawing.Size(207, 124);
+            this.menuGroups.Text = "分组";
+            this.menuGroups.Opening += new System.ComponentModel.CancelEventHandler(this.menuGroups_Opening);
             // 
-            // tableLayoutPanel22
+            // createGroup
             // 
-            this.tableLayoutPanel22.ColumnCount = 2;
-            this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel22.Controls.Add(this.tableLayoutPanel23, 1, 0);
-            this.tableLayoutPanel22.Controls.Add(this.tableLayoutPanel24, 0, 0);
-            this.tableLayoutPanel22.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel22.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel22.Name = "tableLayoutPanel22";
-            this.tableLayoutPanel22.RowCount = 1;
-            this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel22.Size = new System.Drawing.Size(1534, 692);
-            this.tableLayoutPanel22.TabIndex = 0;
+            this.createGroup.Name = "createGroup";
+            this.createGroup.Size = new System.Drawing.Size(206, 30);
+            this.createGroup.Text = "创建分组";
             // 
-            // tableLayoutPanel23
+            // cancelGroup
             // 
-            this.tableLayoutPanel23.ColumnCount = 1;
-            this.tableLayoutPanel23.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel23.Controls.Add(this.buttonExportMain, 0, 2);
-            this.tableLayoutPanel23.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel23.Location = new System.Drawing.Point(1230, 3);
-            this.tableLayoutPanel23.Name = "tableLayoutPanel23";
-            this.tableLayoutPanel23.RowCount = 5;
-            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel23.Size = new System.Drawing.Size(301, 686);
-            this.tableLayoutPanel23.TabIndex = 0;
+            this.cancelGroup.Name = "cancelGroup";
+            this.cancelGroup.Size = new System.Drawing.Size(206, 30);
+            this.cancelGroup.Text = "取消分组";
             // 
-            // buttonExportMain
+            // editGroupTarget
             // 
-            this.buttonExportMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonExportMain.Font = new System.Drawing.Font("微软雅黑", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonExportMain.Location = new System.Drawing.Point(20, 294);
-            this.buttonExportMain.Margin = new System.Windows.Forms.Padding(20);
-            this.buttonExportMain.Name = "buttonExportMain";
-            this.buttonExportMain.Size = new System.Drawing.Size(261, 97);
-            this.buttonExportMain.TabIndex = 0;
-            this.buttonExportMain.Text = "导出计算总表";
-            this.buttonExportMain.UseVisualStyleBackColor = true;
-            this.buttonExportMain.Click += new System.EventHandler(this.buttonExportMain_Click);
+            this.editGroupTarget.Name = "editGroupTarget";
+            this.editGroupTarget.Size = new System.Drawing.Size(206, 30);
+            this.editGroupTarget.Text = "编辑小组目标";
             // 
-            // tableLayoutPanel24
+            // editGroupCompletion
             // 
-            this.tableLayoutPanel24.ColumnCount = 1;
-            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel24.Controls.Add(this.groupBox14, 0, 1);
-            this.tableLayoutPanel24.Controls.Add(this.groupBox13, 0, 0);
-            this.tableLayoutPanel24.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel24.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel24.Name = "tableLayoutPanel24";
-            this.tableLayoutPanel24.RowCount = 2;
-            this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel24.Size = new System.Drawing.Size(1221, 686);
-            this.tableLayoutPanel24.TabIndex = 1;
+            this.editGroupCompletion.Name = "editGroupCompletion";
+            this.editGroupCompletion.Size = new System.Drawing.Size(206, 30);
+            this.editGroupCompletion.Text = "编辑小组完成数";
             // 
-            // groupBox14
+            // tableLayoutPanel26
             // 
-            this.groupBox14.Controls.Add(this.tableLayoutPanel25);
-            this.groupBox14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox14.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox14.Location = new System.Drawing.Point(50, 520);
-            this.groupBox14.Margin = new System.Windows.Forms.Padding(50, 40, 50, 40);
-            this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(1121, 126);
-            this.groupBox14.TabIndex = 3;
-            this.groupBox14.TabStop = false;
-            this.groupBox14.Text = "导出进度";
+            this.tableLayoutPanel26.ColumnCount = 2;
+            this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel26.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel26.Controls.Add(this.labelView, 1, 0);
+            this.tableLayoutPanel26.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel26.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel26.Name = "tableLayoutPanel26";
+            this.tableLayoutPanel26.RowCount = 1;
+            this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel26.Size = new System.Drawing.Size(1548, 76);
+            this.tableLayoutPanel26.TabIndex = 2;
             // 
-            // tableLayoutPanel25
+            // label1
             // 
-            this.tableLayoutPanel25.ColumnCount = 1;
-            this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel25.Controls.Add(this.exportProgressBar, 0, 1);
-            this.tableLayoutPanel25.Controls.Add(this.labelExportMessage, 0, 0);
-            this.tableLayoutPanel25.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel25.Location = new System.Drawing.Point(3, 35);
-            this.tableLayoutPanel25.Name = "tableLayoutPanel25";
-            this.tableLayoutPanel25.RowCount = 2;
-            this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.72727F));
-            this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 52.27273F));
-            this.tableLayoutPanel25.Size = new System.Drawing.Size(1115, 88);
-            this.tableLayoutPanel25.TabIndex = 0;
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 25.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(768, 76);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "DHU考核系统";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
-            // exportProgressBar
+            // labelView
             // 
-            this.exportProgressBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.exportProgressBar.Location = new System.Drawing.Point(3, 44);
-            this.exportProgressBar.Name = "exportProgressBar";
-            this.exportProgressBar.Size = new System.Drawing.Size(1109, 41);
-            this.exportProgressBar.TabIndex = 0;
-            // 
-            // labelExportMessage
-            // 
-            this.labelExportMessage.AutoSize = true;
-            this.labelExportMessage.Location = new System.Drawing.Point(3, 0);
-            this.labelExportMessage.Name = "labelExportMessage";
-            this.labelExportMessage.Size = new System.Drawing.Size(0, 31);
-            this.labelExportMessage.TabIndex = 1;
-            // 
-            // groupBox13
-            // 
-            this.groupBox13.Controls.Add(this.textBoxSummary);
-            this.groupBox13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox13.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox13.Location = new System.Drawing.Point(50, 100);
-            this.groupBox13.Margin = new System.Windows.Forms.Padding(50, 100, 50, 100);
-            this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(1121, 280);
-            this.groupBox13.TabIndex = 2;
-            this.groupBox13.TabStop = false;
-            this.groupBox13.Text = "数据摘要";
-            // 
-            // textBoxSummary
-            // 
-            this.textBoxSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxSummary.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBoxSummary.Location = new System.Drawing.Point(3, 40);
-            this.textBoxSummary.Multiline = true;
-            this.textBoxSummary.Name = "textBoxSummary";
-            this.textBoxSummary.ReadOnly = true;
-            this.textBoxSummary.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxSummary.Size = new System.Drawing.Size(1115, 237);
-            this.textBoxSummary.TabIndex = 0;
+            this.labelView.AutoSize = true;
+            this.labelView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelView.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelView.Location = new System.Drawing.Point(777, 0);
+            this.labelView.Name = "labelView";
+            this.labelView.Size = new System.Drawing.Size(768, 76);
+            this.labelView.TabIndex = 2;
+            this.labelView.Text = "教学科研单位管理";
+            this.labelView.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel4
             // 
@@ -2135,104 +2067,6 @@
             this.multiOpenDialog.Multiselect = true;
             this.multiOpenDialog.RestoreDirectory = true;
             // 
-            // menuGroups
-            // 
-            this.menuGroups.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menuGroups.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createGroup,
-            this.cancelGroup,
-            this.editGroupTarget,
-            this.editGroupCompletion});
-            this.menuGroups.Name = "menuGroups";
-            this.menuGroups.Size = new System.Drawing.Size(207, 124);
-            this.menuGroups.Text = "分组";
-            this.menuGroups.Opening += new System.ComponentModel.CancelEventHandler(this.menuGroups_Opening);
-            // 
-            // createGroup
-            // 
-            this.createGroup.Name = "createGroup";
-            this.createGroup.Size = new System.Drawing.Size(240, 30);
-            this.createGroup.Text = "创建分组";
-            // 
-            // cancelGroup
-            // 
-            this.cancelGroup.Name = "cancelGroup";
-            this.cancelGroup.Size = new System.Drawing.Size(240, 30);
-            this.cancelGroup.Text = "取消分组";
-            // 
-            // editGroupTarget
-            // 
-            this.editGroupTarget.Name = "editGroupTarget";
-            this.editGroupTarget.Size = new System.Drawing.Size(240, 30);
-            this.editGroupTarget.Text = "编辑小组目标";
-            // 
-            // editGroupCompletion
-            // 
-            this.editGroupCompletion.Name = "editGroupCompletion";
-            this.editGroupCompletion.Size = new System.Drawing.Size(240, 30);
-            this.editGroupCompletion.Text = "编辑小组完成数";
-            // 
-            // 数据库转储ToolStripMenuItem
-            // 
-            this.数据库转储ToolStripMenuItem.Name = "数据库转储ToolStripMenuItem";
-            this.数据库转储ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.数据库转储ToolStripMenuItem.Text = "数据库转储";
-            this.数据库转储ToolStripMenuItem.Click += new System.EventHandler(this.数据库转储ToolStripMenuItem_Click);
-            // 
-            // 重置数据库ToolStripMenuItem
-            // 
-            this.重置数据库ToolStripMenuItem.Name = "重置数据库ToolStripMenuItem";
-            this.重置数据库ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.重置数据库ToolStripMenuItem.Text = "重置数据库";
-            this.重置数据库ToolStripMenuItem.Click += new System.EventHandler(this.重置数据库ToolStripMenuItem_Click);
-            // 
-            // 恢复数据库ToolStripMenuItem
-            // 
-            this.恢复数据库ToolStripMenuItem.Name = "恢复数据库ToolStripMenuItem";
-            this.恢复数据库ToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.恢复数据库ToolStripMenuItem.Text = "恢复数据库";
-            this.恢复数据库ToolStripMenuItem.Click += new System.EventHandler(this.恢复数据库ToolStripMenuItem_Click);
-            // 
-            // tableLayoutPanel26
-            // 
-            this.tableLayoutPanel26.ColumnCount = 2;
-            this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel26.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel26.Controls.Add(this.labelView, 1, 0);
-            this.tableLayoutPanel26.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel26.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel26.Name = "tableLayoutPanel26";
-            this.tableLayoutPanel26.RowCount = 1;
-            this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel26.Size = new System.Drawing.Size(1548, 76);
-            this.tableLayoutPanel26.TabIndex = 2;
-            // 
-            // labelView
-            // 
-            this.labelView.AutoSize = true;
-            this.labelView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelView.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labelView.Location = new System.Drawing.Point(777, 0);
-            this.labelView.Name = "labelView";
-            this.labelView.Size = new System.Drawing.Size(768, 76);
-            this.labelView.TabIndex = 2;
-            this.labelView.Text = "教学科研单位视图";
-            this.labelView.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 25.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(768, 76);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "DHU考核系统";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.UseCompatibleTextRendering = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -2291,16 +2125,13 @@
             this.groupBox10.ResumeLayout(false);
             this.tableLayoutPanel21.ResumeLayout(false);
             this.tableLayoutPanel21.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.completionDataGrid)).EndInit();
-            this.pageExport.ResumeLayout(false);
-            this.tableLayoutPanel22.ResumeLayout(false);
-            this.tableLayoutPanel23.ResumeLayout(false);
-            this.tableLayoutPanel24.ResumeLayout(false);
             this.groupBox14.ResumeLayout(false);
             this.tableLayoutPanel25.ResumeLayout(false);
             this.tableLayoutPanel25.PerformLayout();
-            this.groupBox13.ResumeLayout(false);
-            this.groupBox13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.completionDataGrid)).EndInit();
+            this.menuGroups.ResumeLayout(false);
+            this.tableLayoutPanel26.ResumeLayout(false);
+            this.tableLayoutPanel26.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -2330,9 +2161,6 @@
             this.splitContainer9.Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).EndInit();
             this.splitContainer9.ResumeLayout(false);
-            this.menuGroups.ResumeLayout(false);
-            this.tableLayoutPanel26.ResumeLayout(false);
-            this.tableLayoutPanel26.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2388,7 +2216,6 @@
         private System.Windows.Forms.TextBox textLogger;
         private System.Windows.Forms.GroupBox groupBoxMetaInfo;
         private System.Windows.Forms.Label labelCurrentYear;
-        private System.Windows.Forms.Button buttonDeptRefresh;
         private System.Windows.Forms.Button buttonDeptDump;
         private System.Windows.Forms.SaveFileDialog saveDialog;
         private System.Windows.Forms.TabPage pageIndexDuty;
@@ -2396,19 +2223,16 @@
         private System.Windows.Forms.ToolStripMenuItem 完成度视图ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 设置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 修改年份ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem 导出向导ToolStripMenuItem;
         private System.Windows.Forms.TabPage pageIndex;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.Button buttonIndexDump;
-        private System.Windows.Forms.Button buttonIndexRefresh;
         private System.Windows.Forms.Button buttonIndexImport;
         private System.Windows.Forms.Button buttonIndexTemplateDump;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.DataGridView managerDataGrid;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.Button buttonManagerDump;
-        private System.Windows.Forms.Button buttonManagerRefresh;
         private System.Windows.Forms.Button buttonManagerImport;
         private System.Windows.Forms.Button buttonManagerTemplateDump;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
@@ -2437,7 +2261,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn manager_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn manager_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn manager_name;
-        private System.Windows.Forms.TabPage pageExport;
         private System.Windows.Forms.Button buttonDutyClear;
         private System.Windows.Forms.OpenFileDialog openDialog;
         private System.Windows.Forms.DataGridViewTextBoxColumn DeptId;
@@ -2464,7 +2287,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel21;
         private System.Windows.Forms.Label labelCurrentIndexCompletion;
         private System.Windows.Forms.DataGridView completionDataGrid;
-        private System.Windows.Forms.Button buttonCompletionRefresh;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn dept_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn DeptName1;
@@ -2472,27 +2294,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn completion;
         private System.Windows.Forms.DataGridViewTextBoxColumn completion_rate;
         private System.Windows.Forms.OpenFileDialog multiOpenDialog;
-        private System.Windows.Forms.DataGridViewTextBoxColumn indexId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn index_identifier;
-        private System.Windows.Forms.DataGridViewTextBoxColumn secondaryIdentifier;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tertiary_identifier;
-        private System.Windows.Forms.DataGridViewTextBoxColumn indexName;
-        private System.Windows.Forms.DataGridViewComboBoxColumn indexType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn weight1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn weight2;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn enable_sensitivity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sensitivity;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel22;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel23;
         private System.Windows.Forms.Button buttonExportMain;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel24;
-        private System.Windows.Forms.GroupBox groupBox13;
         private System.Windows.Forms.GroupBox groupBox14;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel25;
         private System.Windows.Forms.ProgressBar exportProgressBar;
         private System.Windows.Forms.Label labelExportMessage;
-        private System.Windows.Forms.TextBox textBoxSummary;
         private System.Windows.Forms.ContextMenuStrip menuGroups;
         private System.Windows.Forms.ToolStripMenuItem createGroup;
         private System.Windows.Forms.ToolStripMenuItem cancelGroup;
@@ -2504,6 +2311,15 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel26;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn indexId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn index_identifier;
+        private System.Windows.Forms.DataGridViewTextBoxColumn secondaryIdentifier;
+        private System.Windows.Forms.DataGridViewComboBoxColumn tertiary_identifier;
+        private System.Windows.Forms.DataGridViewTextBoxColumn indexName;
+        private System.Windows.Forms.DataGridViewComboBoxColumn indexType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn weight1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn weight2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sensitivity;
     }
 }
 

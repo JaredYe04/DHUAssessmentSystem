@@ -67,7 +67,7 @@ namespace 考核系统.Utils.CalcUtils
         {
             get
             {
-                if(index.enable_sensitivity == 0) return 0;
+                if(index.sensitivity == 0) return 0;//不以enable_sensitivity为判断标准，只要sensitivity不为0则算
                 var completed = completion.completed;
                 var population = (double)(deptAnnualInfo.dept_population);
 

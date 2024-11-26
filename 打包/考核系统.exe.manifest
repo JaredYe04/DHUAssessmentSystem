@@ -822,14 +822,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="考核系统.exe" size="231344">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="考核系统.exe" size="261040">
       <assemblyIdentity name="考核系统" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>SA2PwFdh4iqtV72QznTUyYw8T7RTt2sfJo7c+x4p+Y8=</dsig:DigestValue>
+        <dsig:DigestValue>cGCU4ohKaKtr2u1JIbOu6hkYCccyANM6bcII7rQI6AQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

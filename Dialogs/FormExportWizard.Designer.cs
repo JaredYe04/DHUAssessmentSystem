@@ -37,6 +37,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkListManager = new System.Windows.Forms.CheckedListBox();
+            this.labelExportInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -72,7 +73,7 @@
             // 
             this.buttonExport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonExport.Font = new System.Drawing.Font("微软雅黑", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonExport.Location = new System.Drawing.Point(10, 703);
+            this.buttonExport.Location = new System.Drawing.Point(10, 644);
             this.buttonExport.Margin = new System.Windows.Forms.Padding(10);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(462, 63);
@@ -84,10 +85,10 @@
             // progressBar
             // 
             this.progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.progressBar.Location = new System.Drawing.Point(3, 786);
+            this.progressBar.Location = new System.Drawing.Point(3, 727);
             this.progressBar.Margin = new System.Windows.Forms.Padding(3, 10, 3, 10);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(476, 40);
+            this.progressBar.Size = new System.Drawing.Size(476, 38);
             this.progressBar.TabIndex = 5;
             // 
             // tableLayoutPanel1
@@ -98,13 +99,15 @@
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.buttonExport, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelExportInfo, 0, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 76F));
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(482, 836);
             this.tableLayoutPanel1.TabIndex = 6;
@@ -117,7 +120,7 @@
             this.tableLayoutPanel2.Controls.Add(this.buttonSelectAll, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonClearSelect, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 638);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 579);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -131,7 +134,7 @@
             this.groupBox1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(476, 629);
+            this.groupBox1.Size = new System.Drawing.Size(476, 570);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "请选择职能部门";
@@ -144,8 +147,18 @@
             this.checkListManager.Location = new System.Drawing.Point(3, 27);
             this.checkListManager.Name = "checkListManager";
             this.checkListManager.ScrollAlwaysVisible = true;
-            this.checkListManager.Size = new System.Drawing.Size(470, 599);
+            this.checkListManager.Size = new System.Drawing.Size(470, 540);
             this.checkListManager.TabIndex = 0;
+            // 
+            // labelExportInfo
+            // 
+            this.labelExportInfo.AutoSize = true;
+            this.labelExportInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelExportInfo.Location = new System.Drawing.Point(3, 775);
+            this.labelExportInfo.Name = "labelExportInfo";
+            this.labelExportInfo.Size = new System.Drawing.Size(476, 61);
+            this.labelExportInfo.TabIndex = 6;
+            this.labelExportInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormExportWizard
             // 
@@ -161,6 +174,7 @@
             this.Text = "完成情况分表导出向导";
             this.Load += new System.EventHandler(this.FormExportWizard_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -177,5 +191,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckedListBox checkListManager;
+        private System.Windows.Forms.Label labelExportInfo;
     }
 }
