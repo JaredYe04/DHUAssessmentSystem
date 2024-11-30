@@ -145,6 +145,11 @@ namespace 考核系统
             foreach (var index in indexList)
             {
                 CommonData.IndexInfo[index.id] = Index.Copy(index);
+                if(index.tertiary_identifier==null || index.tertiary_identifier.ToString().Trim() == "")
+                {
+                    index.tertiary_identifier=Consts.singleIndexPlaceholder;
+                    indexMapper.Update(index);
+                }
             }
             //指标信息不显示，只有在选中第一级类别时才显示
 
@@ -800,10 +805,7 @@ namespace 考核系统
         {
             mainContainer.SelectedIndex = 4;
             labelView.Text = "完成情况管理";
-            fetchIndexInfo();
-            fetchManagerInfo();
-            fetchDepartmentInfo();
-            fetchCompletionInfo();
+            fetchAll();
         }
 
         private bool HasSelectedManager//是否选中了职能部门
@@ -1849,7 +1851,15 @@ namespace 考核系统
                 //indexObj.id = row.Cells[(int)IndexInfoColumns.id].Value == null ? -1 : Int32.Parse(row.Cells[(int)IndexInfoColumns.id].Value.ToString());
                 indexObj.identifier_id = Int32.Parse(row.Cells[(int)IndexInfoColumns.identifier_id].Value.ToString());
                 indexObj.secondary_identifier = Int32.Parse(row.Cells[(int)IndexInfoColumns.secondary_identifier].Value.ToString());
-                indexObj.tertiary_identifier = row.Cells[(int)IndexInfoColumns.tertiary_identifier].Value == null ? "": row.Cells[(int)IndexInfoColumns.tertiary_identifier].Value.ToString();
+                if(row.Cells[(int)IndexInfoColumns.tertiary_identifier].Value==null
+                    || row.Cells[(int)IndexInfoColumns.tertiary_identifier].Value.ToString() == "")
+                {
+                    indexObj.tertiary_identifier =Consts.singleIndexPlaceholder;
+                }
+                else
+                {
+                    indexObj.tertiary_identifier = row.Cells[(int)IndexInfoColumns.tertiary_identifier].Value.ToString();
+                }
                 indexObj.index_name = row.Cells[(int)IndexInfoColumns.index_name].Value.ToString();
                 indexObj.index_type = row.Cells[(int)IndexInfoColumns.index_type].Value.ToString();
                 indexObj.weight1 = row.Cells[(int)IndexInfoColumns.weight1].Value == null ? 0 : double.Parse(row.Cells[(int)IndexInfoColumns.weight1].Value.ToString());
@@ -2058,6 +2068,7 @@ namespace 考核系统
         }
         private void initCompletion(Index index)
         {
+            if (CommonData.CompletionInfo == null) CommonData.CompletionInfo = new Dictionary<int, Completion>();
             //由于某些指标在数据库中没有完成度信息，所以要先创建空的完成度信息
             var completionMapper = CompletionMapper.GetInstance();
             var completionList = completionMapper.GetCompletionByIndexId(index.id, CommonData.CurrentYear);
@@ -2072,7 +2083,7 @@ namespace 考核系统
                     break;
                 }
             }
-            if (completionList.Count < CommonData.DeptInfo.Count)
+            if (completionList.Count != CommonData.DeptInfo.Count)
             {
                 var depts= CommonData.DeptInfo.Values.Select(x => x.Item1);
                 int cnt = 0;
@@ -2102,6 +2113,18 @@ namespace 考核系统
                     CommonData.CompletionInfo[completion.id] = completion;
                 }
                 Logger.Log($"为指标{index.index_name}创建了{cnt}个部门的完成度信息");
+
+                //除此之外，如果某个部门被删除了，但是完成度信息没有删除，也要删除
+                var deptIds = depts.Select(x => x.id).ToList();
+                foreach (var completion in completionList)
+                {
+                    if (!deptIds.Contains(completion.dept_id))
+                    {
+                        completionMapper.Remove(completion.id.ToString());
+                        CommonData.CompletionInfo.Remove(completion.id);
+                        Logger.Log($"删除了指标{index.index_name}的部门{completion.dept_id}的完成度信息");
+                    }
+                }
             }
             var groupsMapper = GroupsMapper.GetInstance();
             var currentIndexGroups=groupsMapper.GetGroupsByIndexId(index.id);
@@ -2261,7 +2284,7 @@ namespace 考核系统
                 Logger.Log($"{idx++}/{multiOpenDialog.FileNames.Length}导入{filename}已完成");
                 fetchCompletionInfo();
             }
-            if (mainErrorInfo != "")
+            if (mainErrorInfo.Trim() != "")
             {
                 var errorInfoDialog = new ErrorInfoDialog();
                 errorInfoDialog.textErrorInfo.Text = mainErrorInfo;

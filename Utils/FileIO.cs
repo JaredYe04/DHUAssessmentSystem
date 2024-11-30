@@ -804,12 +804,15 @@ namespace 考核系统.Utils
                                         com.Value.year == cur_completion.year)
                             )
                         {
+                            //var cnt=completions.Values.Count(com => com.dept_id == cur_completion.dept_id &&
+                            //            com.index_id == cur_completion.index_id &&
+                            //            com.year == cur_completion.year);//todo:删除
                             var completion = completions.Values.FirstOrDefault(com => com.dept_id == cur_completion.dept_id &&
                                         com.index_id == cur_completion.index_id &&
                                         com.year == cur_completion.year);
                             cur_completion.id = completion.id;
-                            cur_completion.target = completion.target;
-
+                            //cur_completion.target = completion.target;
+                            //target也从表格中读取，不从数据库中读取
                             completionMapper.Update(cur_completion);
                             Logger.Log($"在{currentYear}年，部门{currentDepts[j].dept_name}的{index.index_name}的完成数为{cur_completion.completed}");
                         }

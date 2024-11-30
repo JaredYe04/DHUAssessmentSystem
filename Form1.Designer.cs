@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -535,8 +535,8 @@
             // 
             // DeptId
             // 
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
-            this.DeptId.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
+            this.DeptId.DefaultCellStyle = dataGridViewCellStyle1;
             this.DeptId.HeaderText = "单位编号";
             this.DeptId.MinimumWidth = 6;
             this.DeptId.Name = "DeptId";
@@ -693,9 +693,9 @@
             this.label3.Location = new System.Drawing.Point(10, 554);
             this.label3.Margin = new System.Windows.Forms.Padding(10);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(280, 96);
+            this.label3.Size = new System.Drawing.Size(262, 24);
             this.label3.TabIndex = 5;
-            this.label3.Text = "提示：三级类别编号为0，则说明没有子类别，如果某个考核指标有分指标，请将总指标三级编号标为-1。";
+            this.label3.Text = "提示：请确保三级指标列不为空";
             // 
             // buttonIndexImport
             // 
@@ -853,8 +853,8 @@
             // 
             // indexId
             // 
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Gainsboro;
-            this.indexId.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            this.indexId.DefaultCellStyle = dataGridViewCellStyle2;
             this.indexId.HeaderText = "指标编号";
             this.indexId.MinimumWidth = 6;
             this.indexId.Name = "indexId";
@@ -937,7 +937,7 @@
             this.pageManager.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pageManager.Name = "pageManager";
             this.pageManager.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pageManager.Size = new System.Drawing.Size(1540, 696);
+            this.pageManager.Size = new System.Drawing.Size(1540, 698);
             this.pageManager.TabIndex = 2;
             this.pageManager.Text = "职能部门视图";
             this.pageManager.UseVisualStyleBackColor = true;
@@ -955,7 +955,7 @@
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(1534, 688);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(1534, 690);
             this.tableLayoutPanel12.TabIndex = 2;
             // 
             // managerDataGrid
@@ -971,7 +971,7 @@
             this.managerDataGrid.Name = "managerDataGrid";
             this.managerDataGrid.RowHeadersWidth = 51;
             this.managerDataGrid.RowTemplate.Height = 27;
-            this.managerDataGrid.Size = new System.Drawing.Size(1221, 680);
+            this.managerDataGrid.Size = new System.Drawing.Size(1221, 682);
             this.managerDataGrid.TabIndex = 5;
             this.managerDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.managerDataGrid_CellContentClick);
             this.managerDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.managerDataGrid_CellEndEdit);
@@ -979,8 +979,8 @@
             // 
             // manager_id
             // 
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro;
-            this.manager_id.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            this.manager_id.DefaultCellStyle = dataGridViewCellStyle3;
             this.manager_id.HeaderText = "职能部门编号";
             this.manager_id.MinimumWidth = 6;
             this.manager_id.Name = "manager_id";
@@ -1019,7 +1019,7 @@
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(301, 680);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(301, 682);
             this.tableLayoutPanel13.TabIndex = 6;
             // 
             // buttonManagerImport
@@ -1068,7 +1068,7 @@
             this.pageIndexDuty.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pageIndexDuty.Name = "pageIndexDuty";
             this.pageIndexDuty.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pageIndexDuty.Size = new System.Drawing.Size(1540, 696);
+            this.pageIndexDuty.Size = new System.Drawing.Size(1540, 698);
             this.pageIndexDuty.TabIndex = 3;
             this.pageIndexDuty.Text = "职责分配视图";
             this.pageIndexDuty.UseVisualStyleBackColor = true;
@@ -1085,7 +1085,7 @@
             this.tableLayoutPanel14.Name = "tableLayoutPanel14";
             this.tableLayoutPanel14.RowCount = 1;
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(1534, 688);
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(1534, 690);
             this.tableLayoutPanel14.TabIndex = 0;
             // 
             // managerInfoSplit
@@ -1100,7 +1100,7 @@
             this.managerInfoSplit.RowCount = 2;
             this.managerInfoSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.managerInfoSplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.managerInfoSplit.Size = new System.Drawing.Size(454, 682);
+            this.managerInfoSplit.Size = new System.Drawing.Size(454, 684);
             this.managerInfoSplit.TabIndex = 0;
             // 
             // groupBox1
@@ -1175,14 +1175,14 @@
             this.dutySplit.RowCount = 2;
             this.dutySplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.dutySplit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.dutySplit.Size = new System.Drawing.Size(1068, 682);
+            this.dutySplit.Size = new System.Drawing.Size(1068, 684);
             this.dutySplit.TabIndex = 1;
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.tableDutyUtil);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 548);
+            this.groupBox4.Location = new System.Drawing.Point(3, 550);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(1062, 131);
             this.groupBox4.TabIndex = 0;
@@ -1225,7 +1225,7 @@
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox8.Location = new System.Drawing.Point(3, 3);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(1062, 539);
+            this.groupBox8.Size = new System.Drawing.Size(1062, 541);
             this.groupBox8.TabIndex = 1;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "职能分配";
@@ -1244,7 +1244,7 @@
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
             this.tableLayoutPanel15.RowCount = 1;
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(1056, 509);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(1056, 511);
             this.tableLayoutPanel15.TabIndex = 0;
             // 
             // groupDutyAllocate
@@ -1259,7 +1259,7 @@
             this.groupDutyAllocate.Margin = new System.Windows.Forms.Padding(15);
             this.groupDutyAllocate.Name = "groupDutyAllocate";
             this.groupDutyAllocate.Padding = new System.Windows.Forms.Padding(20);
-            this.groupDutyAllocate.Size = new System.Drawing.Size(75, 479);
+            this.groupDutyAllocate.Size = new System.Drawing.Size(75, 481);
             this.groupDutyAllocate.TabIndex = 3;
             this.groupDutyAllocate.TabStop = false;
             this.groupDutyAllocate.Text = "分配";
@@ -1324,7 +1324,7 @@
             this.groupUnallocated.Margin = new System.Windows.Forms.Padding(15);
             this.groupUnallocated.Name = "groupUnallocated";
             this.groupUnallocated.Padding = new System.Windows.Forms.Padding(20);
-            this.groupUnallocated.Size = new System.Drawing.Size(446, 479);
+            this.groupUnallocated.Size = new System.Drawing.Size(446, 481);
             this.groupUnallocated.TabIndex = 0;
             this.groupUnallocated.TabStop = false;
             this.groupUnallocated.Text = "未分配的指标";
@@ -1340,7 +1340,7 @@
             this.listUnallocatedIndexes.Name = "listUnallocatedIndexes";
             this.listUnallocatedIndexes.ScrollAlwaysVisible = true;
             this.listUnallocatedIndexes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listUnallocatedIndexes.Size = new System.Drawing.Size(406, 415);
+            this.listUnallocatedIndexes.Size = new System.Drawing.Size(406, 417);
             this.listUnallocatedIndexes.TabIndex = 3;
             this.listUnallocatedIndexes.SelectedIndexChanged += new System.EventHandler(this.listUnallocatedIndexes_SelectedIndexChanged);
             // 
@@ -1352,7 +1352,7 @@
             this.groupBoxAllocated.Margin = new System.Windows.Forms.Padding(15);
             this.groupBoxAllocated.Name = "groupBoxAllocated";
             this.groupBoxAllocated.Padding = new System.Windows.Forms.Padding(20);
-            this.groupBoxAllocated.Size = new System.Drawing.Size(445, 479);
+            this.groupBoxAllocated.Size = new System.Drawing.Size(445, 481);
             this.groupBoxAllocated.TabIndex = 2;
             this.groupBoxAllocated.TabStop = false;
             this.groupBoxAllocated.Text = "已分配的指标";
@@ -1368,7 +1368,7 @@
             this.listAllocatedIndexes.Name = "listAllocatedIndexes";
             this.listAllocatedIndexes.ScrollAlwaysVisible = true;
             this.listAllocatedIndexes.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listAllocatedIndexes.Size = new System.Drawing.Size(405, 415);
+            this.listAllocatedIndexes.Size = new System.Drawing.Size(405, 417);
             this.listAllocatedIndexes.TabIndex = 3;
             this.listAllocatedIndexes.SelectedIndexChanged += new System.EventHandler(this.listAllocatedIndexes_SelectedIndexChanged);
             // 
@@ -1605,8 +1605,8 @@
             // 
             // dept_code
             // 
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dept_code.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dept_code.DefaultCellStyle = dataGridViewCellStyle4;
             this.dept_code.HeaderText = "教学科研单位编号";
             this.dept_code.MinimumWidth = 8;
             this.dept_code.Name = "dept_code";
@@ -1615,8 +1615,8 @@
             // 
             // DeptName1
             // 
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.DeptName1.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.DeptName1.DefaultCellStyle = dataGridViewCellStyle5;
             this.DeptName1.HeaderText = "单位名称";
             this.DeptName1.MinimumWidth = 8;
             this.DeptName1.Name = "DeptName1";
@@ -1639,8 +1639,8 @@
             // 
             // completion_rate
             // 
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.completion_rate.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.completion_rate.DefaultCellStyle = dataGridViewCellStyle6;
             this.completion_rate.HeaderText = "完成率";
             this.completion_rate.MinimumWidth = 8;
             this.completion_rate.Name = "completion_rate";
